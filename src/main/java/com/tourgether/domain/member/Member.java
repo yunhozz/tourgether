@@ -17,6 +17,9 @@ public class Member extends TimeEntity {
     @GeneratedValue
     private Long id;
 
+    @Column(unique = true)
+    private String oAuth2Id;
+
     @Column(length = 50, unique = true)
     private String email;
 
@@ -26,7 +29,7 @@ public class Member extends TimeEntity {
     @Column(length = 20)
     private String name;
 
-    @Column(length = 20)
+    @Column(length = 20, unique = true)
     private String nickname;
 
     private String profileUrl;
@@ -34,7 +37,8 @@ public class Member extends TimeEntity {
     private String auth; // 쉼표로 구분
 
     @Builder
-    private Member(String email, String password, String name, String nickname, String profileUrl, String auth) {
+    private Member(String oAuth2Id, String email, String password, String name, String nickname, String profileUrl, String auth) {
+        this.oAuth2Id = oAuth2Id;
         this.email = email;
         this.password = password;
         this.name = name;
