@@ -1,0 +1,41 @@
+spring:
+  datasource:
+    url: jdbc:h2:tcp://localhost/~/tourgether
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+#        show_sql: true
+        format_sql: true
+        default_batch_fetch_size: 1000
+
+  h2:
+    console.enabled: true
+
+  security:
+    oauth2:
+      client:
+        registration:
+          kakao:
+            client-id: 326f5c4c2ca1457d9c6c12db344b79f8
+            redirect-url: http://localhost:8080/login/oauth2/code/kakao
+            client-authentication-method: POST
+            authorization-grant-type: authorization_code
+            scope: profile_nickname, profile_image, account_email
+            client-name: Kakao
+        provider:
+          kakao:
+            authorization_url: https://kauth.kakao.com/oauth/authorize
+            token_url: https://kauth.kakao.com/oauth/token
+            user-info-url: https://kapi.kakao.com/v2/user/me
+            user_name_attribute: id
+
+logging.level:
+  org.hibernate.SQL: debug
+#  org.hibernate.type: trace
