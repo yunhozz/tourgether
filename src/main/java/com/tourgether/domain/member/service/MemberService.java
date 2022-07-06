@@ -1,11 +1,12 @@
 package com.tourgether.domain.member.service;
 
 import com.tourgether.domain.member.Member;
-import com.tourgether.domain.member.controller.LoginForm;
 import com.tourgether.domain.member.controller.UpdateForm;
 import com.tourgether.domain.member.dto.MemberRequestDto;
 import com.tourgether.domain.member.dto.MemberResponseDto;
 import com.tourgether.domain.member.repository.MemberRepository;
+import com.tourgether.global.auth.UserDetailsImpl;
+import com.tourgether.global.dto.MemberSessionResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -21,7 +22,6 @@ import java.util.stream.Collectors;
 public class MemberService {
 
     private final MemberRepository memberRepository;
-    private final UserDetailsServiceImpl userDetailsService;
     private final BCryptPasswordEncoder encoder;
 
     public Long join(MemberRequestDto memberRequestDto) {
