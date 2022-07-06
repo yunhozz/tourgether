@@ -1,13 +1,15 @@
-package com.tourgether.domain.member;
+package com.tourgether.global.auth;
 
+import com.tourgether.domain.member.Member;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+@Getter
 public class UserDetailsImpl implements UserDetails {
 
     private Member member;
