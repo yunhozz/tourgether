@@ -38,11 +38,13 @@ public class MemberService {
         return member.getId();
     }
 
-    public void login(LoginForm loginForm) {
-        UserDetails userDetails = userDetailsService.loadUserByUsername(loginForm.getEmail()); // 이메일 존재 여부 검증 -> 세션 생성
-        if (!encoder.matches(loginForm.getPassword(), userDetails.getPassword())) {
+    @Transactional(readOnly = true)
+    public MemberSessionResponseDto login(UserDetails userDetails, String password) {
+        if (!encoder.matches(userDetails.getPassword(), password)) {
             throw new IllegalStateException("비밀번호가 다릅니다.");
         }
+        UserDetailsImpl userdetailsImpl = (UserDetailsImpl) userDetails;
+        return new MemberSessionResponseDto(userdetailsImpl.getMember());
     }
 
     public void updatePassword(Long id, String originalPw, String newPw) {
