@@ -4,7 +4,10 @@ import com.tourgether.domain.member.dto.MemberRequestDto;
 import com.tourgether.domain.member.service.MemberService;
 import com.tourgether.global.dto.MemberSessionResponseDto;
 import com.tourgether.global.ui.LoginMember;
+import com.tourgether.global.ui.SessionConstants;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,6 +26,7 @@ import javax.validation.Valid;
 public class MemberController {
 
     private final MemberService memberService;
+    private final UserDetailsService userDetailsService;
 
     @GetMapping("/signup")
     public String signup(@ModelAttribute MemberRequestDto memberRequestDto) {
@@ -52,12 +56,14 @@ public class MemberController {
     }
 
     @PostMapping("/sign-in")
-    public String signIn(@Valid LoginForm loginForm, BindingResult result, @RequestParam(defaultValue = "/") String redirectUrl) {
+    public String signIn(@Valid LoginForm loginForm, BindingResult result, HttpSession session, @RequestParam(defaultValue = "/") String redirectUrl) {
         if (result.hasErrors()) {
             return "member/login";
         }
         try {
-            memberService.login(loginForm);
+            UserDetails userDetails = userDetailsService.loadUserByUsername(loginForm.getEmail()); // 이메일 존재 여부 검증, 시큐리티 고유 세션 영역에 저장
+            MemberSessionResponseDto member = memberService.login(userDetails, loginForm.getPassword()); // 비밀번호 일치 여부 검증
+            session.setAttribute(SessionConstants.LOGIN_MEMBER, member); // 세션에 회원 정보 저장
         } catch (Exception e) {
             result.addError(new ObjectError("loginFail", "로그인에 실패하였습니다."));
             return "member/login";
@@ -103,13 +109,13 @@ public class MemberController {
     @PostMapping("/update-info")
     public String updateInfo(@Valid UpdateForm updateForm, BindingResult result, @RequestParam("userId") Long userId) {
         if (result.hasErrors()) {
-            return "member/update-pw";
+            return "member/update-info";
         }
         try {
             memberService.updateInfo(userId, updateForm);
         } catch (Exception e) {
-            result.addError(new ObjectError("UpdateFail", "비밀번호 변경에 실패하였습니다."));
-            return "member/update-pw";
+            result.addError(new ObjectError("UpdateFail", "회원정보 변경에 실패하였습니다."));
+            return "member/update-info";
         }
         return "redirect:/";
     }
