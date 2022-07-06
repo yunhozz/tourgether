@@ -1,8 +1,7 @@
-package com.tourgether.domain.member.service;
+package com.tourgether.global.auth;
 
 import com.tourgether.domain.member.Member;
 import com.tourgether.domain.member.repository.MemberRepository;
-import com.tourgether.global.auth.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
