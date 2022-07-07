@@ -17,7 +17,7 @@ public class MemberResponseDto {
     private String password;
     private String name;
     private String nickname;
-    private String profileUrl;
+    private String profileImgUrl;
     private Role role;
     private LocalDateTime createdDate;
     private LocalDateTime lastModifiedDate;
@@ -29,7 +29,7 @@ public class MemberResponseDto {
         password = member.getPassword();
         name = member.getName();
         nickname = member.getNickname();
-        profileUrl = member.getProfileUrl();
+        profileImgUrl = member.getProfileImgUrl();
         role = member.getRole();
         createdDate = member.getCreatedDate();
         lastModifiedDate = member.getLastModifiedDate();
