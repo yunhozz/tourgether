@@ -1,6 +1,7 @@
 package com.tourgether.global.dto;
 
 import com.tourgether.domain.member.Member;
+import com.tourgether.global.enums.Role;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -16,8 +17,8 @@ public class MemberSessionResponseDto implements Serializable {
     private String password;
     private String name;
     private String nickname;
-    private String profileUrl;
-    private String auth;
+    private String profileImgUrl;
+    private Role role;
     private LocalDateTime createdDate;
     private LocalDateTime lastModifiedDate;
 
@@ -27,8 +28,8 @@ public class MemberSessionResponseDto implements Serializable {
         password = member.getPassword();
         name = member.getName();
         nickname = member.getNickname();
-        profileUrl = member.getProfileUrl();
-        auth = member.getAuth();
+        profileImgUrl = member.getProfileImgUrl();
+        role = member.getRole();
         createdDate = member.getCreatedDate();
         lastModifiedDate = member.getLastModifiedDate();
     }
