@@ -2,17 +2,18 @@ package com.tourgether.global.auth;
 
 import com.tourgether.domain.member.Member;
 import com.tourgether.domain.member.repository.MemberRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.tourgether.global.auth.UserDetailsImpl;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
+@RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    @Autowired
-    private MemberRepository memberRepository;
+    private final MemberRepository memberRepository;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
