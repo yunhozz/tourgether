@@ -33,19 +33,19 @@ public class Member extends TimeEntity {
     @Column(length = 20, unique = true)
     private String nickname;
 
-    private String profileUrl;
+    private String profileImgUrl;
 
     @Enumerated(EnumType.STRING)
     private Role role;
 
     @Builder
-    private Member(String oAuth2Id, String email, String password, String name, String nickname, String profileUrl, Role role) {
+    private Member(String oAuth2Id, String email, String password, String name, String nickname, String profileImgUrl, Role role) {
         this.oAuth2Id = oAuth2Id;
         this.email = email;
         this.password = password;
         this.name = name;
         this.nickname = nickname;
-        this.profileUrl = profileUrl;
+        this.profileImgUrl = profileImgUrl;
         this.role = role;
     }
 
@@ -53,9 +53,9 @@ public class Member extends TimeEntity {
         this.password = password;
     }
 
-    public void updateInfo(String name, String nickname, String profileUrl) {
+    public void updateInfo(String name, String nickname, String profileImgUrl) {
         this.name = name;
         this.nickname = nickname;
-        this.profileUrl = profileUrl;
+        this.profileImgUrl = profileImgUrl;
     }
 }
