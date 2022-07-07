@@ -72,8 +72,8 @@ public class NotificationService {
     }
 
     // 읽은 알림 삭제
-    public void deleteNotificationsAlreadyChecked(Long receiverId) {
-        notificationRepository.deleteAlreadyChecked(receiverId);
+    public void deleteNotificationsAlreadyChecked(List<Long> ids) {
+        notificationRepository.deleteAlreadyChecked(ids);
     }
 
     @Transactional(readOnly = true)
