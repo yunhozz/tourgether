@@ -2,6 +2,20 @@ package com.tourgether.domain.notification.repository;
 
 import com.tourgether.domain.notification.Notification;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
-public interface NotificationRepository extends JpaRepository<Notification, Long>, EmitterRepository {
+import java.util.List;
+
+public interface NotificationRepository extends JpaRepository<Notification, Long> {
+
+    List<Notification> findByReceiverId(Long receiverId);
+
+    @Query("select n from Notification n join fetch n.receiver r where r.id = :receiverId and n.isChecked = :check")
+    List<Notification> findWithReceiverIdReadOrNot(@Param("receiverId") Long receiverId, @Param("check") boolean check);
+
+    @Modifying(clearAutomatically = true)
+    @Query("delete from Notification n where n.id in :ids and n.isChecked = true")
+    void deleteAlreadyChecked(@Param("ids") List<Long> ids);
 }
