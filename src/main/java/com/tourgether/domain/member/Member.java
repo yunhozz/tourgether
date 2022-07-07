@@ -49,10 +49,19 @@ public class Member extends TimeEntity {
         this.role = role;
     }
 
+    public Member update(String name, String profileImgUrl) {
+        this.name = name;
+        this.profileImgUrl = profileImgUrl;
+
+        return this;
+    }
+
+    // 비밀번호 수정
     public void updatePassword(String password) {
         this.password = password;
     }
 
+    // 이름, 닉네임, 프로필 사진 수정
     public void updateInfo(String name, String nickname, String profileImgUrl) {
         this.name = name;
         this.nickname = nickname;
