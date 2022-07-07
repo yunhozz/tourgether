@@ -37,4 +37,8 @@ public class Notification extends TimeEntity {
         this.type = type;
         this.isChecked = isChecked;
     }
+
+    public void check() {
+        isChecked = true;
+    }
 }
