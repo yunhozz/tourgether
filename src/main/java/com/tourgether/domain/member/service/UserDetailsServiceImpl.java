@@ -1,4 +1,4 @@
-package com.tourgether.global.auth;
+package com.tourgether.domain.member.service;
 
 import com.tourgether.domain.member.Member;
 import com.tourgether.domain.member.repository.MemberRepository;
