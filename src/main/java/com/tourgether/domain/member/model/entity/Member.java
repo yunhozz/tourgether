@@ -1,7 +1,7 @@
 package com.tourgether.domain.member.model.entity;
 
 import com.tourgether.domain.TimeEntity;
-import com.tourgether.global.enums.Role;
+import com.tourgether.enums.Role;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

@@ -1,9 +1,9 @@
 package com.tourgether.domain.notification.controller;
 
-import com.tourgether.domain.notification.dto.NotificationResponseDto;
+import com.tourgether.domain.notification.model.dto.NotificationResponseDto;
 import com.tourgether.domain.notification.service.NotificationService;
-import com.tourgether.global.dto.MemberSessionResponseDto;
-import com.tourgether.global.ui.LoginMember;
+import com.tourgether.dto.MemberSessionResponseDto;
+import com.tourgether.ui.login.LoginMember;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

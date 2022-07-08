@@ -1,12 +1,12 @@
 package com.tourgether.domain.notification.service;
 
-import com.tourgether.domain.member.Member;
-import com.tourgether.domain.member.repository.MemberRepository;
-import com.tourgether.domain.notification.Notification;
-import com.tourgether.domain.notification.dto.NotificationRequestDto;
-import com.tourgether.domain.notification.dto.NotificationResponseDto;
-import com.tourgether.domain.notification.repository.EmitterRepository;
-import com.tourgether.domain.notification.repository.NotificationRepository;
+import com.tourgether.domain.member.model.entity.Member;
+import com.tourgether.domain.member.model.repository.MemberRepository;
+import com.tourgether.domain.notification.model.entity.Notification;
+import com.tourgether.domain.notification.model.dto.NotificationRequestDto;
+import com.tourgether.domain.notification.model.dto.NotificationResponseDto;
+import com.tourgether.domain.notification.model.repository.EmitterRepository;
+import com.tourgether.domain.notification.model.repository.NotificationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

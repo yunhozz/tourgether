@@ -1,12 +1,12 @@
 package com.tourgether.domain.member.service;
 
-import com.tourgether.domain.member.Member;
-import com.tourgether.domain.member.controller.UpdateForm;
-import com.tourgether.domain.member.dto.MemberRequestDto;
-import com.tourgether.domain.member.dto.MemberResponseDto;
-import com.tourgether.domain.member.repository.MemberRepository;
-import com.tourgether.global.auth.UserDetailsImpl;
-import com.tourgether.global.dto.MemberSessionResponseDto;
+import com.tourgether.domain.member.model.entity.Member;
+import com.tourgether.domain.member.controller.form.UpdateForm;
+import com.tourgether.domain.member.model.dto.MemberRequestDto;
+import com.tourgether.domain.member.model.dto.MemberResponseDto;
+import com.tourgether.domain.member.model.repository.MemberRepository;
+import com.tourgether.ui.auth.UserDetailsImpl;
+import com.tourgether.dto.MemberSessionResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

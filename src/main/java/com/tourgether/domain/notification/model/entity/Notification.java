@@ -2,7 +2,7 @@ package com.tourgether.domain.notification.model.entity;
 
 import com.tourgether.domain.TimeEntity;
 import com.tourgether.domain.member.model.entity.Member;
-import com.tourgether.global.enums.NotificationType;
+import com.tourgether.enums.NotificationType;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

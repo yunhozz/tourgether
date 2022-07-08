@@ -2,7 +2,7 @@ package com.tourgether.domain.notification.model.dto;
 
 import com.tourgether.domain.member.model.entity.Member;
 import com.tourgether.domain.notification.model.entity.Notification;
-import com.tourgether.global.enums.NotificationType;
+import com.tourgether.enums.NotificationType;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;

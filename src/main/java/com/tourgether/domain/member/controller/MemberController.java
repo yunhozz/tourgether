@@ -1,10 +1,13 @@
 package com.tourgether.domain.member.controller;
 
-import com.tourgether.domain.member.dto.MemberRequestDto;
+import com.tourgether.domain.member.controller.form.LoginForm;
+import com.tourgether.domain.member.controller.form.PasswordForm;
+import com.tourgether.domain.member.controller.form.UpdateForm;
+import com.tourgether.domain.member.model.dto.MemberRequestDto;
 import com.tourgether.domain.member.service.MemberService;
-import com.tourgether.global.dto.MemberSessionResponseDto;
-import com.tourgether.global.ui.LoginMember;
-import com.tourgether.global.ui.SessionConstants;
+import com.tourgether.dto.MemberSessionResponseDto;
+import com.tourgether.ui.login.LoginMember;
+import com.tourgether.ui.SessionConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -77,7 +80,7 @@ public class MemberController {
     @GetMapping("/update-pw")
     public String updatePw(@LoginMember MemberSessionResponseDto loginMember, @ModelAttribute PasswordForm passwordForm, Model model) {
         if (loginMember == null) {
-            return "redirect:/sign-in";
+            return "redirect:/member/sign-in";
         }
         model.addAttribute("userId", loginMember.getId());
         return "member/update-pw";
@@ -100,7 +103,7 @@ public class MemberController {
     @GetMapping("/update-info")
     public String updateInfo(@LoginMember MemberSessionResponseDto loginMember, @ModelAttribute UpdateForm updateForm, Model model) {
         if (loginMember == null) {
-            return "redirect:/sign-in";
+            return "redirect:/member/sign-in";
         }
         model.addAttribute("userId", loginMember.getId());
         return "member/update-info";
