@@ -1,4 +1,4 @@
-package com.tourgether.global.ui;
+package com.tourgether.ui;
 
 public class SessionConstants {
 

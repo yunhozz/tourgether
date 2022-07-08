@@ -1,6 +1,7 @@
-package com.tourgether.global.ui;
+package com.tourgether.ui.login;
 
-import com.tourgether.global.dto.MemberSessionResponseDto;
+import com.tourgether.dto.MemberSessionResponseDto;
+import com.tourgether.ui.SessionConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;

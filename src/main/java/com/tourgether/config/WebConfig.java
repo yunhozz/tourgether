@@ -1,11 +1,10 @@
-package com.tourgether.global.config;
+package com.tourgether.config;
 
-import com.tourgether.domain.chat.ChatHandler;
-import com.tourgether.global.ui.LoginArgumentResolver;
+import com.tourgether.domain.chat.service.ChatHandler;
+import com.tourgether.ui.login.LoginArgumentResolver;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import org.springframework.web.socket.config.annotation.WebSocketConfigurer;

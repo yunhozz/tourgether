@@ -1,7 +1,7 @@
-package com.tourgether.global.dto;
+package com.tourgether.dto;
 
-import com.tourgether.domain.member.Member;
-import com.tourgether.global.enums.Role;
+import com.tourgether.domain.member.model.entity.Member;
+import com.tourgether.enums.Role;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

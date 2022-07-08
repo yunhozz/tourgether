@@ -1,6 +1,6 @@
-package com.tourgether.global.ui;
+package com.tourgether.ui;
 
-import com.tourgether.global.dto.MemberSessionResponseDto;
+import com.tourgether.dto.MemberSessionResponseDto;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;

@@ -1,7 +1,7 @@
-package com.tourgether.global.auth;
+package com.tourgether.ui.auth;
 
-import com.tourgether.domain.member.Member;
-import com.tourgether.global.enums.Role;
+import com.tourgether.domain.member.model.entity.Member;
+import com.tourgether.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

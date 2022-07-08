@@ -1,4 +1,4 @@
-package com.tourgether.global.enums;
+package com.tourgether.enums;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

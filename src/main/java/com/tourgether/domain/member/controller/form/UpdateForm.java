@@ -1,4 +1,4 @@
-package com.tourgether.domain.member.controller;
+package com.tourgether.domain.member.controller.form;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,11 +8,13 @@ import javax.validation.constraints.NotNull;
 
 @Getter
 @AllArgsConstructor
-public class PasswordForm {
+public class UpdateForm {
 
     @NotBlank
-    private String originalPw;
+    private String name;
 
     @NotBlank
-    private String newPw;
+    private String nickname;
+
+    private String profileUrl;
 }

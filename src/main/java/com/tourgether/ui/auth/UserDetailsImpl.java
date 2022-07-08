@@ -1,6 +1,6 @@
-package com.tourgether.global.auth;
+package com.tourgether.ui.auth;
 
-import com.tourgether.domain.member.Member;
+import com.tourgether.domain.member.model.entity.Member;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,9 +21,6 @@ public class UserDetailsImpl implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<GrantedAuthority> roles = new HashSet<>();
-        for (String role : member.getAuth().split(",")) {
-            roles.add(new SimpleGrantedAuthority(role));
-        }
         return roles;
     }
 

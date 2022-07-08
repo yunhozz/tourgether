@@ -1,4 +1,4 @@
-package com.tourgether.global.config;
+package com.tourgether.config;
 
 import com.tourgether.domain.member.service.OAuth2UserServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -67,7 +67,7 @@ public class WebSecurityConfig {
     // kakao client 등록
     private ClientRegistration kakaoClientRegistration() {
         return ClientRegistration.withRegistrationId("kakao")
-                .clientId("clientId")
+                .clientId("326f5c4c2ca1457d9c6c12db344b79f8")
                 .redirectUri("{baseUrl}/{action}/oauth2/code/{registrationId}")
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_POST)
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)

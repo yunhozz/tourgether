@@ -1,4 +1,4 @@
-package com.tourgether.global.ui;
+package com.tourgether.ui.login;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
