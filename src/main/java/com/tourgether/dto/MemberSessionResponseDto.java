@@ -2,14 +2,14 @@ package com.tourgether.dto;
 
 import com.tourgether.domain.member.model.entity.Member;
 import com.tourgether.enums.Role;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Getter
-@NoArgsConstructor
+@AllArgsConstructor
 public class MemberSessionResponseDto implements Serializable {
 
     private Long id;
