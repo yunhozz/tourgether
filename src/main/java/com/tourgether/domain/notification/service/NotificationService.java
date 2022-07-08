@@ -7,6 +7,9 @@ import com.tourgether.domain.notification.model.dto.NotificationRequestDto;
 import com.tourgether.domain.notification.model.dto.NotificationResponseDto;
 import com.tourgether.domain.notification.model.repository.EmitterRepository;
 import com.tourgether.domain.notification.model.repository.NotificationRepository;
+import com.tourgether.enums.ErrorCode;
+import com.tourgether.exception.MemberNotFoundException;
+import com.tourgether.exception.NotificationNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,7 +53,7 @@ public class NotificationService {
     // 알림 보내기
     public Long sendNotification(NotificationRequestDto notificationRequestDto, Long receiverId) {
         Member receiver = memberRepository.findById(receiverId)
-                .orElseThrow(() -> new IllegalStateException("This member is null : " + receiverId));
+                .orElseThrow(() -> new MemberNotFoundException("This member is null : " + receiverId, ErrorCode.MEMBER_NOT_FOUND));
         notificationRequestDto.setReceiver(receiver);
         Notification notification = notificationRequestDto.toEntity();
         notificationRepository.save(notification);
@@ -98,7 +101,7 @@ public class NotificationService {
     @Transactional(readOnly = true)
     private Notification findNotification(Long id) {
         return notificationRepository.findById(id)
-                .orElseThrow(() -> new IllegalStateException("This notification is null : " + id));
+                .orElseThrow(() -> new NotificationNotFoundException("This notification is null : " + id, ErrorCode.NOTIFICATION_NOT_FOUND));
     }
 
     private void sendToClient(SseEmitter emitter, String id, Object data) {
