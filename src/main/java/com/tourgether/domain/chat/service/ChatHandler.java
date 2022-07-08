@@ -1,4 +1,4 @@
-package com.tourgether.domain.chat;
+package com.tourgether.domain.chat.service;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;

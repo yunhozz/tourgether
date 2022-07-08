@@ -1,4 +1,4 @@
-package com.tourgether.domain.notification.repository;
+package com.tourgether.domain.notification.model.repository;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;

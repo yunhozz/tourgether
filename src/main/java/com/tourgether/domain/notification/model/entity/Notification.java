@@ -1,7 +1,7 @@
-package com.tourgether.domain.notification;
+package com.tourgether.domain.notification.model.entity;
 
 import com.tourgether.domain.TimeEntity;
-import com.tourgether.domain.member.Member;
+import com.tourgether.domain.member.model.entity.Member;
 import com.tourgether.global.enums.NotificationType;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -28,13 +28,16 @@ public class Notification extends TimeEntity {
     @Enumerated(EnumType.STRING)
     private NotificationType type;
 
+    private String redirectUrl;
+
     private boolean isChecked;
 
     @Builder
-    private Notification(Member receiver, String message, NotificationType type, boolean isChecked) {
+    private Notification(Member receiver, String message, NotificationType type, String redirectUrl, boolean isChecked) {
         this.receiver = receiver;
         this.message = message;
         this.type = type;
+        this.redirectUrl = redirectUrl;
         this.isChecked = isChecked;
     }
 

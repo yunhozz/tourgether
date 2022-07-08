@@ -1,6 +1,6 @@
-package com.tourgether.domain.notification.dto;
+package com.tourgether.domain.notification.model.dto;
 
-import com.tourgether.domain.notification.Notification;
+import com.tourgether.domain.notification.model.entity.Notification;
 import com.tourgether.global.enums.NotificationType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,6 +15,7 @@ public class NotificationResponseDto {
     private Long receiverId;
     private String message;
     private NotificationType type;
+    private String redirectUrl;
     private Boolean isChecked;
     private LocalDateTime createdDate;
 
@@ -23,6 +24,7 @@ public class NotificationResponseDto {
         receiverId = notification.getReceiver().getId();
         message = notification.getMessage();
         type = notification.getType();
+        redirectUrl = notification.getRedirectUrl();
         isChecked = notification.isChecked();
         createdDate = notification.getCreatedDate();
     }

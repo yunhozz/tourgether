@@ -1,6 +1,6 @@
-package com.tourgether.domain.notification.repository;
+package com.tourgether.domain.notification.model.repository;
 
-import com.tourgether.domain.notification.Notification;
+import com.tourgether.domain.notification.model.entity.Notification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

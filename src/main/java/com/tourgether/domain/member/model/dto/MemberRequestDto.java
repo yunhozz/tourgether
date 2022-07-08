@@ -1,6 +1,6 @@
-package com.tourgether.domain.member.dto;
+package com.tourgether.domain.member.model.dto;
 
-import com.tourgether.domain.member.Member;
+import com.tourgether.domain.member.model.entity.Member;
 import com.tourgether.global.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,6 +13,9 @@ import javax.validation.constraints.NotNull;
 @Builder
 @AllArgsConstructor
 public class MemberRequestDto {
+
+    @NotBlank
+    private String oAuth2Id;
 
     @NotBlank
     private String email;
@@ -33,6 +36,7 @@ public class MemberRequestDto {
 
     public Member toEntity() {
         return Member.builder()
+                .oAuth2Id(oAuth2Id)
                 .email(email)
                 .password(password)
                 .name(name)

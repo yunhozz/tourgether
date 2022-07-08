@@ -1,7 +1,7 @@
-package com.tourgether.domain.notification.dto;
+package com.tourgether.domain.notification.model.dto;
 
-import com.tourgether.domain.member.Member;
-import com.tourgether.domain.notification.Notification;
+import com.tourgether.domain.member.model.entity.Member;
+import com.tourgether.domain.notification.model.entity.Notification;
 import com.tourgether.global.enums.NotificationType;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,13 +22,16 @@ public class NotificationRequestDto {
     @NotNull
     private NotificationType type;
 
+    private String redirectUrl;
+
     @NotNull
     private Boolean isChecked;
 
     @Builder
-    private NotificationRequestDto(String message, NotificationType type, Boolean isChecked) {
+    private NotificationRequestDto(String message, NotificationType type, String redirectUrl, Boolean isChecked) {
         this.message = message;
         this.type = type;
+        this.redirectUrl = redirectUrl;
         this.isChecked = isChecked;
     }
 
@@ -37,6 +40,7 @@ public class NotificationRequestDto {
                 .receiver(receiver)
                 .message(message)
                 .type(type)
+                .redirectUrl(redirectUrl)
                 .isChecked(isChecked)
                 .build();
     }
