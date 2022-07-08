@@ -5,6 +5,10 @@ import com.tourgether.domain.member.controller.form.UpdateForm;
 import com.tourgether.domain.member.model.dto.MemberRequestDto;
 import com.tourgether.domain.member.model.dto.MemberResponseDto;
 import com.tourgether.domain.member.model.repository.MemberRepository;
+import com.tourgether.enums.ErrorCode;
+import com.tourgether.exception.EmailDuplicateException;
+import com.tourgether.exception.MemberNotFoundException;
+import com.tourgether.exception.PasswordMismatchException;
 import com.tourgether.ui.auth.UserDetailsImpl;
 import com.tourgether.dto.MemberSessionResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +32,7 @@ public class MemberService {
         memberRepository.findAll().forEach(
                 member -> {
                     if (member.getEmail().equals(memberRequestDto.getEmail())) {
-                        throw new IllegalStateException("이메일이 중복된 회원이 존재합니다.");
+                        throw new EmailDuplicateException("이메일이 중복된 회원이 존재합니다.", ErrorCode.EMAIL_DUPLICATION);
                     }
                 }
         );
@@ -41,7 +45,7 @@ public class MemberService {
     @Transactional(readOnly = true)
     public MemberSessionResponseDto login(UserDetails userDetails, String password) {
         if (!encoder.matches(userDetails.getPassword(), password)) {
-            throw new IllegalStateException("비밀번호가 다릅니다.");
+            throw new PasswordMismatchException("비밀번호가 다릅니다.", ErrorCode.PASSWORD_MISMATCH);
         }
         UserDetailsImpl userdetailsImpl = (UserDetailsImpl) userDetails;
         return new MemberSessionResponseDto(userdetailsImpl.getMember());
@@ -50,7 +54,7 @@ public class MemberService {
     public void updatePassword(Long id, String originalPw, String newPw) {
         Member member = findMember(id);
         if (!encoder.matches(originalPw, member.getPassword())) {
-            throw new IllegalStateException("비밀번호가 다릅니다.");
+            throw new PasswordMismatchException("비밀번호가 다릅니다.", ErrorCode.PASSWORD_MISMATCH);
         }
         member.updatePassword(newPw);
     }
@@ -79,6 +83,6 @@ public class MemberService {
     @Transactional(readOnly = true)
     private Member findMember(Long id) {
         return memberRepository.findById(id)
-                .orElseThrow(() -> new IllegalStateException("This member is null : " + id));
+                .orElseThrow(() -> new MemberNotFoundException("회원정보가 없습니다.", ErrorCode.MEMBER_NOT_FOUND));
     }
 }
