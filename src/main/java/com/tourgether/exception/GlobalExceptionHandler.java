@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
+    // exception
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponseDto> handleException(Exception e) {
         log.error("handleException", e);
@@ -20,13 +21,13 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    // 이메일 중복
-    @ExceptionHandler(EmailDuplicateException.class)
-    public ResponseEntity<ErrorResponseDto> handleEmailDuplicateException(EmailDuplicateException e) {
-        log.error("handleEmailDuplicateException", e);
-        ErrorResponseDto error = new ErrorResponseDto(e.getErrorCode());
+    // runtime exception
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<ErrorResponseDto> handleRuntimeException(RuntimeException e) {
+        log.error("handleRuntimeException", e);
+        ErrorResponseDto error = new ErrorResponseDto(ErrorCode.INTER_SERVER_ERROR);
 
-        return new ResponseEntity<>(error, HttpStatus.valueOf(e.getErrorCode().getStatus()));
+        return new ResponseEntity<>(error, HttpStatus.REQUEST_TIMEOUT);
     }
 
     // 회원 조회 실패
@@ -38,10 +39,28 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.valueOf(e.getErrorCode().getStatus()));
     }
 
+    // 이메일 중복
+    @ExceptionHandler(EmailDuplicateException.class)
+    public ResponseEntity<ErrorResponseDto> handleEmailDuplicateException(EmailDuplicateException e) {
+        log.error("handleEmailDuplicateException", e);
+        ErrorResponseDto error = new ErrorResponseDto(e.getErrorCode());
+
+        return new ResponseEntity<>(error, HttpStatus.valueOf(e.getErrorCode().getStatus()));
+    }
+
     // 비밀번호 불일치
     @ExceptionHandler(PasswordMismatchException.class)
     public ResponseEntity<ErrorResponseDto> handlePasswordMismatchException(PasswordMismatchException e) {
         log.error("handlePasswordMismatchException", e);
+        ErrorResponseDto error = new ErrorResponseDto(e.getErrorCode());
+
+        return new ResponseEntity<>(error, HttpStatus.valueOf(e.getErrorCode().getStatus()));
+    }
+
+    // 알림 조회 실패
+    @ExceptionHandler(NotificationNotFoundException.class)
+    public ResponseEntity<ErrorResponseDto> handleNotificationNotFoundException(NotificationNotFoundException e) {
+        log.error("handleNotificationNotFoundException", e);
         ErrorResponseDto error = new ErrorResponseDto(e.getErrorCode());
 
         return new ResponseEntity<>(error, HttpStatus.valueOf(e.getErrorCode().getStatus()));
