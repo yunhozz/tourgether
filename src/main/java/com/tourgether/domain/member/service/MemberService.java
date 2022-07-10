@@ -9,6 +9,7 @@ import com.tourgether.enums.ErrorCode;
 import com.tourgether.exception.EmailDuplicateException;
 import com.tourgether.exception.MemberNotFoundException;
 import com.tourgether.exception.PasswordMismatchException;
+import com.tourgether.ui.SessionConstants;
 import com.tourgether.ui.auth.UserDetailsImpl;
 import com.tourgether.dto.MemberSessionResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,6 +29,7 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final BCryptPasswordEncoder encoder;
+    private final HttpSession session;
 
     public Long join(MemberRequestDto memberRequestDto) {
         memberRepository.findAll().forEach(
@@ -47,8 +50,10 @@ public class MemberService {
         if (!encoder.matches(userDetails.getPassword(), password)) {
             throw new PasswordMismatchException("비밀번호가 다릅니다.", ErrorCode.PASSWORD_MISMATCH);
         }
-        UserDetailsImpl userdetailsImpl = (UserDetailsImpl) userDetails;
-        return new MemberSessionResponseDto(userdetailsImpl.getMember());
+        UserDetailsImpl userDetailsImpl = (UserDetailsImpl) userDetails;
+        session.setAttribute(SessionConstants.LOGIN_MEMBER, userDetailsImpl.getMember()); // 세션에 회원 정보 저장
+
+        return new MemberSessionResponseDto(userDetailsImpl.getMember());
     }
 
     public void updatePassword(Long id, String originalPw, String newPw) {
