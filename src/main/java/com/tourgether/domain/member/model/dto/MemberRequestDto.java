@@ -5,6 +5,7 @@ import com.tourgether.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -35,10 +36,11 @@ public class MemberRequestDto {
     private Role role;
 
     public Member toEntity() {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         return Member.builder()
                 .oAuth2Id(oAuth2Id)
                 .email(email)
-                .password(password)
+                .password(encoder.encode(password))
                 .name(name)
                 .nickname(nickname)
                 .profileImgUrl(profileImgUrl)
