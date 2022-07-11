@@ -8,6 +8,7 @@ import com.tourgether.domain.member.model.repository.MemberRepository;
 import com.tourgether.enums.ErrorCode;
 import com.tourgether.exception.EmailDuplicateException;
 import com.tourgether.exception.MemberNotFoundException;
+import com.tourgether.exception.NicknameDuplicationException;
 import com.tourgether.exception.PasswordMismatchException;
 import com.tourgether.ui.SessionConstants;
 import com.tourgether.ui.auth.UserDetailsImpl;
@@ -36,6 +37,9 @@ public class MemberService {
                 member -> {
                     if (member.getEmail().equals(memberRequestDto.getEmail())) {
                         throw new EmailDuplicateException("이메일이 중복된 회원이 존재합니다.", ErrorCode.EMAIL_DUPLICATION);
+                    }
+                    if (member.getNickname().equals(memberRequestDto.getNickname())) {
+                        throw new NicknameDuplicationException("닉네임이 중복된 회원이 존재합니다.", ErrorCode.NICKNAME_DUPLICATION);
                     }
                 }
         );
