@@ -10,7 +10,8 @@ import java.util.List;
 
 public interface NotificationRepository extends JpaRepository<Notification, Long>, NotificationRepositoryCustom {
 
-    List<Notification> findByReceiverId(Long receiverId);
+    @Query("select n from Notification n join fetch n.receiver r where r.id = :receiverId")
+    List<Notification> findWithReceiverId(@Param("receiverId") Long receiverId);
 
     @Query("select n from Notification n join fetch n.receiver r where r.id = :receiverId and n.isChecked = :check")
     List<Notification> findWithReceiverIdReadOrNot(@Param("receiverId") Long receiverId, @Param("check") boolean check);
