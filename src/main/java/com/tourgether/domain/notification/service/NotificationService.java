@@ -70,7 +70,7 @@ public class NotificationService {
 
     // 전체 알림 읽기 처리
     public void readNotifications(Long receiverId) {
-        List<Notification> notifications = notificationRepository.findByReceiverId(receiverId);
+        List<Notification> notifications = notificationRepository.findWithReceiverId(receiverId);
         notifications.forEach(Notification::check);
     }
 
