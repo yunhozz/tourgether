@@ -51,7 +51,7 @@ public class MemberService {
 
     @Transactional(readOnly = true)
     public MemberSessionResponseDto login(UserDetails userDetails, String password) {
-        if (!encoder.matches(userDetails.getPassword(), password)) {
+        if (!encoder.matches(password, userDetails.getPassword())) {
             throw new PasswordMismatchException("비밀번호가 다릅니다.", ErrorCode.PASSWORD_MISMATCH);
         }
         UserDetailsImpl userDetailsImpl = (UserDetailsImpl) userDetails;
