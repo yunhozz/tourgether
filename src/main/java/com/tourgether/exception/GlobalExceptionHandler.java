@@ -48,6 +48,15 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.valueOf(e.getErrorCode().getStatus()));
     }
 
+    // 닉네임 중복
+    @ExceptionHandler(NicknameDuplicationException.class)
+    public ResponseEntity<ErrorResponseDto> handleNicknameDuplicationException(NicknameDuplicationException e) {
+        log.error("handleNicknameDuplicationException", e);
+        ErrorResponseDto error = new ErrorResponseDto(e.getErrorCode());
+
+        return new ResponseEntity<>(error, HttpStatus.valueOf(e.getErrorCode().getStatus()));
+    }
+
     // 비밀번호 불일치
     @ExceptionHandler(PasswordMismatchException.class)
     public ResponseEntity<ErrorResponseDto> handlePasswordMismatchException(PasswordMismatchException e) {
