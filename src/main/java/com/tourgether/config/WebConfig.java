@@ -1,6 +1,6 @@
 package com.tourgether.config;
 
-import com.tourgether.domain.chat.service.ChatHandler;
+import com.tourgether.domain.chat.controller.ChatHandler;
 import com.tourgether.ui.login.LoginArgumentResolver;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
@@ -27,6 +27,6 @@ public class WebConfig implements WebMvcConfigurer, WebSocketConfigurer {
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(chatHandler, "/chat").setAllowedOriginPatterns("*").withSockJS();
+        registry.addHandler(chatHandler, "ws/chat").setAllowedOrigins("*");
     }
 }
