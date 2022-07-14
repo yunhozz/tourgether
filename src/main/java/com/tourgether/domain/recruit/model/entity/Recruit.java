@@ -32,9 +32,17 @@ public class Recruit extends TimeEntity {
     @Column(length = 2000)
     private String content;
 
+    private int view;
+
     @Builder
-    private Recruit(Member writer, String title, String content) {
+    private Recruit(Member writer, String title, String content, int view) {
         this.writer = writer;
+        this.title = title;
+        this.content = content;
+        this.view = view;
+    }
+
+    public void update(String title, String content) {
         this.title = title;
         this.content = content;
     }
