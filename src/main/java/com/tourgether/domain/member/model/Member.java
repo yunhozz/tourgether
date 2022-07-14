@@ -1,4 +1,4 @@
-package com.tourgether.domain.member.model.entity;
+package com.tourgether.domain.member.model;
 
 import com.tourgether.domain.TimeEntity;
 import com.tourgether.enums.Role;
@@ -24,7 +24,6 @@ public class Member extends TimeEntity {
     @Column(length = 50, unique = true)
     private String email;
 
-    @Column(length = 20)
     private String password;
 
     @Column(length = 20)
