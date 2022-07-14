@@ -74,4 +74,22 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(error, HttpStatus.valueOf(e.getErrorCode().getStatus()));
     }
+
+    // 모집글 조회 실패
+    @ExceptionHandler(RecruitNotFoundException.class)
+    public ResponseEntity<ErrorResponseDto> handleRecruitNotFoundException(RecruitNotFoundException e) {
+        log.error("handleRecruitNotFoundException", e);
+        ErrorResponseDto error = new ErrorResponseDto(e.getErrorCode());
+
+        return new ResponseEntity<>(error, HttpStatus.valueOf(e.getErrorCode().getStatus()));
+    }
+
+    // 모집글 작성자 불일치
+    @ExceptionHandler(WriterMismatchException.class)
+    public ResponseEntity<ErrorResponseDto> handleWriterMismatchException(WriterMismatchException e) {
+        log.error("handleWriterMismatchException", e);
+        ErrorResponseDto error = new ErrorResponseDto(e.getErrorCode());
+
+        return new ResponseEntity<>(error, HttpStatus.valueOf(e.getErrorCode().getStatus()));
+    }
 }
