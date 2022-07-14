@@ -1,6 +1,6 @@
 package com.tourgether.dto;
 
-import com.tourgether.domain.member.model.entity.Member;
+import com.tourgether.domain.member.model.Member;
 import com.tourgether.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

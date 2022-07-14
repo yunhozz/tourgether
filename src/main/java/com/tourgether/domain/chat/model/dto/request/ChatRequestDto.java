@@ -2,7 +2,7 @@ package com.tourgether.domain.chat.model.dto.request;
 
 import com.tourgether.domain.chat.model.entity.Chat;
 import com.tourgether.domain.chat.model.entity.ChatRoom;
-import com.tourgether.domain.member.model.entity.Member;
+import com.tourgether.domain.member.model.Member;
 import lombok.Getter;
 import lombok.Setter;
 

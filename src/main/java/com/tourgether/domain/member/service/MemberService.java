@@ -1,6 +1,6 @@
 package com.tourgether.domain.member.service;
 
-import com.tourgether.domain.member.model.entity.Member;
+import com.tourgether.domain.member.model.Member;
 import com.tourgether.domain.member.controller.form.UpdateForm;
 import com.tourgether.domain.member.model.dto.MemberRequestDto;
 import com.tourgether.domain.member.model.dto.MemberResponseDto;
@@ -73,8 +73,12 @@ public class MemberService {
         member.updateInfo(updateForm.getName(), updateForm.getNickname(), updateForm.getProfileUrl());
     }
 
-    public void withdraw(Long id) {
-
+    public void withdraw(Long id, String password) {
+        Member member = findMember(id);
+        if (!encoder.matches(password, member.getPassword())) {
+            throw new PasswordMismatchException("비밀번호가 다릅니다.", ErrorCode.PASSWORD_MISMATCH);
+        }
+        // 추후 추가 예정
     }
 
     @Transactional(readOnly = true)

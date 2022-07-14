@@ -1,6 +1,6 @@
 package com.tourgether.domain.notification.model.dto;
 
-import com.tourgether.domain.notification.model.entity.Notification;
+import com.tourgether.domain.notification.model.Notification;
 import com.tourgether.enums.NotificationType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
