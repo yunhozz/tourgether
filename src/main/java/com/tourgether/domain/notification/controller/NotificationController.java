@@ -47,6 +47,19 @@ public class NotificationController {
         return "notification/list";
     }
 
+    @GetMapping("/read")
+    public String readNotification(@LoginMember MemberSessionResponseDto loginMember, @RequestParam("id") Long notificationId, Model model) {
+        if (loginMember == null) {
+            return "redirect:/member/sign-in";
+        }
+        NotificationResponseDto notification = notificationService.readNotification(notificationId, loginMember.getId()); // 읽기 처리
+        if (!notification.getRedirectUrl().isEmpty()) {
+            model.addAttribute("isUrl", true);
+            return "redirect:" + notification.getRedirectUrl();
+        }
+        return "notification/detail";
+    }
+
     @GetMapping("/delete")
     public String deleteNotifications(@LoginMember MemberSessionResponseDto loginMember) {
         if (loginMember == null) {
