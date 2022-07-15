@@ -74,11 +74,6 @@ public class NotificationService {
         notifications.forEach(Notification::check);
     }
 
-    // 읽은 알림 삭제
-    public void deleteNotificationsAlreadyChecked(List<Long> ids) {
-        notificationRepository.deleteAlreadyChecked(ids);
-    }
-
     @Transactional(readOnly = true)
     public NotificationResponseDto findNotificationDto(Long id) {
         return new NotificationResponseDto(findNotification(id));
