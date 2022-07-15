@@ -24,7 +24,7 @@ public class NotificationController {
     private final NotificationRepository notificationRepository;
 
     @GetMapping
-    public String readNotifications(@LoginMember MemberSessionResponseDto loginMember, Model model) {
+    public String getNotifications(@LoginMember MemberSessionResponseDto loginMember, Model model) {
         if (loginMember == null) {
             return "redirect:/member/sign-in";
         }
@@ -32,12 +32,11 @@ public class NotificationController {
         model.addAttribute("notifications", notifications);
         model.addAttribute("isNew", true);
 
-        notificationService.readNotifications(loginMember.getId()); // 읽기 처리
         return "notification/list";
     }
 
     @GetMapping("/old")
-    public String readOldNotifications(@LoginMember MemberSessionResponseDto loginMember, Model model) {
+    public String getOldNotifications(@LoginMember MemberSessionResponseDto loginMember, Model model) {
         if (loginMember == null) {
             return "redirect:/member/sign-in";
         }
