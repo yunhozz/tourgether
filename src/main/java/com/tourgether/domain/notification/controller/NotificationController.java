@@ -61,11 +61,14 @@ public class NotificationController {
     }
 
     @GetMapping("/delete")
-    public String deleteNotifications(@LoginMember MemberSessionResponseDto loginMember) {
+    public String deleteCheckedNotifications(@LoginMember MemberSessionResponseDto loginMember) {
         if (loginMember == null) {
             return "redirect:/member/sign-in";
         }
-        notificationService.deleteNotificationsAlreadyChecked(loginMember.getId());
+        List<Long> ids = notificationService.findNotificationDtoListWithReceiverIdReadOrNot(loginMember.getId(), true).stream()
+                .map(NotificationResponseDto::getId).toList();
+        notificationRepository.deleteAlreadyChecked(ids);
+
         return "redirect:/notifications";
     }
 }
