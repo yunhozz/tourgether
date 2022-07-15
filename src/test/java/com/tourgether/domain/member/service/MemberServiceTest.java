@@ -3,8 +3,8 @@ package com.tourgether.domain.member.service;
 import com.tourgether.domain.member.controller.form.UpdateForm;
 import com.tourgether.domain.member.model.dto.MemberRequestDto;
 import com.tourgether.domain.member.model.dto.MemberResponseDto;
-import com.tourgether.dto.MemberSessionResponseDto;
 import com.tourgether.enums.Role;
+import com.tourgether.ui.auth.UserDetailsImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -63,10 +63,11 @@ class MemberServiceTest {
 
         //when
         UserDetails userDetails = userDetailsService.loadUserByUsername(memberRequestDto.getEmail());
-        MemberSessionResponseDto member = memberService.login(userDetails, "123");
+        memberService.login(userDetails, "123");
+        UserDetailsImpl details = (UserDetailsImpl) userDetails;
 
         //then
-        assertThat(member.getEmail()).isEqualTo(userDetails.getUsername());
+        assertThat(details.getMember().getEmail()).isEqualTo(userDetails.getUsername());
     }
 
     @Test
