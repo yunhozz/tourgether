@@ -12,7 +12,6 @@ import com.tourgether.exception.NicknameDuplicationException;
 import com.tourgether.exception.PasswordMismatchException;
 import com.tourgether.ui.SessionConstants;
 import com.tourgether.ui.auth.UserDetailsImpl;
-import com.tourgether.dto.MemberSessionResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -50,14 +49,12 @@ public class MemberService {
     }
 
     @Transactional(readOnly = true)
-    public MemberSessionResponseDto login(UserDetails userDetails, String password) {
+    public void login(UserDetails userDetails, String password) {
         if (!encoder.matches(password, userDetails.getPassword())) {
             throw new PasswordMismatchException("비밀번호가 다릅니다.", ErrorCode.PASSWORD_MISMATCH);
         }
         UserDetailsImpl userDetailsImpl = (UserDetailsImpl) userDetails;
         session.setAttribute(SessionConstants.LOGIN_MEMBER, userDetailsImpl.getMember()); // 세션에 회원 정보 저장
-
-        return new MemberSessionResponseDto(userDetailsImpl.getMember());
     }
 
     public void updatePassword(Long id, String originalPw, String newPw) {
