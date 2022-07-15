@@ -58,7 +58,7 @@ public class MemberController {
             return "member/login";
         }
         UserDetails userDetails = userDetailsService.loadUserByUsername(loginForm.getEmail());// 이메일 존재 여부 검증, 시큐리티 고유 세션 영역에 저장
-        MemberSessionResponseDto member = memberService.login(userDetails, loginForm.getPassword()); // 비밀번호 일치 여부 검증, 세션 저장
+        memberService.login(userDetails, loginForm.getPassword()); // 비밀번호 일치 여부 검증, 세션 저장
 
         if (redirectUrl != null) {
             return "redirect:" + redirectUrl;
