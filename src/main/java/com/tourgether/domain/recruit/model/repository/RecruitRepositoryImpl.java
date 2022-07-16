@@ -167,10 +167,19 @@ public class RecruitRepositoryImpl implements RecruitRepositoryCustom {
             int totalCount = countKeyword(keyword, recruit);
             countMap.put(recruit, totalCount);
         }
-        List<Map.Entry<RecruitQueryDto, Integer>> countMapList = new ArrayList<>();
+        List<Map.Entry<RecruitQueryDto, Integer>> countMapList = new ArrayList<>(countMap.entrySet());
         List<RecruitQueryDto> sortedRecruits = new ArrayList<>();
 
-        Collections.sort(countMapList, (o1, o2) -> o2.getValue().compareTo(o1.getValue()));
+        // 키워드 개수 내림차순 정렬, 같을 시 id 내림차순 정렬
+        Collections.sort(countMapList, (o1, o2) -> {
+            int num;
+            if (!o1.getValue().equals(o2.getValue())) {
+                num = o2.getValue().compareTo(o1.getValue());
+            } else {
+                num = o2.getKey().getId().compareTo(o1.getKey().getId());
+            }
+            return num;
+        });
         countMapList.forEach(m -> sortedRecruits.add(m.getKey()));
 
         Long count = queryFactory
