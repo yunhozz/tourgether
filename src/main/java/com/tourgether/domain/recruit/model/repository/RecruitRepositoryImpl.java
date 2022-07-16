@@ -67,7 +67,7 @@ public class RecruitRepositoryImpl implements RecruitRepositoryCustom {
                 .join(recruit.writer, member)
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
-                .orderBy(recruit.view.desc())
+                .orderBy(recruit.view.desc(), recruit.createdDate.desc())
                 .fetch();
 
         Long count = queryFactory
