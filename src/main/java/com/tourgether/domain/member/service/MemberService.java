@@ -5,6 +5,7 @@ import com.tourgether.domain.member.controller.form.UpdateForm;
 import com.tourgether.domain.member.model.dto.MemberRequestDto;
 import com.tourgether.domain.member.model.dto.MemberResponseDto;
 import com.tourgether.domain.member.model.repository.MemberRepository;
+import com.tourgether.dto.MemberSessionResponseDto;
 import com.tourgether.enums.ErrorCode;
 import com.tourgether.exception.EmailDuplicateException;
 import com.tourgether.exception.MemberNotFoundException;
@@ -54,7 +55,7 @@ public class MemberService {
             throw new PasswordMismatchException("비밀번호가 다릅니다.", ErrorCode.PASSWORD_MISMATCH);
         }
         UserDetailsImpl userDetailsImpl = (UserDetailsImpl) userDetails;
-        session.setAttribute(SessionConstants.LOGIN_MEMBER, userDetailsImpl.getMember()); // 세션에 회원 정보 저장
+        session.setAttribute(SessionConstants.LOGIN_MEMBER, new MemberSessionResponseDto(userDetailsImpl.getMember())); // 세션에 회원 정보 저장
     }
 
     public void updatePassword(Long id, String originalPw, String newPw) {
