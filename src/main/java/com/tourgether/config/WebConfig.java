@@ -1,6 +1,6 @@
 package com.tourgether.config;
 
-import com.tourgether.domain.chat.controller.ChatHandler;
+import com.tourgether.domain.chat.service.ChatHandler;
 import com.tourgether.ui.login.LoginArgumentResolver;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
