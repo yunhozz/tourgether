@@ -16,6 +16,9 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 @Controller
@@ -71,14 +74,47 @@ public class RecruitController {
     }
 
     @GetMapping("/{id}")
-    public String readRecruit(@LoginMember MemberSessionResponseDto loginMember, @PathVariable("id") Long recruitId, Model model) {
+    public String readRecruit(@LoginMember MemberSessionResponseDto loginMember, @PathVariable("id") Long recruitId, HttpServletRequest request,
+                              HttpServletResponse response, Model model) {
         if (loginMember == null) {
             return "redirect:/member/signIn";
         }
         RecruitResponseDto recruit = recruitService.findRecruitDto(recruitId);
-        recruitRepository.addView(recruit.getId()); // 조회수 증가 -> 추후 조회수 중복 고려
+        addViewCount(recruitId, request, response); // 조회수 증가 (중복 x)
         model.addAttribute("recruit", recruit);
 
         return "recruit/detail";
+    }
+
+    private void addViewCount(Long recruitId, HttpServletRequest request, HttpServletResponse response) {
+        Cookie oldCookie = null;
+        Cookie[] cookies = request.getCookies();
+
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("recruit")) {
+                    oldCookie = cookie;
+                }
+            }
+        }
+        /*
+        쿠키가 존재할 때 : 쿠키의 값에 recruitId 를 포함하고 있지 않을 때만 조회수 증가
+        쿠키가 존재하지 않을 때 : 새로운 recruit 쿠키 생성
+         */
+        if (oldCookie != null) {
+            if (!oldCookie.getValue().contains("[" + recruitId.toString() + "]")) {
+                recruitRepository.addView(recruitId);
+                oldCookie.setValue(oldCookie.getValue() + "_[" + recruitId + "]");
+                oldCookie.setPath("/");
+                oldCookie.setMaxAge(60 * 60 * 24);
+                response.addCookie(oldCookie);
+            }
+        } else {
+            recruitRepository.addView(recruitId);
+            Cookie newCookie = new Cookie("recruit","[" + recruitId + "]");
+            newCookie.setPath("/");
+            newCookie.setMaxAge(60 * 60 * 24);
+            response.addCookie(newCookie);
+        }
     }
 }
