@@ -92,4 +92,13 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(error, HttpStatus.valueOf(e.getErrorCode().getStatus()));
     }
+
+    // 채팅 조회 실패
+    @ExceptionHandler(ChatNotFoundException.class)
+    public ResponseEntity<ErrorResponseDto> handlerChatNotFoundException(ChatNotFoundException e) {
+        log.error("handlerChatNotFoundException", e);
+        ErrorResponseDto error = new ErrorResponseDto(e.getErrorCode());
+
+        return new ResponseEntity<>(error, HttpStatus.valueOf(e.getErrorCode().getStatus()));
+    }
 }
