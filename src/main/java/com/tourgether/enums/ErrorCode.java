@@ -21,7 +21,11 @@ public enum ErrorCode {
 
     // recruit
     RECRUIT_NOT_FOUND(400, "RECRUIT-ERR-400", "RECRUITMENT NOT FOUND"),
-    WRITER_MISMATCH(400, "RECRUIT-ERR-400", "WRITER DO NOT MATCH");
+    WRITER_MISMATCH(400, "RECRUIT-ERR-400", "WRITER DO NOT MATCH"),
+
+    // chat
+    CHAT_NOT_FOUND(400, "CHATTING-ERR-400", "CHAT NOT FOUND"),
+    CHATROOM_NOT_FOUND(400, "CHATROOM-ERR-400", "CHATROOM NOT FOUND");
 
     private final int status;
     private final String code;
