@@ -29,4 +29,8 @@ public class Bookmark extends TimeEntity {
         this.member = member;
         this.recruit = recruit;
     }
+
+    public void deleteRecruit() {
+        recruit = null;
+    }
 }
