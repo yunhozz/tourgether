@@ -27,6 +27,9 @@ class RecruitServiceTest {
     @Autowired
     private MemberService memberService;
 
+    @Autowired
+    private BookmarkService bookmarkService;
+
     @Test
     void makeRecruit() throws Exception {
         //given
