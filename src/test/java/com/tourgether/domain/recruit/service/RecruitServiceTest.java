@@ -78,11 +78,27 @@ class RecruitServiceTest {
     @Test
     void deleteRecruit() throws Exception {
         //given
-
+        MemberRequestDto memberRequestDto = createMemberDto("email", "123", "yunho", "pyh");
+        Long userId = memberService.join(memberRequestDto);
+        RecruitRequestDto recruitRequestDto1 = createRecruitDto("title1", "content1");
+        RecruitRequestDto recruitRequestDto2 = createRecruitDto("title2", "content2");
+        RecruitRequestDto recruitRequestDto3 = createRecruitDto("title3", "content3");
 
         //when
+        Long id1 = recruitService.makeRecruit(recruitRequestDto1, userId);
+        Long id2 = recruitService.makeRecruit(recruitRequestDto2, userId);
+        Long id3 = recruitService.makeRecruit(recruitRequestDto3, userId);
+
+        bookmarkService.makeBookmark(userId, id1);
+        bookmarkService.makeBookmark(userId, id2);
+        bookmarkService.makeBookmark(userId, id3);
+
+        recruitService.deleteRecruit(id2, userId);
+        List<RecruitResponseDto> result = recruitService.findRecruitDtoList();
 
         //then
+        assertThat(result.size()).isEqualTo(2);
+        assertThat(result).extracting("title").contains("title1", "title3");
     }
 
     private MemberRequestDto createMemberDto(String email, String password, String name, String nickname) {
