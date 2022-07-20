@@ -5,7 +5,9 @@ import com.tourgether.domain.member.model.repository.MemberRepository;
 import com.tourgether.domain.recruit.controller.UpdateForm;
 import com.tourgether.domain.recruit.model.dto.request.RecruitRequestDto;
 import com.tourgether.domain.recruit.model.dto.response.RecruitResponseDto;
+import com.tourgether.domain.recruit.model.entity.Bookmark;
 import com.tourgether.domain.recruit.model.entity.Recruit;
+import com.tourgether.domain.recruit.model.repository.BookmarkRepository;
 import com.tourgether.domain.recruit.model.repository.RecruitRepository;
 import com.tourgether.enums.ErrorCode;
 import com.tourgether.exception.MemberNotFoundException;
@@ -25,6 +27,7 @@ public class RecruitService {
 
     private final RecruitRepository recruitRepository;
     private final MemberRepository memberRepository;
+    private final BookmarkRepository bookmarkRepository;
 
     public Long makeRecruit(RecruitRequestDto recruitRequestDto, Long userId) {
         Member writer = memberRepository.findById(userId)
@@ -44,7 +47,9 @@ public class RecruitService {
         if (!recruit.getWriter().getId().equals(userId)) {
             throw new WriterMismatchException("This member don't match on recruitment : " + userId, ErrorCode.WRITER_MISMATCH);
         }
-        recruitRepository.delete(recruit); // 추후 북마크 고려
+        List<Bookmark> bookmarks = bookmarkRepository.findWithRecruitId(recruit.getId());
+        bookmarks.forEach(Bookmark::deleteRecruit);
+        recruitRepository.delete(recruit);
     }
 
     @Transactional(readOnly = true)
