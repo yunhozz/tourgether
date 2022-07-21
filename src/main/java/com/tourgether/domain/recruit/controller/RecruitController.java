@@ -85,8 +85,8 @@ public class RecruitController {
     }
 
     @GetMapping("/{id}")
-    public String readRecruit(@LoginMember MemberSessionResponseDto loginMember, @PathVariable("id") Long recruitId, HttpServletRequest request,
-                              HttpServletResponse response, Model model) {
+    public String readRecruit(@LoginMember MemberSessionResponseDto loginMember, @PathVariable("id") Long recruitId,
+                              @ModelAttribute CommentRequestDto commentRequestDto, HttpServletRequest request, HttpServletResponse response, Model model) {
         if (loginMember == null) {
             return "redirect:/member/signIn";
         }
@@ -94,6 +94,13 @@ public class RecruitController {
         addViewCount(recruitId, request, response); // 조회수 증가 (중복 x)
         model.addAttribute("recruit", recruit);
 
+        boolean isRecruitWriter = recruit.getWriterId().equals(loginMember.getId());
+        model.addAttribute("isRecruitWriter", isRecruitWriter); // 모집글 작성자일 경우 수정, 삭제 버튼 활성화
+        List<CommentResponseDto> comments = recruit.getComments();
+        for (CommentResponseDto comment : comments) {
+            boolean isCommentWriter = comment.getWriterId().equals(loginMember.getId());
+            model.addAttribute("isCommentWriter", isCommentWriter); // 댓글 작성자일 경우 수정, 삭제 버튼 활성화
+        }
         return "recruit/detail";
     }
 
