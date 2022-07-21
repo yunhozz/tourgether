@@ -104,6 +104,94 @@ public class RecruitController {
         return "recruit/detail";
     }
 
+    @GetMapping("/write")
+    public String writePage(@LoginMember MemberSessionResponseDto loginMember, @ModelAttribute RecruitRequestDto recruitRequestDto, Model model) {
+        if (loginMember == null) {
+            return "redirect:/member/signIn";
+        }
+        model.addAttribute("writer", loginMember.getId());
+        return "recruit/write";
+    }
+
+    @PostMapping("/write")
+    public String write(@Valid @RequestBody RecruitRequestDto recruitRequestDto, BindingResult result, @RequestParam("writer") Long writerId) {
+        if (result.hasErrors()) {
+            return "recruit/write";
+        }
+        recruitService.makeRecruit(recruitRequestDto, writerId);
+        return "redirect:/recruit";
+    }
+
+    @PostMapping("/comment/write")
+    public String comment(@Valid @RequestBody CommentRequestDto commentRequestDto, BindingResult result, @RequestParam("writer") Long writerId,
+                          @RequestParam("recruit") Long recruitId) {
+        if (result.hasErrors()) {
+            return "recruit/detail";
+        }
+        commentService.makeComment(commentRequestDto, writerId, recruitId);
+        return "redirect:/" + recruitId;
+    }
+
+    @GetMapping("/{id}/update")
+    public String updateRecruitForm(@LoginMember MemberSessionResponseDto loginMember, @PathVariable("id") Long recruitId, @ModelAttribute UpdateForm updateForm,
+                                    Model model) {
+        if (loginMember == null) {
+            return "redirect:/member/signIn";
+        }
+        model.addAttribute("recruitId", recruitId);
+        return "recruit/update";
+    }
+
+    @PostMapping("/update")
+    public String updateRecruit(@Valid @RequestBody UpdateForm updateForm, BindingResult result, @RequestParam("id") Long recruitId) {
+        if (result.hasErrors()) {
+            return "recruit/update";
+        }
+        recruitService.updateRecruit(recruitId, updateForm);
+        return "redirect:/" + recruitId;
+    }
+
+    @GetMapping("/{id}/comment/{commentId}/update")
+    public String updateCommentForm(@LoginMember MemberSessionResponseDto loginMember, @PathVariable("id") Long recruitId, @PathVariable("commentId") Long commentId,
+                                    Model model) {
+        if (loginMember == null) {
+            return "redirect:/member/signIn";
+        }
+        model.addAttribute("writer", loginMember.getId());
+        model.addAttribute("recruitId", recruitId);
+        model.addAttribute("commentId", commentId);
+
+        return "recruit/comment-update";
+    }
+
+    @PostMapping("/comment/update")
+    public String updateComment(@RequestParam("content") String content, BindingResult result, @RequestParam("writer") Long userId,
+                                @RequestParam("id") Long recruitId, @RequestParam("commentId") Long commentId) {
+        if (!StringUtils.hasText(content)) {
+            return "recruit/comment-update";
+        }
+        commentService.updateComment(commentId, userId, content);
+        return "redirect:/" + recruitId;
+    }
+
+    @GetMapping("/{id}/delete")
+    public String deleteRecruit(@LoginMember MemberSessionResponseDto loginMember, @PathVariable("id") Long recruitId) {
+        if (loginMember == null) {
+            return "redirect:/member/signIn";
+        }
+        recruitService.deleteRecruit(recruitId, loginMember.getId());
+        return "redirect:/recruit";
+    }
+
+    @GetMapping("/{id}/comment/{commentId}/delete")
+    public String deleteComment(@LoginMember MemberSessionResponseDto loginMember, @PathVariable("id") Long recruitId, @PathVariable("commentId") Long commentId) {
+        if (loginMember == null) {
+            return "redirect:/member/signIn";
+        }
+        commentRepository.deleteById(commentId);
+        return "redirect:/" + recruitId;
+    }
+
     private void addViewCount(Long recruitId, HttpServletRequest request, HttpServletResponse response) {
         Cookie oldCookie = null;
         Cookie[] cookies = request.getCookies();
