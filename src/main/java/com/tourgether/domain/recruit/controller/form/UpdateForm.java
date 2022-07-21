@@ -1,4 +1,4 @@
-package com.tourgether.domain.recruit.controller;
+package com.tourgether.domain.recruit.controller.form;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
