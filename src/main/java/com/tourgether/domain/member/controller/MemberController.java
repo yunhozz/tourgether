@@ -76,7 +76,7 @@ public class MemberController {
     }
 
     @PostMapping("/update-pw")
-    public String updatePw(@Valid PasswordForm passwordForm, BindingResult result, @RequestParam("userId") Long userId) {
+    public String updatePw(@Valid PasswordForm passwordForm, BindingResult result, @RequestParam("user") Long userId) {
         if (result.hasErrors()) {
             return "member/update-pw";
         }
@@ -94,7 +94,7 @@ public class MemberController {
     }
 
     @PostMapping("/update-info")
-    public String updateInfo(@Valid UpdateForm updateForm, BindingResult result, @RequestParam("userId") Long userId) {
+    public String updateInfo(@Valid UpdateForm updateForm, BindingResult result, @RequestParam("user") Long userId) {
         if (result.hasErrors()) {
             return "member/update-info";
         }
