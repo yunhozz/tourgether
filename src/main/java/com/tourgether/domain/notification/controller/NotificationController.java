@@ -11,7 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -47,8 +46,8 @@ public class NotificationController {
         return "notification/list";
     }
 
-    @GetMapping("/read")
-    public String readNotification(@LoginMember MemberSessionResponseDto loginMember, @RequestParam("id") Long notificationId, Model model) {
+    @GetMapping("/read/{id}")
+    public String readNotification(@LoginMember MemberSessionResponseDto loginMember, @PathVariable("id") Long notificationId, Model model) {
         if (loginMember == null) {
             return "redirect:/member/sign-in";
         }
