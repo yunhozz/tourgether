@@ -1,5 +1,6 @@
 package com.tourgether.domain.recruit.model.repository;
 
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.tourgether.domain.recruit.model.dto.QRecruitQueryDto;
 import com.tourgether.domain.recruit.model.dto.RecruitQueryDto;
@@ -94,8 +95,7 @@ public class RecruitRepositoryImpl implements RecruitRepositoryCustom {
                 ))
                 .from(recruit)
                 .join(recruit.writer, member)
-                .where(recruit.title.contains(keyword)
-                        .or(recruit.content.contains(keyword)))
+                .where(isContain(keyword))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .orderBy(recruit.createdDate.desc())
@@ -125,8 +125,7 @@ public class RecruitRepositoryImpl implements RecruitRepositoryCustom {
                 ))
                 .from(recruit)
                 .join(recruit.writer, member)
-                .where(recruit.title.contains(keyword)
-                        .or(recruit.content.contains(keyword)))
+                .where(isContain(keyword))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .orderBy(recruit.lastModifiedDate.desc())
@@ -156,8 +155,7 @@ public class RecruitRepositoryImpl implements RecruitRepositoryCustom {
                 ))
                 .from(recruit)
                 .join(recruit.writer, member)
-                .where(recruit.title.contains(keyword)
-                        .or(recruit.content.contains(keyword)))
+                .where(isContain(keyword))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
@@ -188,6 +186,10 @@ public class RecruitRepositoryImpl implements RecruitRepositoryCustom {
                 .fetchOne();
 
         return new PageImpl<>(sortedRecruits, pageable, count);
+    }
+
+    private BooleanExpression isContain(String keyword) {
+        return recruit.title.contains(keyword).or(recruit.content.contains(keyword));
     }
 
     private int countKeyword(String keyword, RecruitQueryDto recruit) {
