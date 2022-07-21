@@ -1,8 +1,15 @@
 package com.tourgether.domain.recruit.controller;
 
+import com.tourgether.domain.recruit.controller.form.SearchForm;
+import com.tourgether.domain.recruit.controller.form.UpdateForm;
 import com.tourgether.domain.recruit.model.dto.RecruitQueryDto;
+import com.tourgether.domain.recruit.model.dto.request.CommentRequestDto;
+import com.tourgether.domain.recruit.model.dto.request.RecruitRequestDto;
+import com.tourgether.domain.recruit.model.dto.response.CommentResponseDto;
 import com.tourgether.domain.recruit.model.dto.response.RecruitResponseDto;
+import com.tourgether.domain.recruit.model.repository.CommentRepository;
 import com.tourgether.domain.recruit.model.repository.RecruitRepository;
+import com.tourgether.domain.recruit.service.CommentService;
 import com.tourgether.domain.recruit.service.RecruitService;
 import com.tourgether.dto.MemberSessionResponseDto;
 import com.tourgether.enums.SearchCondition;
@@ -13,6 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +28,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @RequestMapping("/recruit")
@@ -27,7 +36,9 @@ import javax.validation.Valid;
 public class RecruitController {
 
     private final RecruitService recruitService;
+    private final CommentService commentService;
     private final RecruitRepository recruitRepository;
+    private final CommentRepository commentRepository;
 
     @GetMapping
     public String recruitPage(@LoginMember MemberSessionResponseDto loginMember, @ModelAttribute SearchForm searchForm, @PageableDefault(size = 10) Pageable pageable,
