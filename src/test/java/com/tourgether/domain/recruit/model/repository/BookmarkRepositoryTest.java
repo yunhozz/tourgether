@@ -7,6 +7,7 @@ import com.tourgether.domain.recruit.model.entity.Recruit;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -89,6 +90,35 @@ class BookmarkRepositoryTest {
         assertThat(result.size()).isEqualTo(2);
         assertThat(result).extracting("id").contains(bookmark2.getId(), bookmark3.getId());
         assertThat(bookmarkRepository.findById(bookmark1.getId())).isNotPresent();
+    }
+
+    @Test
+    void findPageWithUserId() throws Exception {
+        //given
+        Member writer = createMember("writer", "writer", "writer", "writer");
+        Member member1 = createMember("email1", "pw1", "yunho1", "pyh1");
+        Member member2 = createMember("email2", "pw2", "yunho2", "pyh2");
+        Member member3 = createMember("email3", "pw3", "yunho3", "pyh3");
+        memberRepository.save(writer);
+        memberRepository.save(member1);
+        memberRepository.save(member2);
+        memberRepository.save(member3);
+
+        Recruit recruit = createRecruit(writer, "title1", "content1");
+        recruitRepository.save(recruit);
+
+        Bookmark bookmark1 = createBookmark(member1, recruit);
+        Bookmark bookmark2 = createBookmark(member2, recruit);
+        Bookmark bookmark3 = createBookmark(member3, recruit);
+        bookmarkRepository.save(bookmark1);
+        bookmarkRepository.save(bookmark2);
+        bookmarkRepository.save(bookmark3);
+
+        //when
+        PageRequest pageable = PageRequest.of(0, 10);
+        bookmarkRepository.findPageWithUserId(member1.getId(), pageable);
+
+        //then
     }
 
     private Bookmark createBookmark(Member member, Recruit recruit) {
