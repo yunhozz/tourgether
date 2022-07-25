@@ -2,6 +2,14 @@ package com.tourgether.exception;
 
 import com.tourgether.dto.ErrorResponseDto;
 import com.tourgether.enums.ErrorCode;
+import com.tourgether.exception.chat.ChatNotFoundException;
+import com.tourgether.exception.member.EmailDuplicateException;
+import com.tourgether.exception.member.MemberNotFoundException;
+import com.tourgether.exception.member.NicknameDuplicationException;
+import com.tourgether.exception.member.PasswordMismatchException;
+import com.tourgether.exception.notification.NotificationNotFoundException;
+import com.tourgether.exception.recruit.RecruitNotFoundException;
+import com.tourgether.exception.recruit.WriterMismatchException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
