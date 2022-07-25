@@ -1,4 +1,4 @@
-package com.tourgether.exception;
+package com.tourgether.exception.member;
 
 import com.tourgether.enums.ErrorCode;
 import lombok.Getter;
