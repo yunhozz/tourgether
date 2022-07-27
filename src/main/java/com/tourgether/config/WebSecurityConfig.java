@@ -68,7 +68,8 @@ public class WebSecurityConfig {
     private ClientRegistration kakaoClientRegistration() {
         return ClientRegistration.withRegistrationId("kakao")
                 .clientId("326f5c4c2ca1457d9c6c12db344b79f8")
-                .redirectUri("{baseUrl}/{action}/oauth2/code/{registrationId}")
+                .clientSecret("8LccWab22LNfGfYdHx9YsZ0PxV3VfglM")
+                .redirectUri("http://localhost:8080/login/oauth2/code/kakao")
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_POST)
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                 .scope("profile_nickname", "profile_image", "account_email")
