@@ -19,19 +19,20 @@ public class OAuthDto {
     private String nameAttributeKey;
     private Map<String, Object> attributes;
 
-    public OAuthDto(String registrationId, String userNameAttributeName, Map<String, Object> attributes) {
+    public static OAuthDto of(String registrationId, String userNameAttributeName, Map<String, Object> attributes) {
         if (registrationId.equals("kakao")) {
-            ofKakao(userNameAttributeName, attributes); // kakao
+            return ofKakao(userNameAttributeName, attributes); // kakao
         }
         if (registrationId.equals("naver")) {
-            ofNaver(userNameAttributeName, attributes); // naver
+            return ofNaver(userNameAttributeName, attributes); // naver
         }
         if (registrationId.equals("google")) {
-            ofGoogle(userNameAttributeName, attributes); // google
+            return ofGoogle(userNameAttributeName, attributes); // google
         }
+        return null;
     }
 
-    public static OAuthDto ofKakao(String userNameAttributeName, Map<String, Object> attributes) {
+    private static OAuthDto ofKakao(String userNameAttributeName, Map<String, Object> attributes) {
         Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");
         Map<String, Object> kakaoProfile = (Map<String, Object>) kakaoAccount.get("profile");
 
@@ -44,7 +45,7 @@ public class OAuthDto {
                 .build();
     }
 
-    public static OAuthDto ofNaver(String userNameAttributeName, Map<String, Object> attributes) {
+    private static OAuthDto ofNaver(String userNameAttributeName, Map<String, Object> attributes) {
         Map<String, Object> naverAccount = (Map<String, Object>) attributes.get("naver_account");
         Map<String, Object> naverProfile = (Map<String, Object>) naverAccount.get("profile");
 
@@ -57,7 +58,7 @@ public class OAuthDto {
                 .build();
     }
 
-    public static OAuthDto ofGoogle(String userNameAttributeName, Map<String, Object> attributes) {
+    private static OAuthDto ofGoogle(String userNameAttributeName, Map<String, Object> attributes) {
         Map<String, Object> googleAccount = (Map<String, Object>) attributes.get("google_account");
         Map<String, Object> googleProfile = (Map<String, Object>) googleAccount.get("profile");
 
