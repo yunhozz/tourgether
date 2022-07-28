@@ -40,14 +40,14 @@ public class OAuth2UserServiceImpl implements OAuth2UserService<OAuth2UserReques
         String userNameAttributeName = userRequest.getClientRegistration().getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName(); // OAuth2 로그인 진행 시 키가 되는 필드 값(PK)
 
         //OAuth2UserService
-        OAuthDto attributes = new OAuthDto(registrationId, userNameAttributeName, oAuth2User.getAttributes());
-        Member member = saveOrUpdate(attributes);
+        OAuthDto oAuthDto = OAuthDto.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
+        Member member = saveOrUpdate(oAuthDto);
         session.setAttribute(SessionConstants.LOGIN_MEMBER, new MemberSessionResponseDto(member));
 
         return new DefaultOAuth2User(
                 Collections.singleton(new SimpleGrantedAuthority(member.getRole().getKey())),
-                attributes.getAttributes(),
-                attributes.getNameAttributeKey()
+                oAuthDto.getAttributes(),
+                oAuthDto.getNameAttributeKey()
         );
     }
 
