@@ -67,8 +67,8 @@ public class WebSecurityConfig {
     // kakao client 등록
     private ClientRegistration kakaoClientRegistration() {
         return ClientRegistration.withRegistrationId("kakao")
-                .clientId("326f5c4c2ca1457d9c6c12db344b79f8")
-                .clientSecret("8LccWab22LNfGfYdHx9YsZ0PxV3VfglM")
+                .clientId("CLIENT ID")
+                .clientSecret("CLIENT SECRET ID")
                 .redirectUri("http://localhost:8080/login/oauth2/code/kakao")
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_POST)
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
