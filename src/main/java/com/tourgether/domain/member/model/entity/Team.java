@@ -1,7 +1,6 @@
-package com.tourgether.domain.team.model.entity;
+package com.tourgether.domain.member.model.entity;
 
 import com.tourgether.domain.TimeEntity;
-import com.tourgether.domain.member.model.Member;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,13 +16,24 @@ public class Team extends TimeEntity {
     @GeneratedValue
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
-
     @Column(length = 10)
     private String name;
 
     @Column(columnDefinition = "tinyint")
     private int numOfMember;
+
+    public Team(String name) {
+        this.name = name;
+    }
+
+    public void increaseNum() {
+        numOfMember++;
+    }
+
+    public void decreaseNum() {
+        if (numOfMember == 0) {
+            throw new IllegalStateException("Number of people cannot be less than zero");
+        }
+        numOfMember--;
+    }
 }
