@@ -2,7 +2,7 @@ package com.tourgether.domain.member.service;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import com.tourgether.domain.member.model.Member;
+import com.tourgether.domain.member.model.entity.Member;
 import com.tourgether.domain.member.model.repository.MemberRepository;
 import com.tourgether.ui.auth.OAuthDto;
 import com.tourgether.dto.MemberSessionResponseDto;

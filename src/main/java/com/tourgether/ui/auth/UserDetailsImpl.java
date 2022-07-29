@@ -1,6 +1,6 @@
 package com.tourgether.ui.auth;
 
-import com.tourgether.domain.member.model.Member;
+import com.tourgether.domain.member.model.entity.Member;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

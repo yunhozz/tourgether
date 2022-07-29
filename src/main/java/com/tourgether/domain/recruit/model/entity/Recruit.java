@@ -1,7 +1,7 @@
 package com.tourgether.domain.recruit.model.entity;
 
 import com.tourgether.domain.TimeEntity;
-import com.tourgether.domain.member.model.Member;
+import com.tourgether.domain.member.model.entity.Member;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

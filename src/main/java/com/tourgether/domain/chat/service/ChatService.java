@@ -12,7 +12,7 @@ import com.tourgether.domain.chat.model.entity.ChatRoomMember;
 import com.tourgether.domain.chat.model.repository.ChatRepository;
 import com.tourgether.domain.chat.model.repository.ChatRoomMemberRepository;
 import com.tourgether.domain.chat.model.repository.ChatRoomRepository;
-import com.tourgether.domain.member.model.Member;
+import com.tourgether.domain.member.model.entity.Member;
 import com.tourgether.domain.member.model.repository.MemberRepository;
 import com.tourgether.enums.ErrorCode;
 import com.tourgether.exception.chat.ChatNotFoundException;

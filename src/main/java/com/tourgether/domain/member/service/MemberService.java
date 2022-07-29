@@ -1,6 +1,6 @@
 package com.tourgether.domain.member.service;
 
-import com.tourgether.domain.member.model.Member;
+import com.tourgether.domain.member.model.entity.Member;
 import com.tourgether.domain.member.controller.form.UpdateForm;
 import com.tourgether.domain.member.model.dto.MemberRequestDto;
 import com.tourgether.domain.member.model.dto.MemberResponseDto;

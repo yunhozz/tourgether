@@ -1,6 +1,6 @@
 package com.tourgether.domain.recruit.model.repository;
 
-import com.tourgether.domain.member.model.Member;
+import com.tourgether.domain.member.model.entity.Member;
 import com.tourgether.domain.member.model.repository.MemberRepository;
 import com.tourgether.domain.recruit.model.dto.RecruitQueryDto;
 import com.tourgether.domain.recruit.model.entity.Recruit;

@@ -1,6 +1,6 @@
 package com.tourgether.domain.recruit.model.dto.request;
 
-import com.tourgether.domain.member.model.Member;
+import com.tourgether.domain.member.model.entity.Member;
 import com.tourgether.domain.recruit.model.entity.Recruit;
 import lombok.Getter;
 import lombok.Setter;

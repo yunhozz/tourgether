@@ -3,7 +3,7 @@ package com.tourgether.domain.chat.model.repository;
 import com.tourgether.domain.chat.model.dto.response.ChatRoomResponseDto;
 import com.tourgether.domain.chat.model.entity.ChatRoom;
 import com.tourgether.domain.chat.model.entity.ChatRoomMember;
-import com.tourgether.domain.member.model.Member;
+import com.tourgether.domain.member.model.entity.Member;
 import com.tourgether.domain.member.model.repository.MemberRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
