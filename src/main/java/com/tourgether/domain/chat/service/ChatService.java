@@ -1,8 +1,6 @@
 package com.tourgether.domain.chat.service;
 
 import com.tourgether.domain.chat.model.dto.request.ChatRequestDto;
-import com.tourgether.domain.chat.model.dto.request.ChatRoomMemberRequestDto;
-import com.tourgether.domain.chat.model.dto.request.ChatRoomRequestDto;
 import com.tourgether.domain.chat.model.dto.response.ChatResponseDto;
 import com.tourgether.domain.chat.model.dto.response.ChatRoomMemberResponseDto;
 import com.tourgether.domain.chat.model.dto.response.ChatRoomResponseDto;
@@ -34,13 +32,13 @@ public class ChatService {
     private final ChatRoomMemberRepository chatRoomMemberRepository;
     private final MemberRepository memberRepository;
 
-    public Long makeChatRoom(ChatRoomRequestDto chatRoomRequestDto, Long userId) {
+    public Long makeChatRoom(String title, Long userId) {
         Member member = memberRepository.findById(userId)
                 .orElseThrow(() -> new MemberNotFoundException("This member is null: " + userId, ErrorCode.MEMBER_NOT_FOUND));
-        ChatRoom chatRoom = chatRoomRequestDto.toEntity();
-        ChatRoomMemberRequestDto chatRoomMemberRequestDto = new ChatRoomMemberRequestDto(member, chatRoom);
+        ChatRoom chatRoom = new ChatRoom(title);
+        ChatRoomMember chatRoomMember = new ChatRoomMember(member, chatRoom);
 
-        chatRoomMemberRepository.save(chatRoomMemberRequestDto.toEntity()); // cascade: persist chatroom
+        chatRoomMemberRepository.save(chatRoomMember); // cascade: persist chatroom
         return chatRoom.getId();
     }
 
