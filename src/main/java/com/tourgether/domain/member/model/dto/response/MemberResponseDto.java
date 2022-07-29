@@ -1,4 +1,4 @@
-package com.tourgether.domain.member.model.dto;
+package com.tourgether.domain.member.model.dto.response;
 
 import com.tourgether.domain.member.model.entity.Member;
 import com.tourgether.enums.Role;
