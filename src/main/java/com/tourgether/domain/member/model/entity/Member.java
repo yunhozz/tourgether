@@ -1,4 +1,4 @@
-package com.tourgether.domain.member.model;
+package com.tourgether.domain.member.model.entity;
 
 import com.tourgether.domain.TimeEntity;
 import com.tourgether.enums.Role;
