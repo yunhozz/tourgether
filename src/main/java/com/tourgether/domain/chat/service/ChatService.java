@@ -93,7 +93,7 @@ public class ChatService {
     @Transactional(readOnly = true)
     private Chat findChat(Long id) {
         return chatRepository.findById(id)
-                .orElseThrow(() -> new IllegalStateException("This chat is null: " + id));
+                .orElseThrow(() -> new ChatNotFoundException("This chat is null: " + id, ErrorCode.CHAT_NOT_FOUND));
     }
 
     @Transactional(readOnly = true)
