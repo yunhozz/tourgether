@@ -15,26 +15,23 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @Controller
-@RequestMapping("/comment")
 @RequiredArgsConstructor
 public class CommentController {
 
     private final CommentService commentService;
     private final CommentRepository commentRepository;
 
-    @PostMapping("/write")
-    public String comment(@Valid @RequestBody CommentRequestDto commentRequestDto, BindingResult result, @RequestParam("writer") Long writerId,
-                          @RequestParam("recruit") Long recruitId) {
+    @PostMapping("/comment/write")
+    public String comment(@Valid @RequestBody CommentRequestDto commentRequestDto, BindingResult result, @RequestParam String writerId, @RequestParam String recruitId) {
         if (result.hasErrors()) {
             return "recruit/detail";
         }
-        commentService.makeComment(commentRequestDto, writerId, recruitId);
+        commentService.makeComment(commentRequestDto, Long.valueOf(writerId), Long.valueOf(recruitId));
         return "redirect:/" + recruitId;
     }
 
-    @GetMapping("/{id}/update")
-    public String updateCommentForm(@LoginMember MemberSessionResponseDto loginMember, @PathVariable("id") Long commentId, @RequestParam("recruit") Long recruitId,
-                                    Model model) {
+    @GetMapping("/comment/{commentId}/update")
+    public String updateCommentForm(@LoginMember MemberSessionResponseDto loginMember, @PathVariable String commentId, @RequestParam String recruitId, Model model) {
         if (loginMember == null) {
             return "redirect:/member/signIn";
         }
@@ -45,22 +42,21 @@ public class CommentController {
         return "recruit/comment-update";
     }
 
-    @PostMapping("/update")
-    public String updateComment(@RequestParam String content, @RequestParam("writer") Long userId, @RequestParam("recruit") Long recruitId,
-                                @RequestParam("comment") Long commentId) {
+    @PostMapping("/comment/update")
+    public String updateComment(@RequestParam String content, @RequestParam String userId, @RequestParam String recruitId, @RequestParam String commentId) {
         if (!StringUtils.hasText(content)) {
             return "recruit/comment-update";
         }
-        commentService.updateComment(commentId, userId, content);
+        commentService.updateComment(Long.valueOf(commentId), Long.valueOf(userId), content);
         return "redirect:/" + recruitId;
     }
 
-    @GetMapping("/{id}/delete")
-    public String deleteComment(@LoginMember MemberSessionResponseDto loginMember, @PathVariable("id") Long commentId, @RequestParam("recruit") Long recruitId) {
+    @GetMapping("/comment/{commentId}/delete")
+    public String deleteComment(@LoginMember MemberSessionResponseDto loginMember, @PathVariable String commentId, @RequestParam String recruitId) {
         if (loginMember == null) {
             return "redirect:/member/signIn";
         }
-        commentRepository.deleteById(commentId);
+        commentRepository.deleteById(Long.valueOf(commentId));
         return "redirect:/" + recruitId;
     }
 }

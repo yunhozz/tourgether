@@ -13,17 +13,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/bookmark")
 @RequiredArgsConstructor
 public class BookmarkController {
 
     private final BookmarkService bookmarkService;
     private final BookmarkRepository bookmarkRepository;
 
-    @GetMapping("/list")
+    @GetMapping("/bookmark/list")
     public String getBookmarks(@LoginMember MemberSessionResponseDto loginMember, Model model) {
         if (loginMember == null) {
             return "redirect:/member/login";
@@ -34,17 +32,17 @@ public class BookmarkController {
         return "bookmark/list";
     }
 
-    @GetMapping("/{id}")
-    public String selectBookmark(@PathVariable("id") Long bookmarkId, Model model) {
-        BookmarkResponseDto bookmark = bookmarkService.findBookmarkDto(bookmarkId);
+    @GetMapping("/bookmark/{bookmarkId}")
+    public String selectBookmark(@PathVariable String bookmarkId, Model model) {
+        BookmarkResponseDto bookmark = bookmarkService.findBookmarkDto(Long.valueOf(bookmarkId));
         Long recruitId = bookmark.getRecruitId();
 
         return "redirect:/recruit/" + recruitId;
     }
 
-    @GetMapping("/delete/{id}")
-    public String deleteBookmark(@PathVariable("id") Long bookmarkId) {
-        bookmarkService.deleteBookmark(bookmarkId);
+    @GetMapping("/bookmark/{bookmarkId}/delete")
+    public String deleteBookmark(@PathVariable String bookmarkId) {
+        bookmarkService.deleteBookmark(Long.valueOf(bookmarkId));
         return "redirect:/bookmark/list";
     }
 }

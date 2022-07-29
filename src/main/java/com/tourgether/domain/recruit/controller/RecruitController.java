@@ -28,14 +28,13 @@ import javax.validation.Valid;
 import java.util.List;
 
 @Controller
-@RequestMapping("/recruit")
 @RequiredArgsConstructor
 public class RecruitController {
 
     private final RecruitService recruitService;
     private final RecruitRepository recruitRepository;
 
-    @GetMapping
+    @GetMapping("/recruit")
     public String recruitPage(@LoginMember MemberSessionResponseDto loginMember, @ModelAttribute SearchForm searchForm, @PageableDefault(size = 10) Pageable pageable,
                               Model model) {
         if (loginMember == null) {
@@ -48,7 +47,7 @@ public class RecruitController {
         return "recruit/list";
     }
 
-    @GetMapping("/popular")
+    @GetMapping("/recruit/popular")
     public String recruitPageWithPopularity(@LoginMember MemberSessionResponseDto loginMember, @PageableDefault(size = 10) Pageable pageable, Model model) {
         if (loginMember == null) {
             return "redirect:/member/signIn";
@@ -60,7 +59,7 @@ public class RecruitController {
         return "recruit/list";
     }
 
-    @GetMapping("/search")
+    @GetMapping("/recruit/search")
     public String searchRecruit(@Valid @RequestBody SearchForm searchForm, BindingResult result, @PageableDefault(size = 10) Pageable pageable, Model model) {
         if (result.hasErrors()) {
             return "recruit/list";
@@ -79,14 +78,14 @@ public class RecruitController {
         return "recruit/list";
     }
 
-    @GetMapping("/{id}")
-    public String readRecruit(@LoginMember MemberSessionResponseDto loginMember, @PathVariable("id") Long recruitId,
-                              @ModelAttribute CommentRequestDto commentRequestDto, HttpServletRequest request, HttpServletResponse response, Model model) {
+    @GetMapping("/recruit/{recruitId}")
+    public String readRecruit(@LoginMember MemberSessionResponseDto loginMember, @PathVariable String recruitId, @ModelAttribute CommentRequestDto commentRequestDto,
+                              HttpServletRequest request, HttpServletResponse response, Model model) {
         if (loginMember == null) {
             return "redirect:/member/signIn";
         }
-        RecruitResponseDto recruit = recruitService.findRecruitDto(recruitId);
-        addViewCount(recruitId, request, response); // 조회수 증가 (중복 x)
+        RecruitResponseDto recruit = recruitService.findRecruitDto(Long.valueOf(recruitId));
+        addViewCount(Long.valueOf(recruitId), request, response); // 조회수 증가 (중복 x)
         model.addAttribute("recruit", recruit);
 
         boolean isRecruitWriter = recruit.getWriterId().equals(loginMember.getId());
@@ -99,7 +98,7 @@ public class RecruitController {
         return "recruit/detail";
     }
 
-    @GetMapping("/write")
+    @GetMapping("/recruit/write")
     public String writePage(@LoginMember MemberSessionResponseDto loginMember, @ModelAttribute RecruitRequestDto recruitRequestDto, Model model) {
         if (loginMember == null) {
             return "redirect:/member/signIn";
@@ -108,17 +107,17 @@ public class RecruitController {
         return "recruit/write";
     }
 
-    @PostMapping("/write")
-    public String write(@Valid @RequestBody RecruitRequestDto recruitRequestDto, BindingResult result, @RequestParam("writer") Long writerId) {
+    @PostMapping("/recruit/write")
+    public String write(@Valid @RequestBody RecruitRequestDto recruitRequestDto, BindingResult result, @RequestParam String writerId) {
         if (result.hasErrors()) {
             return "recruit/write";
         }
-        recruitService.makeRecruit(recruitRequestDto, writerId);
+        recruitService.makeRecruit(recruitRequestDto, Long.valueOf(writerId));
         return "redirect:/recruit";
     }
 
-    @GetMapping("/{id}/update")
-    public String updateRecruitForm(@LoginMember MemberSessionResponseDto loginMember, @PathVariable("id") Long recruitId, @ModelAttribute UpdateForm updateForm,
+    @GetMapping("/recruit/{recruitId}/update")
+    public String updateRecruitForm(@LoginMember MemberSessionResponseDto loginMember, @PathVariable String recruitId, @ModelAttribute UpdateForm updateForm,
                                     Model model) {
         if (loginMember == null) {
             return "redirect:/member/signIn";
@@ -127,21 +126,21 @@ public class RecruitController {
         return "recruit/update";
     }
 
-    @PostMapping("/update")
-    public String updateRecruit(@Valid @RequestBody UpdateForm updateForm, BindingResult result, @RequestParam("id") Long recruitId) {
+    @PostMapping("/recruit/update")
+    public String updateRecruit(@Valid @RequestBody UpdateForm updateForm, BindingResult result, @RequestParam String recruitId) {
         if (result.hasErrors()) {
             return "recruit/update";
         }
-        recruitService.updateRecruit(recruitId, updateForm);
+        recruitService.updateRecruit(Long.valueOf(recruitId), updateForm);
         return "redirect:/" + recruitId;
     }
 
-    @GetMapping("/{id}/delete")
-    public String deleteRecruit(@LoginMember MemberSessionResponseDto loginMember, @PathVariable("id") Long recruitId) {
+    @GetMapping("/recruit/{recruitId}/delete")
+    public String deleteRecruit(@LoginMember MemberSessionResponseDto loginMember, @PathVariable String recruitId) {
         if (loginMember == null) {
             return "redirect:/member/signIn";
         }
-        recruitService.deleteRecruit(recruitId, loginMember.getId());
+        recruitService.deleteRecruit(Long.valueOf(recruitId), loginMember.getId());
         return "redirect:/recruit";
     }
 

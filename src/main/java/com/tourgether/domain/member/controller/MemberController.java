@@ -3,7 +3,8 @@ package com.tourgether.domain.member.controller;
 import com.tourgether.domain.member.controller.form.LoginForm;
 import com.tourgether.domain.member.controller.form.PasswordForm;
 import com.tourgether.domain.member.controller.form.UpdateForm;
-import com.tourgether.domain.member.model.dto.MemberRequestDto;
+import com.tourgether.domain.member.model.dto.request.MemberRequestDto;
+import com.tourgether.domain.member.model.dto.response.MemberResponseDto;
 import com.tourgether.domain.member.service.MemberService;
 import com.tourgether.domain.member.service.UserDetailsServiceImpl;
 import com.tourgether.dto.MemberSessionResponseDto;
@@ -22,19 +23,18 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @Controller
-@RequestMapping("/member")
 @RequiredArgsConstructor
 public class MemberController {
 
     private final MemberService memberService;
     private final UserDetailsServiceImpl userDetailsService;
 
-    @GetMapping("/signup")
+    @GetMapping("/member/signup")
     public String signup(@ModelAttribute MemberRequestDto memberRequestDto) {
         return "member/join";
     }
 
-    @PostMapping("/signup")
+    @PostMapping("/member/signup")
     public String signup(@Valid MemberRequestDto memberRequestDto, BindingResult result, @RequestParam(defaultValue = "/") String redirectUrl) {
         if (result.hasErrors()) {
             return "member/join";
@@ -52,7 +52,7 @@ public class MemberController {
         return "member/login";
     }
 
-    @PostMapping("/sign-in")
+    @PostMapping("/member/sign-in")
     public String signIn(@Valid LoginForm loginForm, BindingResult result, @RequestParam(defaultValue = "/") String redirectUrl) {
         if (result.hasErrors()) {
             return "member/login";
@@ -66,7 +66,15 @@ public class MemberController {
         return "redirect:/";
     }
 
-    @GetMapping("/update-pw")
+    @GetMapping("/member/{userId}")
+    public String memberInfo(@PathVariable String userId, Model model) {
+        MemberResponseDto member = memberService.findMemberDto(Long.valueOf(userId));
+        model.addAttribute("member", member);
+
+        return "member/info";
+    }
+
+    @GetMapping("/member/update-pw")
     public String updatePw(@LoginMember MemberSessionResponseDto loginMember, @ModelAttribute PasswordForm passwordForm, Model model) {
         if (loginMember == null) {
             return "redirect:/member/sign-in";
@@ -75,16 +83,16 @@ public class MemberController {
         return "member/update-pw";
     }
 
-    @PostMapping("/update-pw")
-    public String updatePw(@Valid PasswordForm passwordForm, BindingResult result, @RequestParam("user") Long userId) {
+    @PostMapping("/member/update-pw")
+    public String updatePw(@Valid PasswordForm passwordForm, BindingResult result, @RequestParam String userId) {
         if (result.hasErrors()) {
             return "member/update-pw";
         }
-        memberService.updatePassword(userId, passwordForm.getOriginalPw(), passwordForm.getNewPw());
+        memberService.updatePassword(Long.valueOf(userId), passwordForm.getOriginalPw(), passwordForm.getNewPw());
         return "redirect:/";
     }
 
-    @GetMapping("/update-info")
+    @GetMapping("/member/update-info")
     public String updateInfo(@LoginMember MemberSessionResponseDto loginMember, @ModelAttribute UpdateForm updateForm, Model model) {
         if (loginMember == null) {
             return "redirect:/member/sign-in";
@@ -93,16 +101,16 @@ public class MemberController {
         return "member/update-info";
     }
 
-    @PostMapping("/update-info")
-    public String updateInfo(@Valid UpdateForm updateForm, BindingResult result, @RequestParam("user") Long userId) {
+    @PostMapping("/member/update-info")
+    public String updateInfo(@Valid UpdateForm updateForm, BindingResult result, @RequestParam String userId) {
         if (result.hasErrors()) {
             return "member/update-info";
         }
-        memberService.updateInfo(userId, updateForm);
+        memberService.updateInfo(Long.valueOf(userId), updateForm);
         return "redirect:/";
     }
 
-    @GetMapping("/logout")
+    @GetMapping("/member/logout")
     public String logout(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession(false);
         if (session != null) {
