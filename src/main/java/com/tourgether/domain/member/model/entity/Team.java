@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -16,14 +18,29 @@ public class Team extends TimeEntity {
     @GeneratedValue
     private Long id;
 
+    @OneToMany(mappedBy = "team")
+    private List<Member> members = new ArrayList<>();
+
     @Column(length = 10)
     private String name;
+
+    @Column(length = 1000)
+    private String introduction;
 
     @Column(columnDefinition = "tinyint")
     private int numOfMember;
 
-    public Team(String name) {
+    public Team(String name, String introduction, int numOfMember) {
         this.name = name;
+        this.introduction = introduction;
+        this.numOfMember = numOfMember;
+    }
+
+    public static Team createTeam(Member member, String name, String introduction) {
+        Team team = new Team(name, introduction, 1);
+        member.updateTeam(team);
+
+        return team;
     }
 
     public void increaseNum() {
