@@ -1,6 +1,6 @@
 package com.tourgether.domain.notification.service;
 
-import com.tourgether.domain.member.model.dto.MemberRequestDto;
+import com.tourgether.domain.member.model.dto.request.MemberRequestDto;
 import com.tourgether.domain.member.service.MemberService;
 import com.tourgether.domain.notification.model.dto.NotificationRequestDto;
 import com.tourgether.domain.notification.model.dto.NotificationResponseDto;

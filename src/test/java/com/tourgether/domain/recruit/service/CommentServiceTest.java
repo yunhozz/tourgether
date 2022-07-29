@@ -1,6 +1,6 @@
 package com.tourgether.domain.recruit.service;
 
-import com.tourgether.domain.member.model.dto.MemberRequestDto;
+import com.tourgether.domain.member.model.dto.request.MemberRequestDto;
 import com.tourgether.domain.member.service.MemberService;
 import com.tourgether.domain.recruit.model.dto.request.CommentRequestDto;
 import com.tourgether.domain.recruit.model.dto.request.RecruitRequestDto;
