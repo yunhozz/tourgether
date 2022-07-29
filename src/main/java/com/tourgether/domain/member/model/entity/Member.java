@@ -18,6 +18,10 @@ public class Member extends TimeEntity {
     @GeneratedValue
     private Long id;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "team_id")
+    private Team team;
+
     @Column(unique = true)
     private String oAuth2Id;
 
@@ -38,7 +42,8 @@ public class Member extends TimeEntity {
     private Role role;
 
     @Builder
-    private Member(String oAuth2Id, String email, String password, String name, String nickname, String profileImgUrl, Role role) {
+    private Member(Team team, String oAuth2Id, String email, String password, String name, String nickname, String profileImgUrl, Role role) {
+        this.team = team;
         this.oAuth2Id = oAuth2Id;
         this.email = email;
         this.password = password;
