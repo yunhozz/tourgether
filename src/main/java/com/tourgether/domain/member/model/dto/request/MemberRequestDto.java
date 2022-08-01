@@ -1,21 +1,18 @@
 package com.tourgether.domain.member.model.dto.request;
 
 import com.tourgether.domain.member.model.entity.Member;
-import com.tourgether.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 @Getter
 @Builder
 @AllArgsConstructor
 public class MemberRequestDto {
 
-    @NotBlank
     private String oAuth2Id;
 
     @NotBlank
@@ -32,9 +29,6 @@ public class MemberRequestDto {
 
     private String profileImgUrl;
 
-    @NotNull
-    private Role role;
-
     public Member toEntity() {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         return Member.builder()
@@ -44,7 +38,6 @@ public class MemberRequestDto {
                 .name(name)
                 .nickname(nickname)
                 .profileImgUrl(profileImgUrl)
-                .role(Role.USER)
                 .build();
     }
 }
