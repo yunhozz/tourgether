@@ -1,7 +1,6 @@
 package com.tourgether.domain.member.model.dto.response;
 
 import com.tourgether.domain.member.model.entity.Member;
-import com.tourgether.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -19,7 +18,6 @@ public class MemberResponseDto {
     private String name;
     private String nickname;
     private String profileImgUrl;
-    private Role role;
     private LocalDateTime createdDate;
     private LocalDateTime lastModifiedDate;
 
@@ -32,7 +30,6 @@ public class MemberResponseDto {
         name = member.getName();
         nickname = member.getNickname();
         profileImgUrl = member.getProfileImgUrl();
-        role = member.getRole();
         createdDate = member.getCreatedDate();
         lastModifiedDate = member.getLastModifiedDate();
     }
