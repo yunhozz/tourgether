@@ -6,7 +6,8 @@ import org.springframework.data.domain.Pageable;
 
 public interface RecruitRepositoryCustom {
 
-    Page<RecruitQueryDto> findSimplePage(Pageable pageable);
+    Page<RecruitQueryDto> findPageWithCreated(Pageable pageable);
+    Page<RecruitQueryDto> findPageWithModified(Pageable pageable);
     Page<RecruitQueryDto> findPageWithPopularity(Pageable pageable);
     Page<RecruitQueryDto> findPageWithKeyword(String keyword, Pageable pageable);
     Page<RecruitQueryDto> findPageWithKeywordOnLatestOrder(String keyword, Pageable pageable);
