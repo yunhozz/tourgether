@@ -3,16 +3,18 @@ package com.tourgether.ui.auth;
 import com.tourgether.domain.member.model.entity.Member;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
 public class UserDetailsImpl implements UserDetails {
 
-    private Member member;
+    private final Member member;
 
     public UserDetailsImpl(Member member) {
         this.member = member;
@@ -20,8 +22,15 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Set<GrantedAuthority> roles = new HashSet<>();
-        return roles;
+        Set<SimpleGrantedAuthority> authorities = new HashSet<>();
+        List<String> roles = member.getAuthorities().stream()
+                .map(memberAuthority -> memberAuthority.getAuthority().getAuthorityName())
+                .toList();
+
+        for (String role : roles) {
+            authorities.add(new SimpleGrantedAuthority(role));
+        }
+        return authorities;
     }
 
     @Override
