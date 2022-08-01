@@ -35,12 +35,21 @@ public class RecruitController {
     private final RecruitRepository recruitRepository;
 
     @GetMapping("/recruit")
-    public String recruitPage(@LoginMember MemberSessionResponseDto loginMember, @ModelAttribute SearchForm searchForm, @PageableDefault(size = 10) Pageable pageable,
-                              Model model) {
+    public String recruitPage(@LoginMember MemberSessionResponseDto loginMember, @ModelAttribute SearchForm searchForm, @RequestParam(required = false) String query,
+                              @PageableDefault(size = 10) Pageable pageable, Model model) {
         if (loginMember == null) {
             return "redirect:/member/signIn";
         }
-        Page<RecruitQueryDto> recruits = recruitRepository.findSimplePage(pageable);
+        Page<RecruitQueryDto> recruits = recruitRepository.findPageWithCreated(pageable);
+        if (query.equals("c")){
+            recruits = recruitRepository.findPageWithCreated(pageable);
+        }
+        if (query.equals("m")) {
+            recruits = recruitRepository.findPageWithModified(pageable);
+        }
+        if (query.equals("p")) {
+            recruits = recruitRepository.findPageWithPopularity(pageable);
+        }
         model.addAttribute("recruits", recruits);
         model.addAttribute("isPopularity", false);
 
@@ -48,7 +57,7 @@ public class RecruitController {
     }
 
     @GetMapping("/recruit/search")
-    public String searchRecruit(@Valid @RequestBody SearchForm searchForm, BindingResult result, @PageableDefault(size = 10) Pageable pageable, Model model) {
+    public String searchRecruit(@Valid SearchForm searchForm, BindingResult result, @PageableDefault(size = 10) Pageable pageable, Model model) {
         if (result.hasErrors()) {
             return "recruit/list";
         }
