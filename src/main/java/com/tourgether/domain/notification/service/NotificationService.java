@@ -69,10 +69,8 @@ public class NotificationService {
     }
 
     // 하나의 알림 읽기 처리
-    public NotificationResponseDto readNotification(Long id, Long receiverId) {
-        Notification notification = notificationRepository.findWithReceiverId(receiverId).stream()
-                .filter(n -> n.getId().equals(id)).findFirst()
-                .orElseThrow(() -> new NotificationNotFoundException("This notification is null : " + id, ErrorCode.NOTIFICATION_NOT_FOUND));
+    public NotificationResponseDto readNotification(Long id) {
+        Notification notification = findNotification(id);
         notification.check();
 
         return new NotificationResponseDto(notification);
