@@ -1,12 +1,10 @@
 package com.tourgether.domain.member.controller.form;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 
-@Getter
-@AllArgsConstructor
+@Data
 public class LoginForm {
 
     @NotBlank
