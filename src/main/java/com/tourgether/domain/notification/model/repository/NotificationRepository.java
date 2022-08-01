@@ -17,6 +17,10 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
     List<Notification> findWithReceiverIdReadOrNot(@Param("receiverId") Long receiverId, @Param("check") boolean check);
 
     @Modifying(clearAutomatically = true)
+    @Query("delete from Notification n where n.id = :id")
+    void deleteNotification(@Param("id") Long id);
+
+    @Modifying(clearAutomatically = true)
     @Query("delete from Notification n where n.id in :ids and n.isChecked = true")
     void deleteAlreadyChecked(@Param("ids") List<Long> ids);
 }
