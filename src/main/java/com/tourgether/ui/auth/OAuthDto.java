@@ -1,7 +1,6 @@
 package com.tourgether.ui.auth;
 
 import com.tourgether.domain.member.model.entity.Member;
-import com.tourgether.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -76,7 +75,6 @@ public class OAuthDto {
                 .email(email)
                 .name(name)
                 .profileImgUrl(profileImgUrl)
-                .role(Role.USER)
                 .build();
     }
 }
