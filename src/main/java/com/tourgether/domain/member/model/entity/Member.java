@@ -1,13 +1,14 @@
 package com.tourgether.domain.member.model.entity;
 
 import com.tourgether.domain.TimeEntity;
-import com.tourgether.enums.Role;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -21,6 +22,9 @@ public class Member extends TimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "team_id")
     private Team team;
+
+    @OneToMany(mappedBy = "member")
+    private Set<MemberAuthority> authorities = new HashSet<>();
 
     @Column(unique = true)
     private String oAuth2Id;
@@ -38,19 +42,16 @@ public class Member extends TimeEntity {
 
     private String profileImgUrl;
 
-    @Enumerated(EnumType.STRING)
-    private Role role;
-
     @Builder
-    private Member(Team team, String oAuth2Id, String email, String password, String name, String nickname, String profileImgUrl, Role role) {
+    private Member(Team team, Set<MemberAuthority> authorities, String oAuth2Id, String email, String password, String name, String nickname, String profileImgUrl) {
         this.team = team;
+        this.authorities = authorities;
         this.oAuth2Id = oAuth2Id;
         this.email = email;
         this.password = password;
         this.name = name;
         this.nickname = nickname;
         this.profileImgUrl = profileImgUrl;
-        this.role = role;
     }
 
     public Member update(String name, String profileImgUrl) {
