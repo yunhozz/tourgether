@@ -1,10 +1,16 @@
 package com.tourgether.domain.member.service;
 
+import com.tourgether.domain.member.model.entity.Authority;
 import com.tourgether.domain.member.model.entity.Member;
 import com.tourgether.domain.member.controller.form.UpdateForm;
-import com.tourgether.domain.member.model.dto.MemberRequestDto;
-import com.tourgether.domain.member.model.dto.MemberResponseDto;
+import com.tourgether.domain.member.model.dto.request.MemberRequestDto;
+import com.tourgether.domain.member.model.dto.response.MemberResponseDto;
+import com.tourgether.domain.member.model.entity.MemberAuthority;
+import com.tourgether.domain.member.model.entity.Team;
+import com.tourgether.domain.member.model.repository.AuthorityRepository;
+import com.tourgether.domain.member.model.repository.MemberAuthorityRepository;
 import com.tourgether.domain.member.model.repository.MemberRepository;
+import com.tourgether.domain.member.model.repository.TeamRepository;
 import com.tourgether.dto.MemberSessionResponseDto;
 import com.tourgether.enums.ErrorCode;
 import com.tourgether.exception.member.EmailDuplicateException;
@@ -29,6 +35,9 @@ import java.util.stream.Collectors;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final AuthorityRepository authorityRepository;
+    private final MemberAuthorityRepository memberAuthorityRepository;
+    private final TeamRepository teamRepository;
     private final BCryptPasswordEncoder encoder;
     private final HttpSession session;
 
@@ -44,9 +53,11 @@ public class MemberService {
                 }
         );
         Member member = memberRequestDto.toEntity();
-        memberRepository.save(member);
+        Authority roleUser = authorityRepository.getReferenceById("ROLE_USER");
+        MemberAuthority memberAuthority = new MemberAuthority(member, roleUser); // 사용자 권한 부여
+        memberAuthorityRepository.save(memberAuthority);
 
-        return member.getId();
+        return memberRepository.save(member).getId();
     }
 
     @Transactional(readOnly = true)
