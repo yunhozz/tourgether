@@ -1,11 +1,19 @@
 package com.tourgether.config;
 
 import com.tourgether.domain.member.service.OAuth2UserServiceImpl;
+import com.tourgether.ui.auth.jwt.JwtAccessDeniedHandler;
+import com.tourgether.ui.auth.jwt.JwtAuthenticationEntryPoint;
+import com.tourgether.ui.auth.jwt.JwtFilter;
+import com.tourgether.ui.auth.jwt.TokenProvider;
 import lombok.RequiredArgsConstructor;
+import org.apache.catalina.filters.CorsFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
@@ -13,12 +21,19 @@ import org.springframework.security.oauth2.client.registration.InMemoryClientReg
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor
 public class WebSecurityConfig {
 
     private final OAuth2UserServiceImpl oAuth2UserService;
+    private final TokenProvider tokenProvider;
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
+//    private final CorsFilter corsFilter;
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
@@ -32,6 +47,7 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
+        JwtFilter jwtFilter = new JwtFilter(tokenProvider);
         httpSecurity
                 .csrf().disable() // 추후 제거 예정
                 .authorizeRequests()
@@ -48,7 +64,26 @@ public class WebSecurityConfig {
                 .logout()
                 .logoutUrl("/logout")
                 .logoutSuccessUrl("/")
-                .invalidateHttpSession(true)
+                .invalidateHttpSession(true);
+
+        // jwt, oauth2
+        httpSecurity
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+//                .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling()
+                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                .accessDeniedHandler(jwtAccessDeniedHandler)
+
+                .and()
+
+                .headers()
+                .frameOptions()
+                .sameOrigin()
+
+                .and()
+
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 세션을 사용하지 않기 때문에 STATELESS 로 설정
 
                 .and()
 
@@ -61,7 +96,7 @@ public class WebSecurityConfig {
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return web -> web.ignoring().antMatchers("/resources/**", "/h2-console/**");
+        return web -> web.ignoring().antMatchers("/resources/**", "/h2-console/**", "/error");
     }
 
     // kakao client 등록
