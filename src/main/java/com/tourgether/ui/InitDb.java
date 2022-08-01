@@ -29,6 +29,8 @@ public class InitDb {
     @RequiredArgsConstructor
     public static class InitService {
 
+        private final AuthorityRepository authorityRepository;
+        private final BCryptPasswordEncoder encoder;
         private final EntityManager em;
 
         public void initAuthority() {
@@ -42,15 +44,21 @@ public class InitDb {
             for (int i = 1; i <= 5; i++) {
                 Member member = Member.builder()
                         .email("email" + i)
-                        .password("pw" + i)
+                        .password(encoder.encode("pw" + i))
                         .name("yunho" + i)
                         .nickname("pyh" + i)
                         .profileImgUrl(null)
                         .oAuth2Id(null)
-                        .role(Role.USER)
                         .build();
 
+                Authority roleAdmin = authorityRepository.getReferenceById("ROLE_ADMIN");
+                Authority roleUser = authorityRepository.getReferenceById("ROLE_USER");
+                MemberAuthority memberAuthority1 = new MemberAuthority(member, roleAdmin);
+                MemberAuthority memberAuthority2 = new MemberAuthority(member, roleUser);
+
                 em.persist(member);
+                em.persist(memberAuthority1);
+                em.persist(memberAuthority2);
                 Thread.sleep(10);
             }
         }
