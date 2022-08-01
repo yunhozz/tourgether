@@ -47,18 +47,6 @@ public class RecruitController {
         return "recruit/list";
     }
 
-    @GetMapping("/recruit/popular")
-    public String recruitPageWithPopularity(@LoginMember MemberSessionResponseDto loginMember, @PageableDefault(size = 10) Pageable pageable, Model model) {
-        if (loginMember == null) {
-            return "redirect:/member/signIn";
-        }
-        Page<RecruitQueryDto> recruits = recruitRepository.findPageWithPopularity(pageable);
-        model.addAttribute("recruits", recruits);
-        model.addAttribute("isPopularity", true);
-
-        return "recruit/list";
-    }
-
     @GetMapping("/recruit/search")
     public String searchRecruit(@Valid @RequestBody SearchForm searchForm, BindingResult result, @PageableDefault(size = 10) Pageable pageable, Model model) {
         if (result.hasErrors()) {
