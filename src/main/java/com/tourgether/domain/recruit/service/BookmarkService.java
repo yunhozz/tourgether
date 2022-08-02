@@ -7,9 +7,6 @@ import com.tourgether.domain.recruit.model.entity.Bookmark;
 import com.tourgether.domain.recruit.model.entity.Recruit;
 import com.tourgether.domain.recruit.model.repository.BookmarkRepository;
 import com.tourgether.domain.recruit.model.repository.RecruitRepository;
-import com.tourgether.enums.ErrorCode;
-import com.tourgether.exception.member.MemberNotFoundException;
-import com.tourgether.exception.recruit.RecruitNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,10 +24,8 @@ public class BookmarkService {
     private final RecruitRepository recruitRepository;
 
     public Long makeBookmark(Long userId, Long recruitId) {
-        Member member = memberRepository.findById(userId)
-                .orElseThrow(() -> new MemberNotFoundException("This member is null: " + userId, ErrorCode.MEMBER_NOT_FOUND));
-        Recruit recruit = recruitRepository.findById(recruitId)
-                .orElseThrow(() -> new RecruitNotFoundException("This recruitment is null: " + recruitId, ErrorCode.RECRUIT_NOT_FOUND));
+        Member member = memberRepository.getReferenceById(userId);
+        Recruit recruit = recruitRepository.getReferenceById(recruitId);
         Bookmark bookmark = new Bookmark(member, recruit);
 
         bookmarkRepository.save(bookmark);

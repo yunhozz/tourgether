@@ -8,7 +8,6 @@ import com.tourgether.domain.notification.model.dto.NotificationResponseDto;
 import com.tourgether.domain.notification.model.repository.EmitterRepository;
 import com.tourgether.domain.notification.model.repository.NotificationRepository;
 import com.tourgether.enums.ErrorCode;
-import com.tourgether.exception.member.MemberNotFoundException;
 import com.tourgether.exception.notification.NotificationNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -52,8 +51,7 @@ public class NotificationService {
 
     // 알림 보내기
     public Long sendNotification(NotificationRequestDto notificationRequestDto, Long receiverId) {
-        Member receiver = memberRepository.findById(receiverId)
-                .orElseThrow(() -> new MemberNotFoundException("This member is null : " + receiverId, ErrorCode.MEMBER_NOT_FOUND));
+        Member receiver = memberRepository.getReferenceById(receiverId);
         notificationRequestDto.setReceiver(receiver);
         Notification notification = notificationRequestDto.toEntity();
         notificationRepository.save(notification);

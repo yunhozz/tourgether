@@ -14,7 +14,6 @@ import com.tourgether.domain.member.model.entity.Member;
 import com.tourgether.domain.member.model.repository.MemberRepository;
 import com.tourgether.enums.ErrorCode;
 import com.tourgether.exception.chat.ChatNotFoundException;
-import com.tourgether.exception.member.MemberNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,13 +32,12 @@ public class ChatService {
     private final MemberRepository memberRepository;
 
     public Long makeChatRoom(String title, Long userId) {
-        Member member = memberRepository.findById(userId)
-                .orElseThrow(() -> new MemberNotFoundException("This member is null: " + userId, ErrorCode.MEMBER_NOT_FOUND));
+        Member member = memberRepository.getReferenceById(userId);
         ChatRoom chatRoom = new ChatRoom(title);
         ChatRoomMember chatRoomMember = new ChatRoomMember(member, chatRoom);
 
-        chatRoomMemberRepository.save(chatRoomMember); // cascade: persist chatroom
-        return chatRoom.getId();
+        chatRoomMemberRepository.save(chatRoomMember);
+        return chatRoomRepository.save(chatRoom).getId();
     }
 
     public Long sendMessage(ChatRequestDto chatRequestDto, Long userId, Long chatRoomId) {
@@ -51,7 +49,13 @@ public class ChatService {
         chatRequestDto.setChatRoom(chatRoom);
         Chat chat = chatRepository.save(chatRequestDto.toEntity());
 
-        return chat.getId();
+    public void sendMessage(ChatRequestDto chatRequestDto, Long senderId, Long chatRoomId) {
+        Member sender = memberRepository.getReferenceById(senderId);
+        ChatRoom chatRoom = findChatRoom(chatRoomId);
+
+        chatRequestDto.setSender(sender);
+        chatRequestDto.setChatRoom(chatRoom);
+        chatRepository.save(chatRequestDto.toEntity());
     }
 
     @Transactional(readOnly = true)

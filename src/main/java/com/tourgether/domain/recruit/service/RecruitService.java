@@ -10,7 +10,6 @@ import com.tourgether.domain.recruit.model.entity.Recruit;
 import com.tourgether.domain.recruit.model.repository.BookmarkRepository;
 import com.tourgether.domain.recruit.model.repository.RecruitRepository;
 import com.tourgether.enums.ErrorCode;
-import com.tourgether.exception.member.MemberNotFoundException;
 import com.tourgether.exception.recruit.RecruitNotFoundException;
 import com.tourgether.exception.recruit.WriterMismatchException;
 import lombok.RequiredArgsConstructor;
@@ -29,9 +28,8 @@ public class RecruitService {
     private final MemberRepository memberRepository;
     private final BookmarkRepository bookmarkRepository;
 
-    public Long makeRecruit(RecruitRequestDto recruitRequestDto, Long userId) {
-        Member writer = memberRepository.findById(userId)
-                .orElseThrow(() -> new MemberNotFoundException("This member is null : " + userId, ErrorCode.MEMBER_NOT_FOUND));
+    public Long makeRecruit(RecruitRequestDto recruitRequestDto, Long writerId) {
+        Member writer = memberRepository.getReferenceById(writerId);
         recruitRequestDto.setWriter(writer);
 
         return recruitRepository.save(recruitRequestDto.toEntity()).getId();
@@ -42,10 +40,10 @@ public class RecruitService {
         recruit.update(updateForm.getTitle(), updateForm.getContent());
     }
 
-    public void deleteRecruit(Long id, Long userId) {
+    public void deleteRecruit(Long id, Long writerId) {
         Recruit recruit = findRecruit(id);
-        if (!recruit.getWriter().getId().equals(userId)) {
-            throw new WriterMismatchException("This member don't match on recruitment : " + userId, ErrorCode.WRITER_MISMATCH);
+        if (!recruit.getWriter().getId().equals(writerId)) {
+            throw new WriterMismatchException("This member don't match on recruitment : " + writerId, ErrorCode.WRITER_MISMATCH);
         }
         List<Bookmark> bookmarks = bookmarkRepository.findWithRecruitId(recruit.getId());
         bookmarks.forEach(Bookmark::deleteRecruit);

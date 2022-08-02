@@ -9,8 +9,6 @@ import com.tourgether.domain.recruit.model.entity.Recruit;
 import com.tourgether.domain.recruit.model.repository.CommentRepository;
 import com.tourgether.domain.recruit.model.repository.RecruitRepository;
 import com.tourgether.enums.ErrorCode;
-import com.tourgether.exception.member.MemberNotFoundException;
-import com.tourgether.exception.recruit.RecruitNotFoundException;
 import com.tourgether.exception.recruit.WriterMismatchException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,11 +26,9 @@ public class CommentService {
     private final MemberRepository memberRepository;
     private final RecruitRepository recruitRepository;
 
-    public Long makeComment(CommentRequestDto commentRequestDto, Long userId, Long recruitId) {
-        Member writer = memberRepository.findById(userId)
-                .orElseThrow(() -> new MemberNotFoundException("This member is null: " + userId, ErrorCode.MEMBER_NOT_FOUND));
-        Recruit recruit = recruitRepository.findById(recruitId)
-                .orElseThrow(() -> new RecruitNotFoundException("This recruitment is null: " + recruitId, ErrorCode.RECRUIT_NOT_FOUND));
+    public Long makeComment(CommentRequestDto commentRequestDto, Long writerId, Long recruitId) {
+        Member writer = memberRepository.getReferenceById(writerId);
+        Recruit recruit = recruitRepository.getReferenceById(recruitId);
 
         commentRequestDto.setWriter(writer);
         commentRequestDto.setRecruit(recruit);
@@ -40,11 +36,9 @@ public class CommentService {
         return commentRepository.save(commentRequestDto.parentToEntity()).getId();
     }
 
-    public Long makeCommentChild(CommentRequestDto commentRequestDto, Long userId, Long recruitId, Long parentId) {
-        Member writer = memberRepository.findById(userId)
-                .orElseThrow(() -> new MemberNotFoundException("This member is null: " + userId, ErrorCode.MEMBER_NOT_FOUND));
-        Recruit recruit = recruitRepository.findById(recruitId)
-                .orElseThrow(() -> new RecruitNotFoundException("This recruitment is null: " + recruitId, ErrorCode.RECRUIT_NOT_FOUND));
+    public Long makeCommentChild(CommentRequestDto commentRequestDto, Long writerId, Long recruitId, Long parentId) {
+        Member writer = memberRepository.getReferenceById(writerId);
+        Recruit recruit = recruitRepository.getReferenceById(recruitId);
         Comment parent = findComment(parentId);
 
         commentRequestDto.setWriter(writer);
@@ -54,10 +48,10 @@ public class CommentService {
         return commentRepository.save(commentRequestDto.childToEntity()).getId();
     }
 
-    public void updateComment(Long commentId, Long userId, String content) {
+    public void updateComment(Long commentId, Long writerId, String content) {
         Comment comment = findComment(commentId);
-        if (!comment.getWriter().getId().equals(userId)) {
-            throw new WriterMismatchException("This member is not writer of this: " + userId, ErrorCode.WRITER_MISMATCH);
+        if (!comment.getWriter().getId().equals(writerId)) {
+            throw new WriterMismatchException("This member is not writer of this: " + writerId, ErrorCode.WRITER_MISMATCH);
         }
         comment.update(content);
     }
