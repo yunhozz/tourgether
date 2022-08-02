@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-import static com.tourgether.domain.member.model.QMember.*;
+import static com.tourgether.domain.member.model.entity.QMember.*;
 import static com.tourgether.domain.notification.model.QNotification.*;
 
 @Repository
