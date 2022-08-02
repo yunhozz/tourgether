@@ -1,5 +1,6 @@
 package com.tourgether.ui.auth.jwt;
 
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
@@ -17,16 +18,13 @@ import java.io.IOException;
 /**
  * GenericFilterBean 을 extends 해서 doFilter Override, 실제 필터링 로직은 doFilter 내부에 작성
  */
+@RequiredArgsConstructor
 public class JwtFilter extends GenericFilterBean {
 
     private final TokenProvider tokenProvider;
 
     private static final Logger logger = LoggerFactory.getLogger(JwtFilter.class);
     public static final String AUTHORIZATION_HEADER = "Authorization";
-
-    public JwtFilter(TokenProvider tokenProvider) {
-        this.tokenProvider = tokenProvider;
-    }
 
     // jwt 토큰의 인증정보를 SecurityContext 에 저장하는 역할 수행
     @Override
