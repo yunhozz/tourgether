@@ -1,5 +1,6 @@
 package com.tourgether.domain.notification.model.repository;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
@@ -7,6 +8,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Repository
 public class EmitterRepositoryImpl implements EmitterRepository {
 
@@ -16,12 +18,14 @@ public class EmitterRepositoryImpl implements EmitterRepository {
     @Override
     public SseEmitter save(String emitterId, SseEmitter emitter) {
         emitters.put(emitterId, emitter);
+        log.info("Save emitter, emitterId = {}", emitterId);
         return emitter;
     }
 
     @Override
     public void saveEventCache(String eventCacheId, Object event) {
         eventCaches.put(eventCacheId, event);
+        log.info("Save event cache, eventCacheId = {}", eventCacheId);
     }
 
     @Override
