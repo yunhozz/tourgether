@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -23,11 +24,10 @@ public class NotificationController {
     @GetMapping("/notifications")
     public String getNotifications(@LoginMember MemberSessionResponseDto loginMember, Model model) {
         if (loginMember == null) {
-            return "redirect:/member/sign-in";
+            return "redirect:/member/login";
         }
         List<NotificationResponseDto> notifications = notificationService.findNotificationDtoListWithReceiverIdReadOrNot(loginMember.getId(), false);
         model.addAttribute("notifications", notifications);
-        model.addAttribute("isNew", true);
 
         return "notification/list";
     }
@@ -35,21 +35,20 @@ public class NotificationController {
     @GetMapping("/notifications/old")
     public String getOldNotifications(@LoginMember MemberSessionResponseDto loginMember, Model model) {
         if (loginMember == null) {
-            return "redirect:/member/sign-in";
+            return "redirect:/member/login";
         }
         List<NotificationResponseDto> notifications = notificationService.findNotificationDtoListWithReceiverIdReadOrNot(loginMember.getId(), true);
         model.addAttribute("notifications", notifications);
-        model.addAttribute("isNew", false);
 
         return "notification/list";
     }
 
-    @GetMapping("/notifications/{notificationId}/read")
+    @GetMapping("/notifications/{notificationId}")
     public String readNotification(@LoginMember MemberSessionResponseDto loginMember, @PathVariable String notificationId, Model model) {
         if (loginMember == null) {
-            return "redirect:/member/sign-in";
+            return "redirect:/member/login";
         }
-        NotificationResponseDto notification = notificationService.readNotification(Long.valueOf(notificationId), loginMember.getId()); // 읽기 처리
+        NotificationResponseDto notification = notificationService.readNotification(Long.valueOf(notificationId)); // 읽기 처리
         if (!notification.getRedirectUrl().isEmpty()) {
             model.addAttribute("isUrl", true);
             return "redirect:" + notification.getRedirectUrl();
@@ -57,15 +56,15 @@ public class NotificationController {
         return "notification/detail";
     }
 
-    @GetMapping("/notifications/delete")
-    public String deleteCheckedNotifications(@LoginMember MemberSessionResponseDto loginMember) {
-        if (loginMember == null) {
-            return "redirect:/member/sign-in";
-        }
-        List<Long> ids = notificationService.findNotificationDtoListWithReceiverIdReadOrNot(loginMember.getId(), true).stream()
-                .map(NotificationResponseDto::getId).toList();
-        notificationRepository.deleteAlreadyChecked(ids);
+    @GetMapping("/notifications/{notificationId}/delete")
+    public String deleteNotification(@PathVariable String notificationId) {
+        notificationRepository.deleteNotification(Long.valueOf(notificationId));
+        return "redirect:/notifications";
+    }
 
+    @GetMapping("/notifications/delete-all")
+    public String deleteCheckedNotifications(@RequestParam List<Long> ids) {
+        notificationRepository.deleteAlreadyChecked(ids);
         return "redirect:/notifications";
     }
 }
