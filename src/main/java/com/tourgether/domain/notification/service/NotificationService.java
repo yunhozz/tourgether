@@ -56,17 +56,15 @@ public class NotificationService {
                 .orElseThrow(() -> new MemberNotFoundException("This member is null : " + receiverId, ErrorCode.MEMBER_NOT_FOUND));
         notificationRequestDto.setReceiver(receiver);
         Notification notification = notificationRequestDto.toEntity();
+        notificationRepository.save(notification);
 
         Map<String, SseEmitter> emitters = emitterRepository.findEmittersWithMemberId(String.valueOf(receiverId));
-        if (!emitters.isEmpty()) {
-            emitters.forEach(
-                    (key, emitter) -> {
-                        emitterRepository.saveEventCache(key, notification);
-                        sendToClient(emitter, String.valueOf(receiverId), new NotificationResponseDto(notification));
-                    }
-            );
-            notificationRepository.save(notification);
-        }
+        emitters.forEach(
+                (key, emitter) -> {
+                    emitterRepository.saveEventCache(key, notification);
+                    sendToClient(emitter, String.valueOf(receiverId), new NotificationResponseDto(notification));
+                }
+        );
         return notification.getId();
     }
 
