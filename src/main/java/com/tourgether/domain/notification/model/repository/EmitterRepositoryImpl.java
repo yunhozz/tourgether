@@ -12,8 +12,8 @@ import java.util.stream.Collectors;
 @Repository
 public class EmitterRepositoryImpl implements EmitterRepository {
 
-    Map<String, SseEmitter> emitters = new ConcurrentHashMap<>();
-    Map<String, Object> eventCaches = new ConcurrentHashMap<>();
+    private final Map<String, SseEmitter> emitters = new ConcurrentHashMap<>();
+    private final Map<String, Object> eventCaches = new ConcurrentHashMap<>();
 
     @Override
     public SseEmitter save(String emitterId, SseEmitter emitter) {
