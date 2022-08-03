@@ -2,9 +2,9 @@ package com.tourgether.domain.member.service;
 
 import com.tourgether.domain.member.model.entity.Member;
 import com.tourgether.domain.member.model.repository.MemberRepository;
-import com.tourgether.ui.auth.OAuthDto;
+import com.tourgether.util.auth.OAuthDto;
 import com.tourgether.dto.MemberSessionResponseDto;
-import com.tourgether.ui.SessionConstants;
+import com.tourgether.util.SessionConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;

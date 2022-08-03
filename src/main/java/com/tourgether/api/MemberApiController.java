@@ -5,7 +5,7 @@ import com.tourgether.domain.member.model.dto.request.MemberRequestDto;
 import com.tourgether.domain.member.model.dto.response.MemberResponseDto;
 import com.tourgether.domain.member.service.MemberService;
 import com.tourgether.domain.member.service.UserDetailsServiceImpl;
-import com.tourgether.ui.SessionConstants;
+import com.tourgether.util.SessionConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
