@@ -3,9 +3,9 @@ package com.tourgether.domain.recruit.controller;
 import com.tourgether.domain.recruit.model.dto.request.CommentRequestDto;
 import com.tourgether.domain.recruit.model.repository.CommentRepository;
 import com.tourgether.domain.recruit.service.CommentService;
-import com.tourgether.dto.MemberSessionResponseDto;
-import com.tourgether.ui.login.LoginMember;
+import com.tourgether.util.auth.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -31,11 +31,12 @@ public class CommentController {
     }
 
     @GetMapping("/comment/{commentId}/update")
-    public String updateCommentForm(@LoginMember MemberSessionResponseDto loginMember, @PathVariable String commentId, @RequestParam String recruitId, Model model) {
+    public String updateCommentForm(@AuthenticationPrincipal UserDetailsImpl loginMember, @PathVariable String commentId, @RequestParam String recruitId,
+                                    Model model) {
         if (loginMember == null) {
             return "redirect:/member/signIn";
         }
-        model.addAttribute("writer", loginMember.getId());
+        model.addAttribute("writer", loginMember.getMember().getId());
         model.addAttribute("recruitId", recruitId);
         model.addAttribute("commentId", commentId);
 
@@ -52,7 +53,7 @@ public class CommentController {
     }
 
     @GetMapping("/comment/{commentId}/delete")
-    public String deleteComment(@LoginMember MemberSessionResponseDto loginMember, @PathVariable String commentId, @RequestParam String recruitId) {
+    public String deleteComment(@AuthenticationPrincipal UserDetailsImpl loginMember, @PathVariable String commentId, @RequestParam String recruitId) {
         if (loginMember == null) {
             return "redirect:/member/signIn";
         }

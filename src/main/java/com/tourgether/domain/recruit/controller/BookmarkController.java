@@ -4,11 +4,11 @@ import com.tourgether.domain.recruit.model.dto.BookmarkQueryDto;
 import com.tourgether.domain.recruit.model.dto.response.BookmarkResponseDto;
 import com.tourgether.domain.recruit.model.repository.BookmarkRepository;
 import com.tourgether.domain.recruit.service.BookmarkService;
-import com.tourgether.dto.MemberSessionResponseDto;
-import com.tourgether.ui.login.LoginMember;
+import com.tourgether.util.auth.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,11 +22,11 @@ public class BookmarkController {
     private final BookmarkRepository bookmarkRepository;
 
     @GetMapping("/bookmark/list")
-    public String getBookmarks(@LoginMember MemberSessionResponseDto loginMember, Model model) {
+    public String getBookmarks(@AuthenticationPrincipal UserDetailsImpl loginMember, Model model) {
         if (loginMember == null) {
             return "redirect:/member/login";
         }
-        Page<BookmarkQueryDto> bookmarks = bookmarkRepository.findPageWithUserId(loginMember.getId(), Pageable.ofSize(10));
+        Page<BookmarkQueryDto> bookmarks = bookmarkRepository.findPageWithUserId(loginMember.getMember().getId(), Pageable.ofSize(10));
         model.addAttribute("bookmarks", bookmarks);
 
         return "bookmark/list";

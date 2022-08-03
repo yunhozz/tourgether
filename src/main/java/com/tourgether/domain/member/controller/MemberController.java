@@ -7,9 +7,9 @@ import com.tourgether.domain.member.model.dto.request.MemberRequestDto;
 import com.tourgether.domain.member.model.dto.response.MemberResponseDto;
 import com.tourgether.domain.member.service.MemberService;
 import com.tourgether.domain.member.service.UserDetailsServiceImpl;
-import com.tourgether.dto.MemberSessionResponseDto;
-import com.tourgether.ui.login.LoginMember;
+import com.tourgether.util.auth.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -75,11 +75,11 @@ public class MemberController {
     }
 
     @GetMapping("/member/update-pw")
-    public String updatePw(@LoginMember MemberSessionResponseDto loginMember, @ModelAttribute PasswordForm passwordForm, Model model) {
+    public String updatePw(@AuthenticationPrincipal UserDetailsImpl loginMember, @ModelAttribute PasswordForm passwordForm, Model model) {
         if (loginMember == null) {
             return "redirect:/member/sign-in";
         }
-        model.addAttribute("userId", loginMember.getId());
+        model.addAttribute("userId", loginMember.getMember().getId());
         return "member/update-pw";
     }
 
@@ -93,11 +93,11 @@ public class MemberController {
     }
 
     @GetMapping("/member/update-info")
-    public String updateInfo(@LoginMember MemberSessionResponseDto loginMember, @ModelAttribute UpdateForm updateForm, Model model) {
+    public String updateInfo(@AuthenticationPrincipal UserDetailsImpl loginMember, @ModelAttribute UpdateForm updateForm, Model model) {
         if (loginMember == null) {
             return "redirect:/member/sign-in";
         }
-        model.addAttribute("userId", loginMember.getId());
+        model.addAttribute("userId", loginMember.getMember().getId());
         return "member/update-info";
     }
 

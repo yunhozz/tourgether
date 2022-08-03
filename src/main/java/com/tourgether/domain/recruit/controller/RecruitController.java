@@ -9,13 +9,13 @@ import com.tourgether.domain.recruit.model.dto.response.CommentResponseDto;
 import com.tourgether.domain.recruit.model.dto.response.RecruitResponseDto;
 import com.tourgether.domain.recruit.model.repository.RecruitRepository;
 import com.tourgether.domain.recruit.service.RecruitService;
-import com.tourgether.dto.MemberSessionResponseDto;
 import com.tourgether.enums.SearchCondition;
-import com.tourgether.ui.login.LoginMember;
+import com.tourgether.util.auth.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -35,7 +35,7 @@ public class RecruitController {
     private final RecruitRepository recruitRepository;
 
     @GetMapping("/recruit")
-    public String recruitPage(@LoginMember MemberSessionResponseDto loginMember, @ModelAttribute SearchForm searchForm, @RequestParam(required = false) String query,
+    public String recruitPage(@AuthenticationPrincipal UserDetailsImpl loginMember, @ModelAttribute SearchForm searchForm, @RequestParam(required = false) String query,
                               @PageableDefault(size = 10) Pageable pageable, Model model) {
         if (loginMember == null) {
             return "redirect:/member/signIn";
@@ -76,7 +76,7 @@ public class RecruitController {
     }
 
     @GetMapping("/recruit/{recruitId}")
-    public String readRecruit(@LoginMember MemberSessionResponseDto loginMember, @PathVariable String recruitId, @ModelAttribute CommentRequestDto commentRequestDto,
+    public String readRecruit(@AuthenticationPrincipal UserDetailsImpl loginMember, @PathVariable String recruitId, @ModelAttribute CommentRequestDto commentRequestDto,
                               HttpServletRequest request, HttpServletResponse response, Model model) {
         if (loginMember == null) {
             return "redirect:/member/signIn";
@@ -85,22 +85,22 @@ public class RecruitController {
         addViewCount(Long.valueOf(recruitId), request, response); // 조회수 증가 (중복 x)
         model.addAttribute("recruit", recruit);
 
-        boolean isRecruitWriter = recruit.getWriterId().equals(loginMember.getId());
+        boolean isRecruitWriter = recruit.getWriterId().equals(loginMember.getMember().getId());
         model.addAttribute("isRecruitWriter", isRecruitWriter); // 모집글 작성자일 경우 수정, 삭제 버튼 활성화
         List<CommentResponseDto> comments = recruit.getComments();
         for (CommentResponseDto comment : comments) {
-            boolean isCommentWriter = comment.getWriterId().equals(loginMember.getId());
+            boolean isCommentWriter = comment.getWriterId().equals(loginMember.getMember().getId());
             model.addAttribute("isCommentWriter", isCommentWriter); // 댓글 작성자일 경우 수정, 삭제 버튼 활성화
         }
         return "recruit/detail";
     }
 
     @GetMapping("/recruit/write")
-    public String writePage(@LoginMember MemberSessionResponseDto loginMember, @ModelAttribute RecruitRequestDto recruitRequestDto, Model model) {
+    public String writePage(@AuthenticationPrincipal UserDetailsImpl loginMember, @ModelAttribute RecruitRequestDto recruitRequestDto, Model model) {
         if (loginMember == null) {
             return "redirect:/member/signIn";
         }
-        model.addAttribute("writer", loginMember.getId());
+        model.addAttribute("writer", loginMember.getMember().getId());
         return "recruit/write";
     }
 
@@ -114,7 +114,7 @@ public class RecruitController {
     }
 
     @GetMapping("/recruit/{recruitId}/update")
-    public String updateRecruitForm(@LoginMember MemberSessionResponseDto loginMember, @PathVariable String recruitId, @ModelAttribute UpdateForm updateForm,
+    public String updateRecruitForm(@AuthenticationPrincipal UserDetailsImpl loginMember, @PathVariable String recruitId, @ModelAttribute UpdateForm updateForm,
                                     Model model) {
         if (loginMember == null) {
             return "redirect:/member/signIn";
@@ -133,11 +133,11 @@ public class RecruitController {
     }
 
     @GetMapping("/recruit/{recruitId}/delete")
-    public String deleteRecruit(@LoginMember MemberSessionResponseDto loginMember, @PathVariable String recruitId) {
+    public String deleteRecruit(@AuthenticationPrincipal UserDetailsImpl loginMember, @PathVariable String recruitId) {
         if (loginMember == null) {
             return "redirect:/member/signIn";
         }
-        recruitService.deleteRecruit(Long.valueOf(recruitId), loginMember.getId());
+        recruitService.deleteRecruit(Long.valueOf(recruitId), loginMember.getMember().getId());
         return "redirect:/recruit";
     }
 
