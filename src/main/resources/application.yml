@@ -20,8 +20,33 @@ spring:
       matching-strategy: ANT_PATH_MATCHER
 
   h2:
-    console.enabled: true
+    console:
+      enabled: true
 
-logging.level:
-  org.hibernate.SQL: debug
-#  org.hibernate.type: trace
+  devtools:
+    livereload:
+      enabled: true
+    restart:
+      enabled: false
+
+  freemarker:
+    cache: false
+
+  jackson:
+    serialization:
+      fail-on-empty-beans: false
+
+  mustache:
+    suffix: .html
+
+jwt:
+  header: Authorization
+  secret: c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK
+  token-validity-in-seconds: 86400
+  #HS512 알고리즘을 사용할 것이기 때문에 512bit, 즉 64byte 이상의 secret key 를 사용해야 한다.
+  #echo 'silvernine-tech-spring-boot-jwt-tutorial-secret-silvernine-tech-spring-boot-jwt-tutorial-secret'|base64
+
+logging:
+  level:
+    org.hibernate.SQL: debug
+    me.silvernine: DEBUG
