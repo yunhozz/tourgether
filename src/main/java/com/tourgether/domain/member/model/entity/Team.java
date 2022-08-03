@@ -27,30 +27,14 @@ public class Team extends TimeEntity {
     @Column(length = 1000)
     private String introduction;
 
-    @Column(columnDefinition = "tinyint")
-    private int numOfMember;
-
-    public Team(String name, String introduction, int numOfMember) {
+    public Team(String name, String introduction) {
         this.name = name;
         this.introduction = introduction;
-        this.numOfMember = numOfMember;
     }
 
-    public static Team createTeam(Member member, String name, String introduction) {
-        Team team = new Team(name, introduction, 1);
-        member.updateTeam(team);
-
-        return team;
-    }
-
-    public void increaseNum() {
-        numOfMember++;
-    }
-
-    public void decreaseNum() {
-        if (numOfMember == 0) {
-            throw new IllegalStateException("Number of people cannot be less than zero");
-        }
-        numOfMember--;
+    // 정보 변경
+    public void update(String name, String introduction) {
+        this.name = name;
+        this.introduction = introduction;
     }
 }
