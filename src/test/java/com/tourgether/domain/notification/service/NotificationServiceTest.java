@@ -5,7 +5,6 @@ import com.tourgether.domain.member.service.MemberService;
 import com.tourgether.domain.notification.model.dto.NotificationRequestDto;
 import com.tourgether.domain.notification.model.dto.NotificationResponseDto;
 import com.tourgether.enums.NotificationType;
-import com.tourgether.enums.Role;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -72,7 +71,7 @@ class NotificationServiceTest {
         Long id2 = notificationService.sendNotification(notificationDto2, receiverId);
         Long id3 = notificationService.sendNotification(notificationDto3, receiverId);
 
-        notificationService.readNotification(id2, receiverId);
+        notificationService.readNotification(id2);
         List<NotificationResponseDto> result = notificationService.findNotificationDtoList();
 
         //then
@@ -124,8 +123,8 @@ class NotificationServiceTest {
         Long id2 = notificationService.sendNotification(notificationDto2, receiverId);
         Long id3 = notificationService.sendNotification(notificationDto3, receiverId);
 
-        NotificationResponseDto notification1 = notificationService.readNotification(id1, receiverId);
-        NotificationResponseDto notification2 = notificationService.readNotification(id2, receiverId);
+        NotificationResponseDto notification1 = notificationService.readNotification(id1);
+        NotificationResponseDto notification2 = notificationService.readNotification(id2);
         List<NotificationResponseDto> result = notificationService.findNotificationDtoListWithReceiverIdReadOrNot(receiverId, true);
 
         //then
@@ -135,7 +134,7 @@ class NotificationServiceTest {
     }
 
     private MemberRequestDto createMemberDto(String oAuth2Id, String email, String password, String name, String nickname) {
-        return new MemberRequestDto(oAuth2Id, email, password, name, nickname, null, Role.USER);
+        return new MemberRequestDto(oAuth2Id, email, password, name, nickname, null);
     }
 
     private NotificationRequestDto createNotificationDto(String message, NotificationType type) {

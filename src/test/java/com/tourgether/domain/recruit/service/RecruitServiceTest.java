@@ -5,7 +5,6 @@ import com.tourgether.domain.member.service.MemberService;
 import com.tourgether.domain.recruit.controller.form.UpdateForm;
 import com.tourgether.domain.recruit.model.dto.request.RecruitRequestDto;
 import com.tourgether.domain.recruit.model.dto.response.RecruitResponseDto;
-import com.tourgether.enums.Role;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -107,7 +106,6 @@ class RecruitServiceTest {
                 .password(password)
                 .name(name)
                 .nickname(nickname)
-                .role(Role.USER)
                 .build();
     }
 

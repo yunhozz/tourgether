@@ -3,8 +3,7 @@ package com.tourgether.domain.member.service;
 import com.tourgether.domain.member.controller.form.UpdateForm;
 import com.tourgether.domain.member.model.dto.request.MemberRequestDto;
 import com.tourgether.domain.member.model.dto.response.MemberResponseDto;
-import com.tourgether.enums.Role;
-import com.tourgether.ui.auth.UserDetailsImpl;
+import com.tourgether.util.auth.UserDetailsImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -161,7 +160,6 @@ class MemberServiceTest {
                 .password(password)
                 .name(name)
                 .nickname(nickname)
-                .role(Role.USER)
                 .build();
     }
 }
