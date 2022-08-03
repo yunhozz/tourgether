@@ -18,22 +18,21 @@ public class ChatHandler extends TextWebSocketHandler {
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-        String payload = message.getPayload();
-        log.info("session: " + session.getId() + ", payload: " + payload);
+        log.info(session.getId() + " : " + message);
         for (WebSocketSession webSocketSession : sessions) {
-            webSocketSession.sendMessage(message);
+            webSocketSession.sendMessage(new TextMessage(session.getPrincipal().getName() + " : " + message.getPayload()));
         }
     }
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         sessions.add(session);
-        log.info(session + ": 클라이언트 접속");
+        log.info(session.getPrincipal().getName() + ": 님이 입장하셨습니다.");
     }
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
         sessions.remove(session);
-        log.info(session + ": 클라이언트 접속 해제");
+        log.info(session.getPrincipal().getName() + ": 님이 퇴장하셨습니다.");
     }
 }
