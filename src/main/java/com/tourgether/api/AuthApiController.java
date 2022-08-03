@@ -2,8 +2,8 @@ package com.tourgether.api;
 
 import com.tourgether.domain.member.controller.form.LoginForm;
 import com.tourgether.dto.TokenResponseDto;
-import com.tourgether.ui.auth.jwt.JwtFilter;
-import com.tourgether.ui.auth.jwt.TokenProvider;
+import com.tourgether.util.auth.jwt.JwtFilter;
+import com.tourgether.util.auth.jwt.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

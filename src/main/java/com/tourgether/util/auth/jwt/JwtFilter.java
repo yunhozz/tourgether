@@ -1,4 +1,4 @@
-package com.tourgether.ui.auth.jwt;
+package com.tourgether.util.auth.jwt;
 
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;

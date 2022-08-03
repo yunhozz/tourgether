@@ -1,4 +1,4 @@
-package com.tourgether.ui.auth.jwt;
+package com.tourgether.util.auth.jwt;
 
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;

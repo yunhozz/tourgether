@@ -1,4 +1,4 @@
-package com.tourgether.ui;
+package com.tourgether.util;
 
 import com.tourgether.domain.member.model.entity.Authority;
 import com.tourgether.domain.member.model.entity.Member;

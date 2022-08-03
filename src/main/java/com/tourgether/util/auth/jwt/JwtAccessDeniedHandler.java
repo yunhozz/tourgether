@@ -1,4 +1,4 @@
-package com.tourgether.ui.auth.jwt;
+package com.tourgether.util.auth.jwt;
 
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;

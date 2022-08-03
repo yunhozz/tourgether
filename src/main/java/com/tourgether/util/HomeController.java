@@ -1,4 +1,4 @@
-package com.tourgether.ui;
+package com.tourgether.util;
 
 import com.tourgether.dto.MemberSessionResponseDto;
 import org.springframework.stereotype.Controller;

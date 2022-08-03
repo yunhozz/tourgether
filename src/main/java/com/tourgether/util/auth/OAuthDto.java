@@ -1,4 +1,4 @@
-package com.tourgether.ui.auth;
+package com.tourgether.util.auth;
 
 import com.tourgether.domain.member.model.entity.Member;
 import lombok.AllArgsConstructor;

@@ -1,4 +1,4 @@
-package com.tourgether.ui.auth.jwt;
+package com.tourgether.util.auth.jwt;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
