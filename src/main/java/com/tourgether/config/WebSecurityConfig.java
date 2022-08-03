@@ -1,12 +1,11 @@
 package com.tourgether.config;
 
 import com.tourgether.domain.member.service.OAuth2UserServiceImpl;
-import com.tourgether.ui.auth.jwt.JwtAccessDeniedHandler;
-import com.tourgether.ui.auth.jwt.JwtAuthenticationEntryPoint;
-import com.tourgether.ui.auth.jwt.JwtFilter;
-import com.tourgether.ui.auth.jwt.TokenProvider;
+import com.tourgether.util.auth.jwt.JwtAccessDeniedHandler;
+import com.tourgether.util.auth.jwt.JwtAuthenticationEntryPoint;
+import com.tourgether.util.auth.jwt.JwtFilter;
+import com.tourgether.util.auth.jwt.TokenProvider;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.filters.CorsFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
