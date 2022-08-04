@@ -1,4 +1,4 @@
-package com.tourgether.domain.member.model.entity;
+package com.tourgether.domain.member.model.entity.auth;
 
 import lombok.AccessLevel;
 import lombok.Getter;
