@@ -1,6 +1,7 @@
 package com.tourgether.domain.member.model.entity;
 
 import com.tourgether.domain.TimeEntity;
+import com.tourgether.domain.member.model.entity.auth.MemberAuthority;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,10 +19,6 @@ public class Member extends TimeEntity {
     @Id
     @GeneratedValue
     private Long id;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "team_id")
-    private Team team;
 
     @OneToMany(mappedBy = "member")
     private Set<MemberAuthority> authorities = new HashSet<>();
@@ -43,8 +40,7 @@ public class Member extends TimeEntity {
     private String profileImgUrl;
 
     @Builder
-    private Member(Team team, Set<MemberAuthority> authorities, String oAuth2Id, String email, String password, String name, String nickname, String profileImgUrl) {
-        this.team = team;
+    private Member(Set<MemberAuthority> authorities, String oAuth2Id, String email, String password, String name, String nickname, String profileImgUrl) {
         this.authorities = authorities;
         this.oAuth2Id = oAuth2Id;
         this.email = email;
