@@ -26,7 +26,7 @@ public class NotificationController {
         if (loginMember == null) {
             return "redirect:/member/login";
         }
-        List<NotificationResponseDto> notifications = notificationService.findNotificationDtoListWithReceiverIdReadOrNot(loginMember.getMember().getId(), false);
+        List<NotificationResponseDto> notifications = notificationService.findNotificationDtoListWithReceiverIdReadOrNot(loginMember.getId(), false);
         model.addAttribute("notifications", notifications);
 
         return "notification/list";
@@ -37,7 +37,7 @@ public class NotificationController {
         if (loginMember == null) {
             return "redirect:/member/login";
         }
-        List<NotificationResponseDto> notifications = notificationService.findNotificationDtoListWithReceiverIdReadOrNot(loginMember.getMember().getId(), true);
+        List<NotificationResponseDto> notifications = notificationService.findNotificationDtoListWithReceiverIdReadOrNot(loginMember.getId(), true);
         model.addAttribute("notifications", notifications);
 
         return "notification/list";

@@ -79,7 +79,7 @@ public class MemberController {
         if (loginMember == null) {
             return "redirect:/member/sign-in";
         }
-        model.addAttribute("userId", loginMember.getMember().getId());
+        model.addAttribute("userId", loginMember.getId());
         return "member/update-pw";
     }
 
@@ -97,7 +97,7 @@ public class MemberController {
         if (loginMember == null) {
             return "redirect:/member/sign-in";
         }
-        model.addAttribute("userId", loginMember.getMember().getId());
+        model.addAttribute("userId", loginMember.getId());
         return "member/update-info";
     }
 

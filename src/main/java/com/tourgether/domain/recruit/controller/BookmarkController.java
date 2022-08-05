@@ -26,7 +26,7 @@ public class BookmarkController {
         if (loginMember == null) {
             return "redirect:/member/login";
         }
-        Page<BookmarkQueryDto> bookmarks = bookmarkRepository.findPageWithUserId(loginMember.getMember().getId(), Pageable.ofSize(10));
+        Page<BookmarkQueryDto> bookmarks = bookmarkRepository.findPageWithUserId(loginMember.getId(), Pageable.ofSize(10));
         model.addAttribute("bookmarks", bookmarks);
 
         return "bookmark/list";

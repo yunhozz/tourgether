@@ -36,7 +36,7 @@ public class CommentController {
         if (loginMember == null) {
             return "redirect:/member/signIn";
         }
-        model.addAttribute("writer", loginMember.getMember().getId());
+        model.addAttribute("writer", loginMember.getId());
         model.addAttribute("recruitId", recruitId);
         model.addAttribute("commentId", commentId);
 
