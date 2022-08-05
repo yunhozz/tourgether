@@ -1,4 +1,4 @@
-package com.tourgether.domain.notification.model;
+package com.tourgether.domain.notification.model.entity;
 
 import com.tourgether.domain.TimeEntity;
 import com.tourgether.domain.member.model.entity.Member;
