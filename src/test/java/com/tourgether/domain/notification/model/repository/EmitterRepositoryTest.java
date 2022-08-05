@@ -1,6 +1,6 @@
 package com.tourgether.domain.notification.model.repository;
 
-import com.tourgether.domain.notification.model.Notification;
+import com.tourgether.domain.notification.model.entity.Notification;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

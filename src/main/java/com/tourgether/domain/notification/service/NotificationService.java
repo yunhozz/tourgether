@@ -2,9 +2,9 @@ package com.tourgether.domain.notification.service;
 
 import com.tourgether.domain.member.model.entity.Member;
 import com.tourgether.domain.member.model.repository.MemberRepository;
-import com.tourgether.domain.notification.model.Notification;
-import com.tourgether.domain.notification.model.dto.NotificationRequestDto;
-import com.tourgether.domain.notification.model.dto.NotificationResponseDto;
+import com.tourgether.domain.notification.model.entity.Notification;
+import com.tourgether.domain.notification.service.dto.NotificationRequestDto;
+import com.tourgether.domain.notification.service.dto.NotificationResponseDto;
 import com.tourgether.domain.notification.model.repository.EmitterRepository;
 import com.tourgether.domain.notification.model.repository.NotificationRepository;
 import com.tourgether.enums.ErrorCode;

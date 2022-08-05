@@ -1,8 +1,8 @@
 package com.tourgether.api;
 
 import com.tourgether.domain.member.controller.form.LoginForm;
-import com.tourgether.domain.member.model.dto.request.MemberRequestDto;
-import com.tourgether.domain.member.model.dto.response.MemberResponseDto;
+import com.tourgether.domain.member.service.dto.request.MemberRequestDto;
+import com.tourgether.domain.member.service.dto.response.MemberResponseDto;
 import com.tourgether.domain.member.service.MemberService;
 import com.tourgether.domain.member.service.UserDetailsServiceImpl;
 import com.tourgether.util.SessionConstants;

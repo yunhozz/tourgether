@@ -2,11 +2,11 @@ package com.tourgether.domain.recruit.controller;
 
 import com.tourgether.domain.recruit.controller.form.SearchForm;
 import com.tourgether.domain.recruit.controller.form.UpdateForm;
-import com.tourgether.domain.recruit.model.dto.RecruitQueryDto;
-import com.tourgether.domain.recruit.model.dto.request.CommentRequestDto;
-import com.tourgether.domain.recruit.model.dto.request.RecruitRequestDto;
-import com.tourgether.domain.recruit.model.dto.response.CommentResponseDto;
-import com.tourgether.domain.recruit.model.dto.response.RecruitResponseDto;
+import com.tourgether.domain.recruit.service.dto.RecruitQueryDto;
+import com.tourgether.domain.recruit.service.dto.request.CommentRequestDto;
+import com.tourgether.domain.recruit.service.dto.request.RecruitRequestDto;
+import com.tourgether.domain.recruit.service.dto.response.CommentResponseDto;
+import com.tourgether.domain.recruit.service.dto.response.RecruitResponseDto;
 import com.tourgether.domain.recruit.model.repository.RecruitRepository;
 import com.tourgether.domain.recruit.service.RecruitService;
 import com.tourgether.enums.SearchCondition;

@@ -1,6 +1,6 @@
 package com.tourgether.domain.recruit.controller;
 
-import com.tourgether.domain.recruit.model.dto.request.CommentRequestDto;
+import com.tourgether.domain.recruit.service.dto.request.CommentRequestDto;
 import com.tourgether.domain.recruit.model.repository.CommentRepository;
 import com.tourgether.domain.recruit.service.CommentService;
 import com.tourgether.util.auth.UserDetailsImpl;

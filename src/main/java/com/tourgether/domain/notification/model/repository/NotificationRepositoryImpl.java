@@ -1,7 +1,7 @@
 package com.tourgether.domain.notification.model.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.tourgether.domain.notification.model.dto.NotificationQueryDto;
+import com.tourgether.domain.notification.service.dto.NotificationQueryDto;
 import com.tourgether.domain.notification.model.dto.QNotificationQueryDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 import static com.tourgether.domain.member.model.entity.QMember.*;
-import static com.tourgether.domain.notification.model.QNotification.*;
+import static com.tourgether.domain.notification.model.entity.QNotification.*;
 
 @Repository
 @RequiredArgsConstructor

@@ -1,7 +1,7 @@
 package com.tourgether.domain.recruit.controller;
 
-import com.tourgether.domain.recruit.model.dto.BookmarkQueryDto;
-import com.tourgether.domain.recruit.model.dto.response.BookmarkResponseDto;
+import com.tourgether.domain.recruit.service.dto.BookmarkQueryDto;
+import com.tourgether.domain.recruit.service.dto.response.BookmarkResponseDto;
 import com.tourgether.domain.recruit.model.repository.BookmarkRepository;
 import com.tourgether.domain.recruit.service.BookmarkService;
 import com.tourgether.util.auth.UserDetailsImpl;

@@ -1,9 +1,9 @@
 package com.tourgether.domain.notification.service;
 
-import com.tourgether.domain.member.model.dto.request.MemberRequestDto;
+import com.tourgether.domain.member.service.dto.request.MemberRequestDto;
 import com.tourgether.domain.member.service.MemberService;
-import com.tourgether.domain.notification.model.dto.NotificationRequestDto;
-import com.tourgether.domain.notification.model.dto.NotificationResponseDto;
+import com.tourgether.domain.notification.service.dto.NotificationRequestDto;
+import com.tourgether.domain.notification.service.dto.NotificationResponseDto;
 import com.tourgether.enums.NotificationType;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

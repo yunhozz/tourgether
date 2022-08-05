@@ -1,8 +1,8 @@
 package com.tourgether.util;
 
-import com.tourgether.domain.member.model.entity.Authority;
+import com.tourgether.domain.member.model.entity.auth.Authority;
 import com.tourgether.domain.member.model.entity.Member;
-import com.tourgether.domain.member.model.entity.MemberAuthority;
+import com.tourgether.domain.member.model.entity.auth.MemberAuthority;
 import com.tourgether.domain.member.model.repository.AuthorityRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

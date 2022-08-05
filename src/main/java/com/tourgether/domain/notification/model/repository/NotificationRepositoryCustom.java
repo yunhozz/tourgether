@@ -1,6 +1,6 @@
 package com.tourgether.domain.notification.model.repository;
 
-import com.tourgether.domain.notification.model.dto.NotificationQueryDto;
+import com.tourgether.domain.notification.service.dto.NotificationQueryDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
