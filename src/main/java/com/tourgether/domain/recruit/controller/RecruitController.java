@@ -1,5 +1,6 @@
 package com.tourgether.domain.recruit.controller;
 
+import com.tourgether.domain.recruit.controller.form.RecruitForm;
 import com.tourgether.domain.recruit.controller.form.SearchForm;
 import com.tourgether.domain.recruit.controller.form.UpdateForm;
 import com.tourgether.domain.recruit.service.dto.RecruitQueryDto;
@@ -105,11 +106,11 @@ public class RecruitController {
     }
 
     @PostMapping("/recruit/write")
-    public String write(@Valid @RequestBody RecruitRequestDto recruitRequestDto, BindingResult result, @RequestParam String writerId) {
+    public String write(@Valid RecruitForm recruitForm, BindingResult result, @RequestParam String writerId) {
         if (result.hasErrors()) {
             return "recruit/write";
         }
-        recruitService.makeRecruit(recruitRequestDto, Long.valueOf(writerId));
+        recruitService.makeRecruit(recruitForm, Long.valueOf(writerId));
         return "redirect:/recruit";
     }
 
@@ -124,7 +125,7 @@ public class RecruitController {
     }
 
     @PostMapping("/recruit/update")
-    public String updateRecruit(@Valid @RequestBody UpdateForm updateForm, BindingResult result, @RequestParam String recruitId) {
+    public String updateRecruit(@Valid UpdateForm updateForm, BindingResult result, @RequestParam String recruitId) {
         if (result.hasErrors()) {
             return "recruit/update";
         }

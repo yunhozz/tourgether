@@ -26,24 +26,30 @@ public class CommentService {
     private final MemberRepository memberRepository;
     private final RecruitRepository recruitRepository;
 
-    public Long makeComment(CommentRequestDto commentRequestDto, Long writerId, Long recruitId) {
+    public Long makeComment(String content, Long writerId, Long recruitId) {
         Member writer = memberRepository.getReferenceById(writerId);
         Recruit recruit = recruitRepository.getReferenceById(recruitId);
 
-        commentRequestDto.setWriter(writer);
-        commentRequestDto.setRecruit(recruit);
+        CommentRequestDto commentRequestDto = CommentRequestDto.builder()
+                .recruit(recruit)
+                .writer(writer)
+                .content(content)
+                .build();
 
         return commentRepository.save(commentRequestDto.parentToEntity()).getId();
     }
 
-    public Long makeCommentChild(CommentRequestDto commentRequestDto, Long writerId, Long recruitId, Long parentId) {
+    public Long makeCommentChild(String content, Long writerId, Long recruitId, Long parentId) {
         Member writer = memberRepository.getReferenceById(writerId);
         Recruit recruit = recruitRepository.getReferenceById(recruitId);
         Comment parent = findComment(parentId);
 
-        commentRequestDto.setWriter(writer);
-        commentRequestDto.setRecruit(recruit);
-        commentRequestDto.setParent(parent);
+        CommentRequestDto commentRequestDto = CommentRequestDto.builder()
+                .recruit(recruit)
+                .writer(writer)
+                .parent(parent)
+                .content(content)
+                .build();
 
         return commentRepository.save(commentRequestDto.childToEntity()).getId();
     }

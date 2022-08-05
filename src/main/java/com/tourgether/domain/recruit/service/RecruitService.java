@@ -2,6 +2,7 @@ package com.tourgether.domain.recruit.service;
 
 import com.tourgether.domain.member.model.entity.Member;
 import com.tourgether.domain.member.model.repository.MemberRepository;
+import com.tourgether.domain.recruit.controller.form.RecruitForm;
 import com.tourgether.domain.recruit.controller.form.UpdateForm;
 import com.tourgether.domain.recruit.service.dto.request.RecruitRequestDto;
 import com.tourgether.domain.recruit.service.dto.response.RecruitResponseDto;
@@ -28,9 +29,14 @@ public class RecruitService {
     private final MemberRepository memberRepository;
     private final BookmarkRepository bookmarkRepository;
 
-    public Long makeRecruit(RecruitRequestDto recruitRequestDto, Long writerId) {
+    public Long makeRecruit(RecruitForm recruitForm, Long writerId) {
         Member writer = memberRepository.getReferenceById(writerId);
-        recruitRequestDto.setWriter(writer);
+        RecruitRequestDto recruitRequestDto = RecruitRequestDto.builder()
+                .writer(writer)
+                .title(recruitForm.getTitle())
+                .content(recruitForm.getContent())
+                .view(0)
+                .build();
 
         return recruitRepository.save(recruitRequestDto.toEntity()).getId();
     }

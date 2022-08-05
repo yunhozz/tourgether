@@ -2,6 +2,7 @@ package com.tourgether.domain.notification.service;
 
 import com.tourgether.domain.member.model.entity.Member;
 import com.tourgether.domain.member.model.repository.MemberRepository;
+import com.tourgether.domain.notification.controller.NotificationForm;
 import com.tourgether.domain.notification.model.entity.Notification;
 import com.tourgether.domain.notification.service.dto.NotificationRequestDto;
 import com.tourgether.domain.notification.service.dto.NotificationResponseDto;
@@ -50,9 +51,15 @@ public class NotificationService {
     }
 
     // 알림 보내기
-    public Long sendNotification(NotificationRequestDto notificationRequestDto, Long receiverId) {
+    public Long sendNotification(NotificationForm notificationForm, Long receiverId) {
         Member receiver = memberRepository.getReferenceById(receiverId);
-        notificationRequestDto.setReceiver(receiver);
+        NotificationRequestDto notificationRequestDto = NotificationRequestDto.builder()
+                .receiver(receiver)
+                .message(notificationForm.getMessage())
+                .type(notificationForm.getType())
+                .redirectUrl(notificationForm.getRedirectUrl())
+                .isChecked(notificationForm.isChecked())
+                .build();
         Notification notification = notificationRequestDto.toEntity();
         notificationRepository.save(notification);
 
