@@ -1,7 +1,7 @@
 package com.tourgether.domain.notification.model.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.tourgether.domain.notification.service.dto.NotificationQueryDto;
+import com.tourgether.domain.notification.dto.NotificationQueryDto;
 import com.tourgether.domain.notification.model.dto.QNotificationQueryDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

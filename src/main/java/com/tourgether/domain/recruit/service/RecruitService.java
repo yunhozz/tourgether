@@ -2,10 +2,9 @@ package com.tourgether.domain.recruit.service;
 
 import com.tourgether.domain.member.model.entity.Member;
 import com.tourgether.domain.member.model.repository.MemberRepository;
-import com.tourgether.domain.recruit.controller.form.RecruitForm;
 import com.tourgether.domain.recruit.controller.form.UpdateForm;
-import com.tourgether.domain.recruit.service.dto.request.RecruitRequestDto;
-import com.tourgether.domain.recruit.service.dto.response.RecruitResponseDto;
+import com.tourgether.domain.recruit.dto.request.RecruitRequestDto;
+import com.tourgether.domain.recruit.dto.response.RecruitResponseDto;
 import com.tourgether.domain.recruit.model.entity.Bookmark;
 import com.tourgether.domain.recruit.model.entity.Recruit;
 import com.tourgether.domain.recruit.model.repository.BookmarkRepository;

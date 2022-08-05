@@ -3,13 +3,14 @@ package com.tourgether.domain.member.controller;
 import com.tourgether.domain.member.controller.form.LoginForm;
 import com.tourgether.domain.member.controller.form.PasswordForm;
 import com.tourgether.domain.member.controller.form.UpdateForm;
-import com.tourgether.domain.member.dto.MemberRequestDto;
-import com.tourgether.domain.member.service.dto.MemberResponseDto;
+import com.tourgether.domain.member.dto.request.MemberRequestDto;
+import com.tourgether.domain.member.dto.response.MemberResponseDto;
 import com.tourgether.domain.member.service.MemberService;
 import com.tourgether.util.auth.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -26,7 +27,7 @@ import javax.validation.Valid;
 public class MemberController {
 
     private final MemberService memberService;
-    private final UserDetailsServiceImpl userDetailsService;
+    private final UserDetailsService userDetailsService;
 
     @GetMapping("/member/signup")
     public String signup(@ModelAttribute MemberRequestDto memberRequestDto) {

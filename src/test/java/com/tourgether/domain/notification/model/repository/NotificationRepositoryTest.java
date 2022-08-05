@@ -2,7 +2,7 @@ package com.tourgether.domain.notification.model.repository;
 
 import com.tourgether.domain.member.model.entity.Member;
 import com.tourgether.domain.member.model.repository.MemberRepository;
-import com.tourgether.domain.notification.service.dto.NotificationQueryDto;
+import com.tourgether.domain.notification.dto.NotificationQueryDto;
 import com.tourgether.domain.notification.model.entity.Notification;
 import com.tourgether.enums.NotificationType;
 import org.junit.jupiter.api.Test;

@@ -1,7 +1,7 @@
 package com.tourgether.domain.recruit.model.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.tourgether.domain.recruit.service.dto.BookmarkQueryDto;
+import com.tourgether.domain.recruit.dto.BookmarkQueryDto;
 import com.tourgether.domain.recruit.model.dto.QBookmarkQueryDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

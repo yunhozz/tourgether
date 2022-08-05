@@ -1,7 +1,7 @@
 package com.tourgether.api;
 
-import com.tourgether.domain.recruit.service.dto.RecruitQueryDto;
-import com.tourgether.domain.recruit.service.dto.response.RecruitResponseDto;
+import com.tourgether.domain.recruit.dto.RecruitQueryDto;
+import com.tourgether.domain.recruit.dto.response.RecruitResponseDto;
 import com.tourgether.domain.recruit.model.repository.RecruitRepository;
 import com.tourgether.domain.recruit.service.RecruitService;
 import lombok.RequiredArgsConstructor;

@@ -2,8 +2,8 @@ package com.tourgether.domain.recruit.service;
 
 import com.tourgether.domain.member.model.entity.Member;
 import com.tourgether.domain.member.model.repository.MemberRepository;
-import com.tourgether.domain.recruit.service.dto.request.CommentRequestDto;
-import com.tourgether.domain.recruit.service.dto.response.CommentResponseDto;
+import com.tourgether.domain.recruit.dto.request.CommentRequestDto;
+import com.tourgether.domain.recruit.dto.response.CommentResponseDto;
 import com.tourgether.domain.recruit.model.entity.Comment;
 import com.tourgether.domain.recruit.model.entity.Recruit;
 import com.tourgether.domain.recruit.model.repository.CommentRepository;

@@ -2,9 +2,8 @@ package com.tourgether.domain.member.service;
 
 import com.tourgether.domain.member.model.entity.auth.Authority;
 import com.tourgether.domain.member.model.entity.Member;
-import com.tourgether.domain.member.controller.form.UpdateForm;
-import com.tourgether.domain.member.dto.MemberRequestDto;
-import com.tourgether.domain.member.service.dto.MemberResponseDto;
+import com.tourgether.domain.member.dto.request.MemberRequestDto;
+import com.tourgether.domain.member.dto.response.MemberResponseDto;
 import com.tourgether.domain.member.model.entity.auth.MemberAuthority;
 import com.tourgether.domain.member.model.repository.AuthorityRepository;
 import com.tourgether.domain.member.model.repository.MemberAuthorityRepository;

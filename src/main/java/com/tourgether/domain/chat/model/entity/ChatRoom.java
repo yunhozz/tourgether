@@ -2,7 +2,7 @@ package com.tourgether.domain.chat.model.entity;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tourgether.domain.TimeEntity;
-import com.tourgether.domain.chat.service.dto.request.ChatRequestDto;
+import com.tourgether.domain.chat.dto.request.ChatRequestDto;
 import com.tourgether.domain.member.model.entity.Member;
 import com.tourgether.enums.MessageType;
 import lombok.AccessLevel;

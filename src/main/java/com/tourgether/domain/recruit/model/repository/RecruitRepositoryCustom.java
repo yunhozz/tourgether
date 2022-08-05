@@ -1,6 +1,6 @@
 package com.tourgether.domain.recruit.model.repository;
 
-import com.tourgether.domain.recruit.service.dto.RecruitQueryDto;
+import com.tourgether.domain.recruit.dto.RecruitQueryDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

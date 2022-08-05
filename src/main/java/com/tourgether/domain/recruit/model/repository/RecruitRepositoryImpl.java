@@ -3,7 +3,7 @@ package com.tourgether.domain.recruit.model.repository;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.tourgether.domain.recruit.model.dto.QRecruitQueryDto;
-import com.tourgether.domain.recruit.service.dto.RecruitQueryDto;
+import com.tourgether.domain.recruit.dto.RecruitQueryDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;

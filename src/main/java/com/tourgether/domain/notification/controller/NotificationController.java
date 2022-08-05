@@ -1,6 +1,6 @@
 package com.tourgether.domain.notification.controller;
 
-import com.tourgether.domain.notification.service.dto.NotificationResponseDto;
+import com.tourgether.domain.notification.dto.NotificationResponseDto;
 import com.tourgether.domain.notification.model.repository.NotificationRepository;
 import com.tourgether.domain.notification.service.NotificationService;
 import com.tourgether.util.auth.UserDetailsImpl;

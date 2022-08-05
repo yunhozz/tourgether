@@ -1,9 +1,10 @@
 package com.tourgether.api;
 
 import com.tourgether.domain.member.controller.form.LoginForm;
+import com.tourgether.domain.member.controller.form.PasswordForm;
 import com.tourgether.domain.member.controller.form.UpdateForm;
-import com.tourgether.domain.member.dto.MemberRequestDto;
-import com.tourgether.domain.member.service.dto.MemberResponseDto;
+import com.tourgether.domain.member.dto.request.MemberRequestDto;
+import com.tourgether.domain.member.dto.response.MemberResponseDto;
 import com.tourgether.domain.member.service.MemberService;
 import com.tourgether.domain.member.service.UserDetailsServiceImpl;
 import com.tourgether.dto.TokenResponseDto;
