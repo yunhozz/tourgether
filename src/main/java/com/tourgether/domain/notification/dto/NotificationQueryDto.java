@@ -1,12 +1,14 @@
-package com.tourgether.domain.notification.service.dto;
+package com.tourgether.domain.notification.dto;
 
 import com.querydsl.core.annotations.QueryProjection;
 import com.tourgether.enums.NotificationType;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Getter
+@NoArgsConstructor
 public class NotificationQueryDto {
 
     // notification

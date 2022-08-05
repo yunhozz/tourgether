@@ -1,4 +1,4 @@
-package com.tourgether.domain.chat.service.dto.response;
+package com.tourgether.domain.chat.dto.response;
 
 import com.tourgether.domain.chat.model.entity.ChatRoom;
 import lombok.AllArgsConstructor;

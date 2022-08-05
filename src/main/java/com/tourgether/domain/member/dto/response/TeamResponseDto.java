@@ -1,4 +1,4 @@
-package com.tourgether.domain.member.service.dto;
+package com.tourgether.domain.member.dto.response;
 
 import com.tourgether.domain.member.model.entity.Team;
 import lombok.AllArgsConstructor;

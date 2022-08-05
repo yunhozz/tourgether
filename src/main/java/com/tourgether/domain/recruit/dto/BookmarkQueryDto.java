@@ -1,11 +1,13 @@
-package com.tourgether.domain.recruit.service.dto;
+package com.tourgether.domain.recruit.dto;
 
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Getter
+@NoArgsConstructor
 public class BookmarkQueryDto {
 
     // bookmark

@@ -1,19 +1,18 @@
-package com.tourgether.domain.recruit.service.dto.request;
+package com.tourgether.domain.recruit.dto.request;
 
 import com.tourgether.domain.member.model.entity.Member;
 import com.tourgether.domain.recruit.model.entity.Recruit;
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 public class RecruitRequestDto {
-
-    @NotBlank
-    private Member writer;
 
     @NotBlank
     private String title;
@@ -21,17 +20,10 @@ public class RecruitRequestDto {
     @NotBlank
     private String content;
 
-    private int view;
+    @NotNull
+    private Integer view;
 
-    @Builder
-    private RecruitRequestDto(Member writer, String title, String content, int view) {
-        this.writer = writer;
-        this.title = title;
-        this.content = content;
-        this.view = view;
-    }
-
-    public Recruit toEntity() {
+    public Recruit toEntity(Member writer) {
         return Recruit.builder()
                 .writer(writer)
                 .title(title)

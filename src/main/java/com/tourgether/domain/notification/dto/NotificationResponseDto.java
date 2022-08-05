@@ -1,4 +1,4 @@
-package com.tourgether.domain.notification.service.dto;
+package com.tourgether.domain.notification.dto;
 
 import com.tourgether.domain.notification.model.entity.Notification;
 import com.tourgether.enums.NotificationType;
@@ -20,6 +20,7 @@ public class NotificationResponseDto {
     private String redirectUrl;
     private boolean isChecked;
     private LocalDateTime createdDate;
+    private LocalDateTime lastModifiedDate;
 
     public NotificationResponseDto(Notification notification) {
         id = notification.getId();
@@ -29,5 +30,6 @@ public class NotificationResponseDto {
         redirectUrl = notification.getRedirectUrl();
         isChecked = notification.isChecked();
         createdDate = notification.getCreatedDate();
+        lastModifiedDate = notification.getLastModifiedDate();
     }
 }

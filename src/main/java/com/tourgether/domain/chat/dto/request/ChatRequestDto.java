@@ -1,10 +1,10 @@
-package com.tourgether.domain.chat.service.dto.request;
+package com.tourgether.domain.chat.dto.request;
 
 import com.tourgether.domain.chat.model.entity.Chat;
 import com.tourgether.domain.chat.model.entity.ChatRoom;
 import com.tourgether.domain.member.model.entity.Member;
 import com.tourgether.enums.MessageType;
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -13,13 +13,8 @@ import javax.validation.constraints.NotNull;
 
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 public class ChatRequestDto {
-
-    @NotNull
-    private Member sender;
-
-    @NotNull
-    private ChatRoom chatRoom;
 
     @NotBlank
     private String message;
@@ -27,15 +22,7 @@ public class ChatRequestDto {
     @NotNull
     private MessageType type;
 
-    @Builder
-    private ChatRequestDto(Member sender, ChatRoom chatRoom, String message, MessageType type) {
-        this.sender = sender;
-        this.chatRoom = chatRoom;
-        this.message = message;
-        this.type = type;
-    }
-
-    public Chat toEntity() {
+    public Chat toEntity(Member sender, ChatRoom chatRoom) {
         return Chat.builder()
                 .sender(sender)
                 .chatRoom(chatRoom)

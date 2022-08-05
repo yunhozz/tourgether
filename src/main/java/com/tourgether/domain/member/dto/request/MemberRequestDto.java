@@ -1,7 +1,7 @@
-package com.tourgether.domain.member.dto;
+package com.tourgether.domain.member.dto.request;
 
 import com.tourgether.domain.member.model.entity.Member;
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -10,6 +10,7 @@ import javax.validation.constraints.NotBlank;
 
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 public class MemberRequestDto {
 
     @NotBlank
@@ -25,15 +26,6 @@ public class MemberRequestDto {
     private String nickname;
 
     private String profileImgUrl;
-
-    @Builder
-    private MemberRequestDto(String email, String password, String name, String nickname, String profileImgUrl) {
-        this.email = email;
-        this.password = password;
-        this.name = name;
-        this.nickname = nickname;
-        this.profileImgUrl = profileImgUrl;
-    }
 
     public Member toEntity() {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
