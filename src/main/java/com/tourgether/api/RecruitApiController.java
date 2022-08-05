@@ -20,42 +20,42 @@ public class RecruitApiController {
     private final RecruitRepository recruitRepository;
 
     @GetMapping("/recruit/{recruitId}")
-    public RecruitResponseDto findRecruit(@PathVariable String recruitId) {
+    public RecruitResponseDto getRecruit(@PathVariable String recruitId) {
         return recruitService.findRecruitDto(Long.valueOf(recruitId));
     }
 
-    @GetMapping("/recruits")
-    public List<RecruitResponseDto> findRecruits() {
+    @GetMapping("/recruit/list")
+    public List<RecruitResponseDto> getRecruits() {
         return recruitService.findRecruitDtoList();
     }
 
     @GetMapping("/page/recruits-created")
-    public Page<RecruitQueryDto> findPageWithCreated(Pageable pageable) {
+    public Page<RecruitQueryDto> getPageWithCreated(Pageable pageable) {
         return recruitRepository.findPageWithCreated(pageable);
     }
 
     @GetMapping("/page/recruits-modified")
-    public Page<RecruitQueryDto> findPageWithModified(Pageable pageable) {
+    public Page<RecruitQueryDto> getPageWithModified(Pageable pageable) {
         return recruitRepository.findPageWithModified(pageable);
     }
 
     @GetMapping("/page/recruits-popularity")
-    public Page<RecruitQueryDto> findPageWithPopularity(Pageable pageable) {
+    public Page<RecruitQueryDto> getPageWithPopularity(Pageable pageable) {
         return recruitRepository.findPageWithPopularity(pageable);
     }
 
     @GetMapping("/page/recruits-created/search")
-    public Page<RecruitQueryDto> findPageWithKeyword(@RequestParam String keyword, Pageable pageable) {
+    public Page<RecruitQueryDto> getPageWithKeyword(@RequestParam String keyword, Pageable pageable) {
         return recruitRepository.findPageWithKeyword(keyword, pageable);
     }
 
     @GetMapping("/page/recruits-modified/search")
-    public Page<RecruitQueryDto> findPageWithKeywordOnLatestOrder(String keyword, Pageable pageable) {
+    public Page<RecruitQueryDto> getPageWithKeywordOnLatestOrder(@RequestParam String keyword, Pageable pageable) {
         return recruitRepository.findPageWithKeywordOnLatestOrder(keyword, pageable);
     }
 
     @GetMapping("/page/recruits-accuracy/search")
-    public Page<RecruitQueryDto> findPageWithKeywordOnAccuracyOrder(String keyword, Pageable pageable) {
+    public Page<RecruitQueryDto> getPageWithKeywordOnAccuracyOrder(@RequestParam String keyword, Pageable pageable) {
         return recruitRepository.findPageWithKeywordOnAccuracyOrder(keyword, pageable);
     }
 }
