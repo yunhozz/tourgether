@@ -1,7 +1,7 @@
 package com.tourgether.api;
 
+import com.tourgether.domain.notification.controller.NotificationForm;
 import com.tourgether.domain.notification.service.dto.NotificationQueryDto;
-import com.tourgether.domain.notification.service.dto.NotificationRequestDto;
 import com.tourgether.domain.notification.service.dto.NotificationResponseDto;
 import com.tourgether.domain.notification.model.repository.NotificationRepository;
 import com.tourgether.domain.notification.service.NotificationService;
