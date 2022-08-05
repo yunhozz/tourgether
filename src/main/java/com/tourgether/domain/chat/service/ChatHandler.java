@@ -1,9 +1,9 @@
 package com.tourgether.domain.chat.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tourgether.domain.chat.dto.request.ChatRequestDto;
 import com.tourgether.domain.chat.model.entity.ChatRoom;
 import com.tourgether.domain.chat.model.repository.ChatRoomRepository;
-import com.tourgether.domain.chat.service.dto.request.ChatRequestDto;
 import com.tourgether.enums.ErrorCode;
 import com.tourgether.exception.chat.ChatRoomNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +33,7 @@ public class ChatHandler extends TextWebSocketHandler {
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         String payload = message.getPayload();
         ChatRequestDto chatRequestDto = objectMapper.readValue(payload, ChatRequestDto.class);
-        Long chatRoomId = chatRequestDto.getChatRoom().getId();
+        Long chatRoomId = chatRequestDto.getChatRoomId();
         ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId)
                 .orElseThrow(() -> new ChatRoomNotFoundException("This chat room is null: " + chatRoomId, ErrorCode.CHATROOM_NOT_FOUND));
 
