@@ -56,7 +56,7 @@ public class NotificationApiController {
     }
 
     @PostMapping("/notification/send")
-    public ResponseEntity<Long> send(@RequestBody NotificationRequestDto notificationRequestDto, @RequestParam String receiverId) {
-        return ResponseEntity.ok(notificationService.sendNotification(notificationRequestDto, Long.valueOf(receiverId)));
+    public ResponseEntity<Long> send(@RequestBody NotificationRequestDto notificationRequestDto) {
+        return ResponseEntity.ok(notificationService.sendNotification(notificationRequestDto));
     }
 }

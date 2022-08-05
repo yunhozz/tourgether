@@ -26,9 +26,9 @@ public class ChatService {
     private final ChatRoomRepository chatRoomRepository;
     private final MemberRepository memberRepository;
 
-    public Long makeChat(ChatRequestDto chatRequestDto, Long senderId, Long chatRoomId) {
-        Member sender = memberRepository.getReferenceById(senderId);
-        ChatRoom chatRoom = chatRoomRepository.getReferenceById(chatRoomId);
+    public Long makeChat(ChatRequestDto chatRequestDto) {
+        Member sender = memberRepository.getReferenceById(chatRequestDto.getSenderId());
+        ChatRoom chatRoom = chatRoomRepository.getReferenceById(chatRequestDto.getChatRoomId());
 
         return chatRepository.save(chatRequestDto.toEntity(sender, chatRoom)).getId();
     }

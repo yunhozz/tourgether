@@ -26,8 +26,8 @@ public class ChatRoomService {
     private final RoomMemberRepository roomMemberRepository;
     private final MemberRepository memberRepository;
 
-    public Long makeChatRoom(ChatRoomRequestDto chatRoomRequestDto, Long userId) {
-        Member member = memberRepository.getReferenceById(userId);
+    public Long makeChatRoom(ChatRoomRequestDto chatRoomRequestDto) {
+        Member member = memberRepository.getReferenceById(chatRoomRequestDto.getUserId());
         ChatRoom chatRoom = chatRoomRequestDto.toEntity(member);
         RoomMember roomMember = RoomMember.createRoomMember(member, chatRoom);
 

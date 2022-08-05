@@ -1,7 +1,7 @@
 package com.tourgether.domain.recruit.controller;
 
 import com.tourgether.domain.recruit.controller.form.SearchForm;
-import com.tourgether.domain.recruit.controller.form.UpdateForm;
+import com.tourgether.domain.recruit.controller.form.RecruitUpdateForm;
 import com.tourgether.domain.recruit.dto.RecruitQueryDto;
 import com.tourgether.domain.recruit.dto.request.CommentRequestDto;
 import com.tourgether.domain.recruit.dto.request.RecruitRequestDto;
@@ -105,31 +105,32 @@ public class RecruitController {
     }
 
     @PostMapping("/recruit/write")
-    public String write(@Valid RecruitRequestDto recruitRequestDto, BindingResult result, @RequestParam String writerId) {
+    public String write(@Valid RecruitRequestDto recruitRequestDto, BindingResult result) {
         if (result.hasErrors()) {
             return "recruit/write";
         }
-        recruitService.makeRecruit(recruitRequestDto, Long.valueOf(writerId));
+        recruitService.makeRecruit(recruitRequestDto);
         return "redirect:/recruit";
     }
 
     @GetMapping("/recruit/{recruitId}/update")
-    public String updateRecruitForm(@AuthenticationPrincipal UserDetailsImpl loginMember, @PathVariable String recruitId, @ModelAttribute UpdateForm updateForm,
-                                    Model model) {
+    public String updateRecruitForm(@AuthenticationPrincipal UserDetailsImpl loginMember, @PathVariable String recruitId, Model model) {
         if (loginMember == null) {
             return "redirect:/member/signIn";
         }
-        model.addAttribute("recruitId", recruitId);
+        RecruitUpdateForm recruitUpdateForm = new RecruitUpdateForm(recruitId, loginMember.getId());
+        model.addAttribute("updateForm", recruitUpdateForm);
+
         return "recruit/update";
     }
 
     @PostMapping("/recruit/update")
-    public String updateRecruit(@Valid UpdateForm form, BindingResult result, @RequestParam String recruitId) {
+    public String updateRecruit(@Valid RecruitUpdateForm form, BindingResult result) {
         if (result.hasErrors()) {
             return "recruit/update";
         }
-        recruitService.updateRecruit(Long.valueOf(recruitId), form.getTitle(), form.getContent());
-        return "redirect:/" + recruitId;
+        recruitService.updateRecruit(Long.valueOf(form.getRecruitId()), form.getWriterId(), form.getTitle(), form.getContent());
+        return "redirect:/" + form.getRecruitId();
     }
 
     @GetMapping("/recruit/{recruitId}/delete")

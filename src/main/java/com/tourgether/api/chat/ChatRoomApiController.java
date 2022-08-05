@@ -27,8 +27,8 @@ public class ChatRoomApiController {
     }
 
     @PostMapping("/chatroom/create")
-    public ResponseEntity<Long> createChatRoom(@RequestBody ChatRoomRequestDto chatRoomRequestDto, @RequestParam String userId) {
-        return ResponseEntity.ok(chatRoomService.makeChatRoom(chatRoomRequestDto, Long.valueOf(userId)));
+    public ResponseEntity<Long> createChatRoom(@RequestBody ChatRoomRequestDto chatRoomRequestDto) {
+        return ResponseEntity.ok(chatRoomService.makeChatRoom(chatRoomRequestDto));
     }
 
     @PatchMapping("/chatroom/{chatRoomId}/update")

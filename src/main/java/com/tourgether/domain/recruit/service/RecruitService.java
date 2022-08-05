@@ -2,7 +2,6 @@ package com.tourgether.domain.recruit.service;
 
 import com.tourgether.domain.member.model.entity.Member;
 import com.tourgether.domain.member.model.repository.MemberRepository;
-import com.tourgether.domain.recruit.controller.form.UpdateForm;
 import com.tourgether.domain.recruit.dto.request.RecruitRequestDto;
 import com.tourgether.domain.recruit.dto.response.RecruitResponseDto;
 import com.tourgether.domain.recruit.model.entity.Bookmark;
@@ -28,13 +27,16 @@ public class RecruitService {
     private final MemberRepository memberRepository;
     private final BookmarkRepository bookmarkRepository;
 
-    public Long makeRecruit(RecruitRequestDto recruitRequestDto, Long writerId) {
-        Member writer = memberRepository.getReferenceById(writerId);
+    public Long makeRecruit(RecruitRequestDto recruitRequestDto) {
+        Member writer = memberRepository.getReferenceById(recruitRequestDto.getWriterId());
         return recruitRepository.save(recruitRequestDto.toEntity(writer)).getId();
     }
 
-    public void updateRecruit(Long id, String title, String content) {
+    public void updateRecruit(Long id, Long writerId, String title, String content) {
         Recruit recruit = findRecruit(id);
+        if (!recruit.getWriter().getId().equals(writerId)) {
+            throw new WriterMismatchException("This member is not writer of this: " + writerId, ErrorCode.WRITER_MISMATCH);
+        }
         recruit.update(title, content);
     }
 

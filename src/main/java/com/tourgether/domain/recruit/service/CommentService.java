@@ -26,9 +26,9 @@ public class CommentService {
     private final MemberRepository memberRepository;
     private final RecruitRepository recruitRepository;
 
-    public Long makeComment(CommentRequestDto commentRequestDto, Long recruitId, Long writerId) {
-        Recruit recruit = recruitRepository.getReferenceById(recruitId);
-        Member writer = memberRepository.getReferenceById(writerId);
+    public Long makeComment(CommentRequestDto commentRequestDto) {
+        Recruit recruit = recruitRepository.getReferenceById(commentRequestDto.getRecruitId());
+        Member writer = memberRepository.getReferenceById(commentRequestDto.getWriterId());
 
         return commentRepository.save(commentRequestDto.parentToEntity(recruit, writer)).getId();
     }

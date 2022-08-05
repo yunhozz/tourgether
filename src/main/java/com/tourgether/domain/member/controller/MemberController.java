@@ -75,38 +75,42 @@ public class MemberController {
     }
 
     @GetMapping("/member/update-pw")
-    public String updatePw(@AuthenticationPrincipal UserDetailsImpl loginMember, @ModelAttribute PasswordForm passwordForm, Model model) {
+    public String updatePw(@AuthenticationPrincipal UserDetailsImpl loginMember, Model model) {
         if (loginMember == null) {
             return "redirect:/member/sign-in";
         }
-        model.addAttribute("userId", loginMember.getId());
+        PasswordForm passwordForm = new PasswordForm(loginMember.getId());
+        model.addAttribute("passwordForm", passwordForm);
+
         return "member/update-pw";
     }
 
     @PostMapping("/member/update-pw")
-    public String updatePw(@Valid PasswordForm form, BindingResult result, @RequestParam String userId) {
+    public String updatePw(@Valid PasswordForm form, BindingResult result) {
         if (result.hasErrors()) {
             return "member/update-pw";
         }
-        memberService.updatePassword(Long.valueOf(userId), form.getOriginalPw(), form.getNewPw());
+        memberService.updatePassword(form.getUserId(), form.getOriginalPw(), form.getNewPw());
         return "redirect:/";
     }
 
     @GetMapping("/member/update-info")
-    public String updateInfo(@AuthenticationPrincipal UserDetailsImpl loginMember, @ModelAttribute UpdateForm updateForm, Model model) {
+    public String updateInfo(@AuthenticationPrincipal UserDetailsImpl loginMember, Model model) {
         if (loginMember == null) {
             return "redirect:/member/sign-in";
         }
-        model.addAttribute("userId", loginMember.getId());
+        UpdateForm updateForm = new UpdateForm(loginMember.getId());
+        model.addAttribute("updateForm", updateForm);
+
         return "member/update-info";
     }
 
     @PostMapping("/member/update-info")
-    public String updateInfo(@Valid UpdateForm form, BindingResult result, @RequestParam String userId) {
+    public String updateInfo(@Valid UpdateForm form, BindingResult result) {
         if (result.hasErrors()) {
             return "member/update-info";
         }
-        memberService.updateInfo(Long.valueOf(userId), form.getName(), form.getNickname(), form.getProfileUrl());
+        memberService.updateInfo(form.getUserId(), form.getName(), form.getNickname(), form.getProfileUrl());
         return "redirect:/";
     }
 

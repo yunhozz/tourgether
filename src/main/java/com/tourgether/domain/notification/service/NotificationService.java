@@ -50,7 +50,8 @@ public class NotificationService {
     }
 
     // 알림 보내기
-    public Long sendNotification(NotificationRequestDto notificationRequestDto, Long receiverId) {
+    public Long sendNotification(NotificationRequestDto notificationRequestDto) {
+        Long receiverId = notificationRequestDto.getReceiverId();
         Member receiver = memberRepository.getReferenceById(receiverId);
         Notification notification = notificationRequestDto.toEntity(receiver);
         notificationRepository.save(notification);
