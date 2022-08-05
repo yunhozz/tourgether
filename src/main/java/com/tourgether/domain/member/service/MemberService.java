@@ -9,15 +9,11 @@ import com.tourgether.domain.member.model.entity.auth.MemberAuthority;
 import com.tourgether.domain.member.model.repository.AuthorityRepository;
 import com.tourgether.domain.member.model.repository.MemberAuthorityRepository;
 import com.tourgether.domain.member.model.repository.MemberRepository;
-import com.tourgether.domain.member.model.repository.TeamRepository;
-import com.tourgether.dto.MemberSessionResponseDto;
 import com.tourgether.enums.ErrorCode;
 import com.tourgether.exception.member.EmailDuplicateException;
 import com.tourgether.exception.member.MemberNotFoundException;
 import com.tourgether.exception.member.NicknameDuplicationException;
 import com.tourgether.exception.member.PasswordMismatchException;
-import com.tourgether.util.SessionConstants;
-import com.tourgether.util.auth.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -73,7 +69,7 @@ public class MemberService {
         if (!encoder.matches(originalPw, member.getPassword())) {
             throw new PasswordMismatchException("비밀번호가 다릅니다.", ErrorCode.PASSWORD_MISMATCH);
         }
-        member.updatePassword(newPw);
+        member.updatePassword(encoder.encode(newPw));
     }
 
     public void updateInfo(Long id, UpdateForm updateForm) {
