@@ -2,9 +2,9 @@ package com.tourgether.domain.recruit.service.dto.request;
 
 import com.tourgether.domain.member.model.entity.Member;
 import com.tourgether.domain.recruit.model.entity.Recruit;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 
@@ -12,7 +12,7 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 public class RecruitRequestDto {
 
-    @Setter
+    @NotBlank
     private Member writer;
 
     @NotBlank
@@ -21,9 +21,14 @@ public class RecruitRequestDto {
     @NotBlank
     private String content;
 
-    public RecruitRequestDto(String title, String content) {
+    private int view;
+
+    @Builder
+    private RecruitRequestDto(Member writer, String title, String content, int view) {
+        this.writer = writer;
         this.title = title;
         this.content = content;
+        this.view = view;
     }
 
     public Recruit toEntity() {
@@ -31,7 +36,7 @@ public class RecruitRequestDto {
                 .writer(writer)
                 .title(title)
                 .content(content)
-                .view(0)
+                .view(view)
                 .build();
     }
 }

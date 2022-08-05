@@ -6,7 +6,6 @@ import com.tourgether.enums.NotificationType;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -15,7 +14,7 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class NotificationRequestDto {
 
-    @Setter
+    @NotNull
     private Member receiver;
 
     @NotBlank
@@ -30,7 +29,8 @@ public class NotificationRequestDto {
     private Boolean isChecked;
 
     @Builder
-    private NotificationRequestDto(String message, NotificationType type, String redirectUrl, Boolean isChecked) {
+    private NotificationRequestDto(Member receiver, String message, NotificationType type, String redirectUrl, Boolean isChecked) {
+        this.receiver = receiver;
         this.message = message;
         this.type = type;
         this.redirectUrl = redirectUrl;
