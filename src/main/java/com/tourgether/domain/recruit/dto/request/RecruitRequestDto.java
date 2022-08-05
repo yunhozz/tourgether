@@ -14,6 +14,9 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 public class RecruitRequestDto {
 
+    @NotNull
+    private Long writerId;
+
     @NotBlank
     private String title;
 

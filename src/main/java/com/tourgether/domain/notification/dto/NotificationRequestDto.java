@@ -15,6 +15,9 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 public class NotificationRequestDto {
 
+    @NotNull
+    private Long receiverId;
+
     @NotBlank
     private String message;
 

@@ -16,6 +16,12 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 public class ChatRequestDto {
 
+    @NotNull
+    private Long senderId;
+
+    @NotNull
+    private Long chatRoomId;
+
     @NotBlank
     private String message;
 

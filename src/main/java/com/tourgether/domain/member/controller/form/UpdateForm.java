@@ -1,15 +1,17 @@
 package com.tourgether.domain.member.controller.form;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 public class UpdateForm {
+
+    @NotNull
+    private Long userId;
 
     @NotBlank
     private String name;
@@ -18,4 +20,8 @@ public class UpdateForm {
     private String nickname;
 
     private String profileUrl;
+
+    public UpdateForm(Long userId) {
+        this.userId = userId;
+    }
 }
