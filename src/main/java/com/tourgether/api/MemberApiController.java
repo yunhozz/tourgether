@@ -44,14 +44,14 @@ public class MemberApiController {
     }
 
     @PatchMapping("/member/{userId}/update-info")
-    public MemberResponseDto updateMemberInfo(@PathVariable String userId, @RequestBody UpdateForm updateForm) {
-        memberService.updateInfo(Long.valueOf(userId), updateForm);
+    public MemberResponseDto updateMemberInfo(@PathVariable String userId, @RequestBody UpdateForm form) {
+        memberService.updateInfo(Long.valueOf(userId), form.getName(), form.getNickname(), form.getProfileUrl());
         return memberService.findMemberDto(Long.valueOf(userId));
     }
 
     @PatchMapping("/member/{userId}/update-password")
-    public MemberResponseDto updateMemberPassword(@PathVariable String userId, @RequestParam String originalPw, @RequestParam String newPw) {
-        memberService.updatePassword(Long.valueOf(userId), originalPw, newPw);
+    public MemberResponseDto updateMemberPassword(@PathVariable String userId, @RequestBody PasswordForm form) {
+        memberService.updatePassword(Long.valueOf(userId), form.getOriginalPw(), form.getNewPw());
         return memberService.findMemberDto(Long.valueOf(userId));
     }
 

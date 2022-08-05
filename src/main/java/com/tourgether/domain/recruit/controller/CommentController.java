@@ -22,11 +22,11 @@ public class CommentController {
     private final CommentRepository commentRepository;
 
     @PostMapping("/comment/write")
-    public String comment(@Valid @RequestBody CommentRequestDto commentRequestDto, BindingResult result, @RequestParam String writerId, @RequestParam String recruitId) {
+    public String comment(@Valid CommentRequestDto commentRequestDto, BindingResult result, @RequestParam String writerId, @RequestParam String recruitId) {
         if (result.hasErrors()) {
             return "recruit/detail";
         }
-        commentService.makeComment(commentRequestDto, Long.valueOf(writerId), Long.valueOf(recruitId));
+        commentService.makeComment(commentRequestDto, Long.valueOf(recruitId), Long.valueOf(writerId));
         return "redirect:/" + recruitId;
     }
 

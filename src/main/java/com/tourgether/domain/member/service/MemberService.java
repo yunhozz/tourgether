@@ -68,9 +68,9 @@ public class MemberService {
         member.updatePassword(encoder.encode(newPw));
     }
 
-    public void updateInfo(Long id, UpdateForm updateForm) {
+    public void updateInfo(Long id, String name, String nickname, String profileUrl) {
         Member member = findMember(id);
-        member.updateInfo(updateForm.getName(), updateForm.getNickname(), updateForm.getProfileUrl());
+        member.updateInfo(name, nickname, profileUrl);
     }
 
     public void withdraw(Long id, String password) {

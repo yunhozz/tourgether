@@ -28,21 +28,14 @@ public class RecruitService {
     private final MemberRepository memberRepository;
     private final BookmarkRepository bookmarkRepository;
 
-    public Long makeRecruit(RecruitForm recruitForm, Long writerId) {
+    public Long makeRecruit(RecruitRequestDto recruitRequestDto, Long writerId) {
         Member writer = memberRepository.getReferenceById(writerId);
-        RecruitRequestDto recruitRequestDto = RecruitRequestDto.builder()
-                .writer(writer)
-                .title(recruitForm.getTitle())
-                .content(recruitForm.getContent())
-                .view(0)
-                .build();
-
-        return recruitRepository.save(recruitRequestDto.toEntity()).getId();
+        return recruitRepository.save(recruitRequestDto.toEntity(writer)).getId();
     }
 
-    public void updateRecruit(Long id, UpdateForm updateForm) {
+    public void updateRecruit(Long id, String title, String content) {
         Recruit recruit = findRecruit(id);
-        recruit.update(updateForm.getTitle(), updateForm.getContent());
+        recruit.update(title, content);
     }
 
     public void deleteRecruit(Long id, Long writerId) {

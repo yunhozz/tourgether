@@ -26,14 +26,12 @@ public class ChatRoomService {
     private final RoomMemberRepository roomMemberRepository;
     private final MemberRepository memberRepository;
 
-    public Long makeChatRoom(String title, Long userId) {
+    public Long makeChatRoom(ChatRoomRequestDto chatRoomRequestDto, Long userId) {
         Member member = memberRepository.getReferenceById(userId);
-        ChatRoomRequestDto chatRoomRequestDto = new ChatRoomRequestDto(member, title);
-
-        ChatRoom chatRoom = chatRoomRequestDto.toEntity();
+        ChatRoom chatRoom = chatRoomRequestDto.toEntity(member);
         RoomMember roomMember = RoomMember.createRoomMember(member, chatRoom);
-        roomMemberRepository.save(roomMember);
 
+        roomMemberRepository.save(roomMember);
         return chatRoomRepository.save(chatRoom).getId();
     }
 

@@ -58,7 +58,7 @@ public class MemberController {
             return "member/login";
         }
         UserDetails userDetails = userDetailsService.loadUserByUsername(loginForm.getEmail());// 이메일 존재 여부 검증, 시큐리티 고유 세션 영역에 저장
-        memberService.login(userDetails, loginForm.getPassword()); // 비밀번호 일치 여부 검증, 세션 저장
+        memberService.login(userDetails, loginForm.getPassword()); // 비밀번호 일치 여부 검증
 
         if (redirectUrl != null) {
             return "redirect:" + redirectUrl;
@@ -84,11 +84,11 @@ public class MemberController {
     }
 
     @PostMapping("/member/update-pw")
-    public String updatePw(@Valid PasswordForm passwordForm, BindingResult result, @RequestParam String userId) {
+    public String updatePw(@Valid PasswordForm form, BindingResult result, @RequestParam String userId) {
         if (result.hasErrors()) {
             return "member/update-pw";
         }
-        memberService.updatePassword(Long.valueOf(userId), passwordForm.getOriginalPw(), passwordForm.getNewPw());
+        memberService.updatePassword(Long.valueOf(userId), form.getOriginalPw(), form.getNewPw());
         return "redirect:/";
     }
 
@@ -102,11 +102,11 @@ public class MemberController {
     }
 
     @PostMapping("/member/update-info")
-    public String updateInfo(@Valid UpdateForm updateForm, BindingResult result, @RequestParam String userId) {
+    public String updateInfo(@Valid UpdateForm form, BindingResult result, @RequestParam String userId) {
         if (result.hasErrors()) {
             return "member/update-info";
         }
-        memberService.updateInfo(Long.valueOf(userId), updateForm);
+        memberService.updateInfo(Long.valueOf(userId), form.getName(), form.getNickname(), form.getProfileUrl());
         return "redirect:/";
     }
 

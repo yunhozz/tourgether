@@ -26,17 +26,11 @@ public class ChatService {
     private final ChatRoomRepository chatRoomRepository;
     private final MemberRepository memberRepository;
 
-    public Long makeChat(ChatForm chatForm, Long senderId, Long chatRoomId) {
+    public Long makeChat(ChatRequestDto chatRequestDto, Long senderId, Long chatRoomId) {
         Member sender = memberRepository.getReferenceById(senderId);
         ChatRoom chatRoom = chatRoomRepository.getReferenceById(chatRoomId);
-        ChatRequestDto chatRequestDto = ChatRequestDto.builder()
-                .sender(sender)
-                .chatRoom(chatRoom)
-                .message(chatForm.getMessage())
-                .type(chatForm.getType())
-                .build();
 
-        return chatRepository.save(chatRequestDto.toEntity()).getId();
+        return chatRepository.save(chatRequestDto.toEntity(sender, chatRoom)).getId();
     }
 
     @Transactional(readOnly = true)

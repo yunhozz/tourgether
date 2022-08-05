@@ -26,32 +26,19 @@ public class CommentService {
     private final MemberRepository memberRepository;
     private final RecruitRepository recruitRepository;
 
-    public Long makeComment(String content, Long writerId, Long recruitId) {
-        Member writer = memberRepository.getReferenceById(writerId);
+    public Long makeComment(CommentRequestDto commentRequestDto, Long recruitId, Long writerId) {
         Recruit recruit = recruitRepository.getReferenceById(recruitId);
+        Member writer = memberRepository.getReferenceById(writerId);
 
-        CommentRequestDto commentRequestDto = CommentRequestDto.builder()
-                .recruit(recruit)
-                .writer(writer)
-                .content(content)
-                .build();
-
-        return commentRepository.save(commentRequestDto.parentToEntity()).getId();
+        return commentRepository.save(commentRequestDto.parentToEntity(recruit, writer)).getId();
     }
 
-    public Long makeCommentChild(String content, Long writerId, Long recruitId, Long parentId) {
-        Member writer = memberRepository.getReferenceById(writerId);
+    public Long makeCommentChild(CommentRequestDto commentRequestDto, Long recruitId, Long writerId, Long parentId) {
         Recruit recruit = recruitRepository.getReferenceById(recruitId);
+        Member writer = memberRepository.getReferenceById(writerId);
         Comment parent = findComment(parentId);
 
-        CommentRequestDto commentRequestDto = CommentRequestDto.builder()
-                .recruit(recruit)
-                .writer(writer)
-                .parent(parent)
-                .content(content)
-                .build();
-
-        return commentRepository.save(commentRequestDto.childToEntity()).getId();
+        return commentRepository.save(commentRequestDto.childToEntity(recruit, writer, parent)).getId();
     }
 
     public void updateComment(Long commentId, Long writerId, String content) {

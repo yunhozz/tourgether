@@ -50,16 +50,9 @@ public class NotificationService {
     }
 
     // 알림 보내기
-    public Long sendNotification(NotificationForm notificationForm, Long receiverId) {
+    public Long sendNotification(NotificationRequestDto notificationRequestDto, Long receiverId) {
         Member receiver = memberRepository.getReferenceById(receiverId);
-        NotificationRequestDto notificationRequestDto = NotificationRequestDto.builder()
-                .receiver(receiver)
-                .message(notificationForm.getMessage())
-                .type(notificationForm.getType())
-                .redirectUrl(notificationForm.getRedirectUrl())
-                .isChecked(notificationForm.isChecked())
-                .build();
-        Notification notification = notificationRequestDto.toEntity();
+        Notification notification = notificationRequestDto.toEntity(receiver);
         notificationRepository.save(notification);
 
         Map<String, SseEmitter> emitters = emitterRepository.findEmittersWithMemberId(String.valueOf(receiverId));
@@ -81,9 +74,11 @@ public class NotificationService {
     }
 
     // 전체 알림 읽기 처리
-    public void readNotifications(Long receiverId) {
-        List<Notification> notifications = notificationRepository.findWithReceiverId(receiverId);
-        notifications.forEach(Notification::check);
+    public void readNotifications(List<Long> ids) {
+        for (Long id : ids) {
+            Notification notification = findNotification(id);
+            notification.check();
+        }
     }
 
     @Transactional(readOnly = true)

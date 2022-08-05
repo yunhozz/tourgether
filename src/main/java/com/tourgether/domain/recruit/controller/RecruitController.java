@@ -105,11 +105,11 @@ public class RecruitController {
     }
 
     @PostMapping("/recruit/write")
-    public String write(@Valid RecruitForm recruitForm, BindingResult result, @RequestParam String writerId) {
+    public String write(@Valid RecruitRequestDto recruitRequestDto, BindingResult result, @RequestParam String writerId) {
         if (result.hasErrors()) {
             return "recruit/write";
         }
-        recruitService.makeRecruit(recruitForm, Long.valueOf(writerId));
+        recruitService.makeRecruit(recruitRequestDto, Long.valueOf(writerId));
         return "redirect:/recruit";
     }
 
@@ -124,11 +124,11 @@ public class RecruitController {
     }
 
     @PostMapping("/recruit/update")
-    public String updateRecruit(@Valid UpdateForm updateForm, BindingResult result, @RequestParam String recruitId) {
+    public String updateRecruit(@Valid UpdateForm form, BindingResult result, @RequestParam String recruitId) {
         if (result.hasErrors()) {
             return "recruit/update";
         }
-        recruitService.updateRecruit(Long.valueOf(recruitId), updateForm);
+        recruitService.updateRecruit(Long.valueOf(recruitId), form.getTitle(), form.getContent());
         return "redirect:/" + recruitId;
     }
 
