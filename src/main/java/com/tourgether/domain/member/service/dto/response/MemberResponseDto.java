@@ -3,10 +3,12 @@ package com.tourgether.domain.member.service.dto.response;
 import com.tourgether.domain.member.model.entity.Member;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Getter
+@NoArgsConstructor
 @AllArgsConstructor
 public class MemberResponseDto {
 

@@ -3,12 +3,14 @@ package com.tourgether.domain.recruit.service.dto.response;
 import com.tourgether.domain.recruit.model.entity.Recruit;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
+@NoArgsConstructor
 @AllArgsConstructor
 public class RecruitResponseDto {
 

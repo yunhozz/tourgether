@@ -4,10 +4,12 @@ import com.tourgether.domain.notification.model.entity.Notification;
 import com.tourgether.enums.NotificationType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Getter
+@NoArgsConstructor
 @AllArgsConstructor
 public class NotificationResponseDto {
 
