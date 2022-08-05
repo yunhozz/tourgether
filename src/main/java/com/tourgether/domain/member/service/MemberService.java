@@ -32,7 +32,6 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final AuthorityRepository authorityRepository;
     private final MemberAuthorityRepository memberAuthorityRepository;
-    private final TeamRepository teamRepository;
     private final BCryptPasswordEncoder encoder;
     private final HttpSession session;
 
@@ -60,8 +59,6 @@ public class MemberService {
         if (!encoder.matches(password, userDetails.getPassword())) {
             throw new PasswordMismatchException("비밀번호가 다릅니다.", ErrorCode.PASSWORD_MISMATCH);
         }
-        UserDetailsImpl userDetailsImpl = (UserDetailsImpl) userDetails;
-        session.setAttribute(SessionConstants.LOGIN_MEMBER, new MemberSessionResponseDto(userDetailsImpl.getMember())); // 세션에 회원 정보 저장
     }
 
     public void updatePassword(Long id, String originalPw, String newPw) {
