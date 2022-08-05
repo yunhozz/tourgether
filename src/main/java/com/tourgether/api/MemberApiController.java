@@ -43,21 +43,21 @@ public class MemberApiController {
     }
 
     @PatchMapping("/member/{userId}/update-info")
-    public String updateMemberInfo(@PathVariable String userId, @RequestBody UpdateForm updateForm) {
+    public MemberResponseDto updateMemberInfo(@PathVariable String userId, @RequestBody UpdateForm updateForm) {
         memberService.updateInfo(Long.valueOf(userId), updateForm);
-        return "update information complete";
+        return memberService.findMemberDto(Long.valueOf(userId));
     }
 
     @PatchMapping("/member/{userId}/update-password")
-    public String updateMemberPassword(@PathVariable String userId, @RequestParam String originalPw, @RequestParam String newPw) {
+    public MemberResponseDto updateMemberPassword(@PathVariable String userId, @RequestParam String originalPw, @RequestParam String newPw) {
         memberService.updatePassword(Long.valueOf(userId), originalPw, newPw);
-        return "update password complete";
+        return memberService.findMemberDto(Long.valueOf(userId));
     }
 
     @DeleteMapping("/member/{userId}/delete")
-    public String deleteMember(@PathVariable String userId, @RequestParam String password) {
+    public List<MemberResponseDto> deleteMember(@PathVariable String userId, @RequestParam String password) {
         memberService.withdraw(Long.valueOf(userId), password);
-        return "delete complete";
+        return memberService.findMemberDtoList();
     }
 
     @PostMapping("/member/signup")
