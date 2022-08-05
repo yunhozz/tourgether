@@ -22,23 +22,30 @@ public class NotificationApiController {
 
     private final NotificationService notificationService;
     private final NotificationRepository notificationRepository;
-    private final AsyncTaskExecutor asyncTaskExecutor;
 
-    @CrossOrigin // 모든 도메인, 모든 요청방식에 대해 허용
-    @GetMapping("/sse")
-    public SseEmitter handleSse() {
-        SseEmitter emitter = new SseEmitter();
-        asyncTaskExecutor.submit(() -> {
-            try {
-                emitter.send(HttpStatus.PROCESSING);
-                Thread.sleep(1000);
-                emitter.send(HttpStatus.OK);
+    @GetMapping("/notification/read/{notificationId}")
+    public NotificationResponseDto readNotification(@PathVariable String notificationId) {
+        return notificationService.readNotification(Long.valueOf(notificationId));
+    }
 
-            } catch (IOException | InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        return emitter;
+    @GetMapping("/notification/read/all")
+    public List<NotificationResponseDto> readNotificationAll(@RequestParam String receiverId) {
+        List<NotificationResponseDto> notifications = notificationService.findNotificationDtoListWithReceiverIdReadOrNot(Long.valueOf(receiverId), false);
+        List<Long> ids = notifications.stream()
+                .map(NotificationResponseDto::getId).toList();
+
+        notificationService.readNotifications(ids);
+        return notificationService.findNotificationDtoList();
+    }
+
+    @GetMapping("/notification/list")
+    public List<NotificationResponseDto> getNotifications() {
+        return notificationService.findNotificationDtoList();
+    }
+
+    @GetMapping("/notification/page")
+    public Page<NotificationQueryDto> getNotificationsPage(@RequestParam("receiver") Long receiverId, @PageableDefault(size = 10) Pageable pageable) {
+        return notificationRepository.findSimplePage(receiverId, pageable);
     }
 
     // 편의상 유저의 id 를 직접 받게 하였지만, 실제 적용시에는 access-token 을 적용
@@ -49,18 +56,7 @@ public class NotificationApiController {
     }
 
     @PostMapping("/notification/send")
-    public ResponseEntity<NotificationResponseDto> send(@Valid NotificationRequestDto notificationRequestDto, @RequestParam String receiverId) {
-        Long notificationId = notificationService.sendNotification(notificationRequestDto, Long.valueOf(receiverId));
-        return ResponseEntity.ok(notificationService.findNotificationDto(notificationId));
-    }
-
-    @GetMapping("/notifications")
-    public List<NotificationResponseDto> getNotifications() {
-        return notificationService.findNotificationDtoList();
-    }
-
-    @GetMapping("/page/notifications")
-    public Page<NotificationQueryDto> getNotificationsPage(@RequestParam("receiver") Long receiverId, @PageableDefault(size = 10) Pageable pageable) {
-        return notificationRepository.findSimplePage(receiverId, pageable);
+    public ResponseEntity<Long> send(@RequestBody NotificationRequestDto notificationRequestDto, @RequestParam String receiverId) {
+        return ResponseEntity.ok(notificationService.sendNotification(notificationRequestDto, Long.valueOf(receiverId)));
     }
 }
