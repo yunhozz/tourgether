@@ -1,4 +1,4 @@
-package com.tourgether.domain.recruit.model.dto.request;
+package com.tourgether.domain.recruit.service.dto.request;
 
 import com.tourgether.domain.member.model.entity.Member;
 import com.tourgether.domain.recruit.model.entity.Comment;

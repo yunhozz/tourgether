@@ -1,4 +1,4 @@
-package com.tourgether.domain.notification.model.dto;
+package com.tourgether.domain.notification.service.dto;
 
 import com.querydsl.core.annotations.QueryProjection;
 import com.tourgether.enums.NotificationType;
