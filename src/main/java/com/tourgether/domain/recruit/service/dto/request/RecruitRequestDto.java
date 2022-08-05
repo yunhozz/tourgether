@@ -3,11 +3,13 @@ package com.tourgether.domain.recruit.service.dto.request;
 import com.tourgether.domain.member.model.entity.Member;
 import com.tourgether.domain.recruit.model.entity.Recruit;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 
 @Getter
+@NoArgsConstructor
 public class RecruitRequestDto {
 
     @Setter

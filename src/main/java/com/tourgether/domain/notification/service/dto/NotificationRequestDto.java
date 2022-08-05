@@ -5,12 +5,14 @@ import com.tourgether.domain.notification.model.entity.Notification;
 import com.tourgether.enums.NotificationType;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Getter
+@NoArgsConstructor
 public class NotificationRequestDto {
 
     @Setter

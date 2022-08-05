@@ -4,12 +4,14 @@ import com.tourgether.domain.member.model.entity.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.validation.constraints.NotBlank;
 
 @Getter
 @Builder
+@NoArgsConstructor
 @AllArgsConstructor
 public class MemberRequestDto {
 
