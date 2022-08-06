@@ -1,8 +1,5 @@
 package com.tourgether.api;
 
-import com.tourgether.domain.notification.dto.NotificationQueryDto;
-import com.tourgether.domain.notification.dto.NotificationRequestDto;
-import com.tourgether.domain.notification.dto.NotificationResponseDto;
 import com.tourgether.domain.notification.model.repository.NotificationRepository;
 import com.tourgether.domain.notification.service.NotificationService;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.util.List;
+
+import static com.tourgether.dto.NotificationDto.*;
 
 @RestController
 @RequestMapping("/api")
@@ -43,9 +42,9 @@ public class NotificationApiController {
         return notificationService.findNotificationDtoList();
     }
 
-    @GetMapping("/notification/page")
-    public Page<NotificationQueryDto> getNotificationsPage(@RequestParam("receiver") Long receiverId, @PageableDefault(size = 10) Pageable pageable) {
-        return notificationRepository.findSimplePage(receiverId, pageable);
+    @GetMapping("/notification/page/{receiverId}")
+    public Page<NotificationQueryDto> getNotificationsPage(@PathVariable String receiverId, @PageableDefault(size = 10) Pageable pageable) {
+        return notificationRepository.findSimplePage(Long.valueOf(receiverId), pageable);
     }
 
     // 편의상 유저의 id 를 직접 받게 하였지만, 실제 적용시에는 access-token 을 적용

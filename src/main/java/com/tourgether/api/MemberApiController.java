@@ -1,10 +1,5 @@
 package com.tourgether.api;
 
-import com.tourgether.domain.member.controller.form.LoginForm;
-import com.tourgether.domain.member.controller.form.PasswordForm;
-import com.tourgether.domain.member.controller.form.UpdateForm;
-import com.tourgether.domain.member.dto.request.MemberRequestDto;
-import com.tourgether.domain.member.dto.response.MemberResponseDto;
 import com.tourgether.domain.member.service.MemberService;
 import com.tourgether.domain.member.service.UserDetailsServiceImpl;
 import com.tourgether.dto.TokenResponseDto;
@@ -22,6 +17,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static com.tourgether.dto.MemberDto.*;
 
 @RestController
 @RequestMapping("/api")
@@ -44,14 +41,14 @@ public class MemberApiController {
     }
 
     @PatchMapping("/member/{userId}/update-info")
-    public MemberResponseDto updateMemberInfo(@PathVariable String userId, @RequestBody UpdateForm form) {
-        memberService.updateInfo(Long.valueOf(userId), form.getName(), form.getNickname(), form.getProfileUrl());
+    public MemberResponseDto updateMemberInfo(@PathVariable String userId, @RequestBody UpdateForm updateForm) {
+        memberService.updateInfo(Long.valueOf(userId), updateForm.getName(), updateForm.getNickname(), updateForm.getProfileUrl());
         return memberService.findMemberDto(Long.valueOf(userId));
     }
 
     @PatchMapping("/member/{userId}/update-password")
-    public MemberResponseDto updateMemberPassword(@PathVariable String userId, @RequestBody PasswordForm form) {
-        memberService.updatePassword(Long.valueOf(userId), form.getOriginalPw(), form.getNewPw());
+    public MemberResponseDto updateMemberPassword(@PathVariable String userId, @RequestBody PasswordForm passwordForm) {
+        memberService.updatePassword(Long.valueOf(userId), passwordForm.getOriginalPw(), passwordForm.getNewPw());
         return memberService.findMemberDto(Long.valueOf(userId));
     }
 

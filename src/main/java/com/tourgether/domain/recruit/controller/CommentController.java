@@ -1,7 +1,5 @@
 package com.tourgether.domain.recruit.controller;
 
-import com.tourgether.domain.recruit.controller.form.CommentUpdateForm;
-import com.tourgether.domain.recruit.dto.request.CommentRequestDto;
 import com.tourgether.domain.recruit.model.repository.CommentRepository;
 import com.tourgether.domain.recruit.service.CommentService;
 import com.tourgether.util.auth.UserDetailsImpl;
@@ -13,6 +11,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+
+import static com.tourgether.dto.CommentDto.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -36,14 +36,14 @@ public class CommentController {
         if (loginMember == null) {
             return "redirect:/member/signIn";
         }
-        CommentUpdateForm commentUpdateForm = new CommentUpdateForm(recruitId, commentId, loginMember.getId());
+        UpdateForm commentUpdateForm = new UpdateForm(recruitId, commentId, loginMember.getId());
         model.addAttribute("updateForm", commentUpdateForm);
 
         return "recruit/comment-update";
     }
 
     @PostMapping("/comment/update")
-    public String updateComment(@Valid CommentUpdateForm form, BindingResult result) {
+    public String updateComment(@Valid UpdateForm form, BindingResult result) {
         if (result.hasErrors()) {
             return "recruit/comment-update";
         }

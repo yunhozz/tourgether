@@ -2,8 +2,8 @@ package com.tourgether.domain.recruit.model.repository;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.tourgether.domain.recruit.model.dto.QRecruitQueryDto;
-import com.tourgether.domain.recruit.dto.RecruitQueryDto;
+import com.tourgether.dto.QRecruitDto_RecruitQueryDto;
+import com.tourgether.dto.RecruitDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -14,6 +14,7 @@ import java.util.*;
 
 import static com.tourgether.domain.member.model.entity.QMember.*;
 import static com.tourgether.domain.recruit.model.entity.QRecruit.*;
+import static com.tourgether.dto.RecruitDto.*;
 
 @Repository
 @RequiredArgsConstructor
@@ -25,7 +26,7 @@ public class RecruitRepositoryImpl implements RecruitRepositoryCustom {
     @Override
     public Page<RecruitQueryDto> findPageWithCreated(Pageable pageable) {
         List<RecruitQueryDto> recruits = queryFactory
-                .select(new QRecruitQueryDto(
+                .select(new QRecruitDto_RecruitQueryDto(
                         recruit.id,
                         recruit.title,
                         recruit.content,
@@ -55,7 +56,7 @@ public class RecruitRepositoryImpl implements RecruitRepositoryCustom {
     @Override
     public Page<RecruitQueryDto> findPageWithModified(Pageable pageable) {
         List<RecruitQueryDto> recruits = queryFactory
-                .select(new QRecruitQueryDto(
+                .select(new QRecruitDto_RecruitQueryDto(
                         recruit.id,
                         recruit.title,
                         recruit.content,
@@ -85,7 +86,7 @@ public class RecruitRepositoryImpl implements RecruitRepositoryCustom {
     @Override
     public Page<RecruitQueryDto> findPageWithPopularity(Pageable pageable) {
         List<RecruitQueryDto> recruits = queryFactory
-                .select(new QRecruitQueryDto(
+                .select(new QRecruitDto_RecruitQueryDto(
                         recruit.id,
                         recruit.title,
                         recruit.content,
@@ -115,7 +116,7 @@ public class RecruitRepositoryImpl implements RecruitRepositoryCustom {
     @Override
     public Page<RecruitQueryDto> findPageWithKeyword(String keyword, Pageable pageable) {
         List<RecruitQueryDto> recruits = queryFactory
-                .select(new QRecruitQueryDto(
+                .select(new QRecruitDto_RecruitQueryDto(
                         recruit.id,
                         recruit.title,
                         recruit.content,
@@ -146,7 +147,7 @@ public class RecruitRepositoryImpl implements RecruitRepositoryCustom {
     @Override
     public Page<RecruitQueryDto> findPageWithKeywordOnLatestOrder(String keyword, Pageable pageable) {
         List<RecruitQueryDto> recruits = queryFactory
-                .select(new QRecruitQueryDto(
+                .select(new QRecruitDto_RecruitQueryDto(
                         recruit.id,
                         recruit.title,
                         recruit.content,
@@ -177,7 +178,7 @@ public class RecruitRepositoryImpl implements RecruitRepositoryCustom {
     @Override
     public Page<RecruitQueryDto> findPageWithKeywordOnAccuracyOrder(String keyword, Pageable pageable) {
         List<RecruitQueryDto> recruits = queryFactory
-                .select(new QRecruitQueryDto(
+                .select(new QRecruitDto_RecruitQueryDto(
                         recruit.id,
                         recruit.title,
                         recruit.content,

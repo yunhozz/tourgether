@@ -1,8 +1,9 @@
 package com.tourgether.domain.recruit.model.repository;
 
-import com.tourgether.domain.recruit.dto.BookmarkQueryDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import static com.tourgether.dto.BookmarkDto.*;
 
 public interface BookmarkRepositoryCustom {
 

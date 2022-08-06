@@ -1,10 +1,5 @@
 package com.tourgether.domain.member.controller;
 
-import com.tourgether.domain.member.controller.form.LoginForm;
-import com.tourgether.domain.member.controller.form.PasswordForm;
-import com.tourgether.domain.member.controller.form.UpdateForm;
-import com.tourgether.domain.member.dto.request.MemberRequestDto;
-import com.tourgether.domain.member.dto.response.MemberResponseDto;
 import com.tourgether.domain.member.service.MemberService;
 import com.tourgether.util.auth.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+
+import static com.tourgether.dto.MemberDto.*;
 
 @Controller
 @RequiredArgsConstructor

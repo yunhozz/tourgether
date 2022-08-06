@@ -3,8 +3,6 @@ package com.tourgether.domain.notification.service;
 import com.tourgether.domain.member.model.entity.Member;
 import com.tourgether.domain.member.model.repository.MemberRepository;
 import com.tourgether.domain.notification.model.entity.Notification;
-import com.tourgether.domain.notification.dto.NotificationRequestDto;
-import com.tourgether.domain.notification.dto.NotificationResponseDto;
 import com.tourgether.domain.notification.model.repository.EmitterRepository;
 import com.tourgether.domain.notification.model.repository.NotificationRepository;
 import com.tourgether.enums.ErrorCode;
@@ -17,6 +15,8 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import static com.tourgether.dto.NotificationDto.*;
 
 @Service
 @Transactional

@@ -1,9 +1,10 @@
 package com.tourgether.util;
 
-import com.tourgether.dto.MemberSessionResponseDto;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
+
+import static com.tourgether.dto.MemberDto.*;
 
 @Controller
 public class HomeController {
@@ -13,7 +14,6 @@ public class HomeController {
         if (loginMember == null) {
             return "home";
         }
-
         return "loginHome";
     }
 }

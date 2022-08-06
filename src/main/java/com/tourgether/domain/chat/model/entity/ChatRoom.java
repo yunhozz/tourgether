@@ -2,7 +2,6 @@ package com.tourgether.domain.chat.model.entity;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tourgether.domain.TimeEntity;
-import com.tourgether.domain.chat.dto.request.ChatRequestDto;
 import com.tourgether.domain.member.model.entity.Member;
 import com.tourgether.enums.MessageType;
 import lombok.AccessLevel;
@@ -17,6 +16,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import static com.tourgether.dto.ChatDto.*;
 
 @Entity
 @Getter

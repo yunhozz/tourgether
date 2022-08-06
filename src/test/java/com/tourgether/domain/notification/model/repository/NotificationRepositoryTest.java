@@ -2,7 +2,6 @@ package com.tourgether.domain.notification.model.repository;
 
 import com.tourgether.domain.member.model.entity.Member;
 import com.tourgether.domain.member.model.repository.MemberRepository;
-import com.tourgether.domain.notification.dto.NotificationQueryDto;
 import com.tourgether.domain.notification.model.entity.Notification;
 import com.tourgether.enums.NotificationType;
 import org.junit.jupiter.api.Test;
@@ -14,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static com.tourgether.dto.NotificationDto.*;
 import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest

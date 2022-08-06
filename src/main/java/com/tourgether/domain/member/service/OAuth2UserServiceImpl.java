@@ -3,7 +3,6 @@ package com.tourgether.domain.member.service;
 import com.tourgether.domain.member.model.entity.Member;
 import com.tourgether.domain.member.model.repository.MemberRepository;
 import com.tourgether.util.auth.OAuthDto;
-import com.tourgether.dto.MemberSessionResponseDto;
 import com.tourgether.util.SessionConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -19,6 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpSession;
 import java.util.Collections;
 import java.util.stream.Collectors;
+
+import static com.tourgether.dto.MemberDto.*;
 
 @Service
 @Transactional

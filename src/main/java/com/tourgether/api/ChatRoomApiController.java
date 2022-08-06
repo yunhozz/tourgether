@@ -1,13 +1,13 @@
-package com.tourgether.api.chat;
+package com.tourgether.api;
 
 import com.tourgether.domain.chat.service.ChatRoomService;
-import com.tourgether.domain.chat.dto.request.ChatRoomRequestDto;
-import com.tourgether.domain.chat.dto.response.ChatRoomResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static com.tourgether.dto.ChatRoomDto.*;
 
 @RestController
 @RequestMapping("/api")

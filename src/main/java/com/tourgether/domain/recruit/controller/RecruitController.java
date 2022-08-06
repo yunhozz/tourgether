@@ -1,14 +1,8 @@
 package com.tourgether.domain.recruit.controller;
 
-import com.tourgether.domain.recruit.controller.form.SearchForm;
-import com.tourgether.domain.recruit.controller.form.RecruitUpdateForm;
-import com.tourgether.domain.recruit.dto.RecruitQueryDto;
-import com.tourgether.domain.recruit.dto.request.CommentRequestDto;
-import com.tourgether.domain.recruit.dto.request.RecruitRequestDto;
-import com.tourgether.domain.recruit.dto.response.CommentResponseDto;
-import com.tourgether.domain.recruit.dto.response.RecruitResponseDto;
 import com.tourgether.domain.recruit.model.repository.RecruitRepository;
 import com.tourgether.domain.recruit.service.RecruitService;
+import com.tourgether.dto.RecruitDto;
 import com.tourgether.enums.SearchCondition;
 import com.tourgether.util.auth.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +20,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.List;
+
+import static com.tourgether.dto.CommentDto.*;
+import static com.tourgether.dto.RecruitDto.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -118,14 +115,14 @@ public class RecruitController {
         if (loginMember == null) {
             return "redirect:/member/signIn";
         }
-        RecruitUpdateForm recruitUpdateForm = new RecruitUpdateForm(recruitId, loginMember.getId());
-        model.addAttribute("updateForm", recruitUpdateForm);
+        RecruitDto.UpdateForm updateForm = new RecruitDto.UpdateForm(recruitId, loginMember.getId());
+        model.addAttribute("updateForm", updateForm);
 
         return "recruit/update";
     }
 
     @PostMapping("/recruit/update")
-    public String updateRecruit(@Valid RecruitUpdateForm form, BindingResult result) {
+    public String updateRecruit(@Valid RecruitDto.UpdateForm form, BindingResult result) {
         if (result.hasErrors()) {
             return "recruit/update";
         }

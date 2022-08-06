@@ -2,7 +2,6 @@ package com.tourgether.domain.recruit.service;
 
 import com.tourgether.domain.member.model.entity.Member;
 import com.tourgether.domain.member.model.repository.MemberRepository;
-import com.tourgether.domain.recruit.dto.response.BookmarkResponseDto;
 import com.tourgether.domain.recruit.model.entity.Bookmark;
 import com.tourgether.domain.recruit.model.entity.Recruit;
 import com.tourgether.domain.recruit.model.repository.BookmarkRepository;
@@ -13,6 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.tourgether.dto.BookmarkDto.*;
 
 @Service
 @Transactional

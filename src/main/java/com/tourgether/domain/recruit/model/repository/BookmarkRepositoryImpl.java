@@ -1,8 +1,7 @@
 package com.tourgether.domain.recruit.model.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.tourgether.domain.recruit.dto.BookmarkQueryDto;
-import com.tourgether.domain.recruit.model.dto.QBookmarkQueryDto;
+import com.tourgether.dto.QBookmarkDto_BookmarkQueryDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -13,6 +12,7 @@ import java.util.List;
 
 import static com.tourgether.domain.recruit.model.entity.QBookmark.*;
 import static com.tourgether.domain.recruit.model.entity.QRecruit.*;
+import static com.tourgether.dto.BookmarkDto.*;
 
 @Repository
 @RequiredArgsConstructor
@@ -23,7 +23,7 @@ public class BookmarkRepositoryImpl implements BookmarkRepositoryCustom {
     @Override
     public Page<BookmarkQueryDto> findPageWithUserId(Long userId, Pageable pageable) {
         List<BookmarkQueryDto> bookmarks = queryFactory
-                .select(new QBookmarkQueryDto(
+                .select(new QBookmarkDto_BookmarkQueryDto(
                         bookmark.id,
                         bookmark.member.id,
                         bookmark.createdDate,

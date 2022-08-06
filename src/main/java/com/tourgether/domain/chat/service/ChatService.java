@@ -1,11 +1,9 @@
 package com.tourgether.domain.chat.service;
 
-import com.tourgether.domain.chat.dto.request.ChatRequestDto;
 import com.tourgether.domain.chat.model.entity.Chat;
 import com.tourgether.domain.chat.model.entity.ChatRoom;
 import com.tourgether.domain.chat.model.repository.ChatRepository;
 import com.tourgether.domain.chat.model.repository.ChatRoomRepository;
-import com.tourgether.domain.chat.dto.response.ChatResponseDto;
 import com.tourgether.domain.member.model.entity.Member;
 import com.tourgether.domain.member.model.repository.MemberRepository;
 import com.tourgether.enums.ErrorCode;
@@ -16,6 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.tourgether.dto.ChatDto.*;
 
 @Service
 @Transactional

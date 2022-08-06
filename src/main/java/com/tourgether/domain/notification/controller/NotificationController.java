@@ -1,6 +1,5 @@
 package com.tourgether.domain.notification.controller;
 
-import com.tourgether.domain.notification.dto.NotificationResponseDto;
 import com.tourgether.domain.notification.model.repository.NotificationRepository;
 import com.tourgether.domain.notification.service.NotificationService;
 import com.tourgether.util.auth.UserDetailsImpl;
@@ -13,6 +12,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+
+import static com.tourgether.dto.NotificationDto.*;
 
 @Controller
 @RequiredArgsConstructor

@@ -1,8 +1,7 @@
 package com.tourgether.domain.notification.model.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.tourgether.domain.notification.dto.NotificationQueryDto;
-import com.tourgether.domain.notification.model.dto.QNotificationQueryDto;
+import com.tourgether.dto.QNotificationDto_NotificationQueryDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -13,6 +12,7 @@ import java.util.List;
 
 import static com.tourgether.domain.member.model.entity.QMember.*;
 import static com.tourgether.domain.notification.model.entity.QNotification.*;
+import static com.tourgether.dto.NotificationDto.*;
 
 @Repository
 @RequiredArgsConstructor
@@ -23,7 +23,7 @@ public class NotificationRepositoryImpl implements NotificationRepositoryCustom 
     @Override
     public Page<NotificationQueryDto> findSimplePage(Long receiverId, Pageable pageable) {
         List<NotificationQueryDto> notifications = queryFactory
-                .select(new QNotificationQueryDto(
+                .select(new QNotificationDto_NotificationQueryDto(
                         notification.id,
                         notification.message,
                         notification.type,

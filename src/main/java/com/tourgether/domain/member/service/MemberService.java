@@ -2,17 +2,12 @@ package com.tourgether.domain.member.service;
 
 import com.tourgether.domain.member.model.entity.auth.Authority;
 import com.tourgether.domain.member.model.entity.Member;
-import com.tourgether.domain.member.dto.request.MemberRequestDto;
-import com.tourgether.domain.member.dto.response.MemberResponseDto;
 import com.tourgether.domain.member.model.entity.auth.MemberAuthority;
 import com.tourgether.domain.member.model.repository.AuthorityRepository;
 import com.tourgether.domain.member.model.repository.MemberAuthorityRepository;
 import com.tourgether.domain.member.model.repository.MemberRepository;
 import com.tourgether.enums.ErrorCode;
-import com.tourgether.exception.member.EmailDuplicateException;
-import com.tourgether.exception.member.MemberNotFoundException;
-import com.tourgether.exception.member.NicknameDuplicationException;
-import com.tourgether.exception.member.PasswordMismatchException;
+import com.tourgether.exception.member.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -22,6 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.tourgether.dto.MemberDto.*;
 
 @Service
 @Transactional
@@ -64,6 +61,9 @@ public class MemberService {
         Member member = findMember(id);
         if (!encoder.matches(originalPw, member.getPassword())) {
             throw new PasswordMismatchException("비밀번호가 다릅니다.", ErrorCode.PASSWORD_MISMATCH);
+        }
+        if (originalPw.equals(newPw)) {
+            throw new PasswordSameException("예전 비밀번호와 같습니다.", ErrorCode.PASSWORD_SAME);
         }
         member.updatePassword(encoder.encode(newPw));
     }

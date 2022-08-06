@@ -1,7 +1,5 @@
 package com.tourgether.api;
 
-import com.tourgether.domain.recruit.dto.RecruitQueryDto;
-import com.tourgether.domain.recruit.dto.response.RecruitResponseDto;
 import com.tourgether.domain.recruit.model.repository.RecruitRepository;
 import com.tourgether.domain.recruit.service.RecruitService;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +8,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static com.tourgether.dto.RecruitDto.*;
 
 @RestController
 @RequestMapping("/api")

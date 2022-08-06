@@ -1,8 +1,9 @@
 package com.tourgether.domain.notification.model.repository;
 
-import com.tourgether.domain.notification.dto.NotificationQueryDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import static com.tourgether.dto.NotificationDto.*;
 
 public interface NotificationRepositoryCustom {
 

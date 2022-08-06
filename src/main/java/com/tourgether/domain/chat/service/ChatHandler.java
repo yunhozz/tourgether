@@ -1,7 +1,6 @@
 package com.tourgether.domain.chat.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tourgether.domain.chat.dto.request.ChatRequestDto;
 import com.tourgether.domain.chat.model.entity.ChatRoom;
 import com.tourgether.domain.chat.model.repository.ChatRoomRepository;
 import com.tourgether.enums.ErrorCode;
@@ -15,6 +14,8 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.util.List;
+
+import static com.tourgether.dto.ChatDto.*;
 
 @Slf4j
 @Component
