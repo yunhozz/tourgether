@@ -51,9 +51,12 @@ public class NotificationService {
 
     // 알림 보내기
     public Long sendNotification(NotificationRequestDto notificationRequestDto) {
+        Long senderId = notificationRequestDto.getSenderId();
         Long receiverId = notificationRequestDto.getReceiverId();
+
+        Member sender = memberRepository.getReferenceById(senderId);
         Member receiver = memberRepository.getReferenceById(receiverId);
-        Notification notification = notificationRequestDto.toEntity(receiver);
+        Notification notification = notificationRequestDto.toEntity(sender, receiver);
         notificationRepository.save(notification);
 
         Map<String, SseEmitter> emitters = emitterRepository.findEmittersWithMemberId(String.valueOf(receiverId));

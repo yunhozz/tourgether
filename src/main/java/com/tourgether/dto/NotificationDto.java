@@ -20,6 +20,9 @@ public class NotificationDto {
     public static class NotificationRequestDto {
 
         @NotNull
+        private Long senderId;
+
+        @NotNull
         private Long receiverId;
 
         @NotBlank
@@ -33,8 +36,9 @@ public class NotificationDto {
         @NotNull
         private Boolean isChecked;
 
-        public Notification toEntity(Member receiver) {
+        public Notification toEntity(Member sender, Member receiver) {
             return Notification.builder()
+                    .sender(sender)
                     .receiver(receiver)
                     .message(message)
                     .type(type)
@@ -50,6 +54,7 @@ public class NotificationDto {
     public static class NotificationResponseDto {
 
         private Long id;
+        private Long senderId;
         private Long receiverId;
         private String message;
         private NotificationType type;
@@ -60,6 +65,7 @@ public class NotificationDto {
 
         public NotificationResponseDto(Notification notification) {
             id = notification.getId();
+            senderId = notification.getSender().getId();
             receiverId = notification.getReceiver().getId();
             message = notification.getMessage();
             type = notification.getType();
@@ -83,21 +89,21 @@ public class NotificationDto {
         private LocalDateTime createdDate;
 
         // member
+        private Long senderId;
         private Long receiverId;
-        private String name;
         private String nickname;
         private String profileImgUrl;
 
         @QueryProjection
-        public NotificationQueryDto(Long id, String message, NotificationType type, String redirectUrl, boolean isChecked, LocalDateTime createdDate, Long receiverId, String name, String nickname, String profileImgUrl) {
+        public NotificationQueryDto(Long id, String message, NotificationType type, String redirectUrl, boolean isChecked, LocalDateTime createdDate, Long senderId, Long receiverId, String nickname, String profileImgUrl) {
             this.id = id;
             this.message = message;
             this.type = type;
             this.redirectUrl = redirectUrl;
             this.isChecked = isChecked;
             this.createdDate = createdDate;
+            this.senderId = senderId;
             this.receiverId = receiverId;
-            this.name = name;
             this.nickname = nickname;
             this.profileImgUrl = profileImgUrl;
         }

@@ -20,6 +20,10 @@ public class Notification extends TimeEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sender_id")
+    private Member sender;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "receiver_id")
     private Member receiver;
 
@@ -33,7 +37,8 @@ public class Notification extends TimeEntity {
     private boolean isChecked;
 
     @Builder
-    private Notification(Member receiver, String message, NotificationType type, String redirectUrl, boolean isChecked) {
+    private Notification(Member sender, Member receiver, String message, NotificationType type, String redirectUrl, boolean isChecked) {
+        this.sender = sender;
         this.receiver = receiver;
         this.message = message;
         this.type = type;
