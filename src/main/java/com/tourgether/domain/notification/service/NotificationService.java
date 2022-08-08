@@ -98,6 +98,13 @@ public class NotificationService {
     }
 
     @Transactional(readOnly = true)
+    public List<NotificationResponseDto> findNotificationDtoListWithReceiverId(Long receiverId) {
+        return notificationRepository.findWithReceiverId(receiverId).stream()
+                .map(NotificationResponseDto::new)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
     public List<NotificationResponseDto> findNotificationDtoListWithReceiverIdReadOrNot(Long receiverId, boolean check) {
         return notificationRepository.findWithReceiverIdReadOrNot(receiverId, check).stream()
                 .map(NotificationResponseDto::new)
