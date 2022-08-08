@@ -58,4 +58,16 @@ public class RecruitApiController {
     public Page<RecruitQueryDto> getPageWithKeywordOnAccuracyOrder(@RequestParam String keyword, Pageable pageable) {
         return recruitRepository.findPageWithKeywordOnAccuracyOrder(keyword, pageable);
     }
+
+    @PostMapping("/recruit/create")
+    public RecruitResponseDto createRecruit(@RequestBody RecruitRequestDto recruitRequestDto) {
+        Long recruitId = recruitService.makeRecruit(recruitRequestDto);
+        return recruitService.findRecruitDto(recruitId);
+    }
+
+    @PatchMapping("/recruit/{recruitId}/update")
+    public RecruitResponseDto updateRecruit(@RequestBody UpdateForm updateForm) {
+        recruitService.updateRecruit(Long.valueOf(updateForm.getRecruitId()), updateForm.getWriterId(), updateForm.getTitle(), updateForm.getContent());
+        return recruitService.findRecruitDto(Long.valueOf(updateForm.getRecruitId()));
+    }
 }
