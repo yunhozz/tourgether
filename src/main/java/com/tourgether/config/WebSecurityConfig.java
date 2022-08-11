@@ -1,10 +1,7 @@
 package com.tourgether.config;
 
 import com.tourgether.domain.member.service.OAuth2UserServiceImpl;
-import com.tourgether.util.auth.jwt.JwtAccessDeniedHandler;
-import com.tourgether.util.auth.jwt.JwtAuthenticationEntryPoint;
-import com.tourgether.util.auth.jwt.JwtFilter;
-import com.tourgether.util.auth.jwt.TokenProvider;
+import com.tourgether.util.auth.jwt.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,7 +25,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class WebSecurityConfig {
 
     private final OAuth2UserServiceImpl oAuth2UserService;
-    private final TokenProvider tokenProvider;
+    private final JwtProvider jwtProvider;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
 //    private final CorsFilter corsFilter;
@@ -45,11 +42,12 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-        JwtFilter jwtFilter = new JwtFilter(tokenProvider);
+        JwtFilter jwtFilter = new JwtFilter(jwtProvider);
         httpSecurity
                 .csrf().disable() // 추후 제거 예정
                 .authorizeRequests()
-                .anyRequest().permitAll() // 추후 수정 예정
+                .antMatchers("/", "/api/**", "/member/signup", "/member/login", "/swagger-ui/**", "/h2-console/**", "/resources/**").permitAll()
+                .anyRequest().authenticated()
 
                 .and()
 
