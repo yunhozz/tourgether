@@ -20,43 +20,54 @@ public class MemberApiController {
     private final MemberRepository memberRepository;
 
     @GetMapping("/member/{userId}")
-    public MemberResponseDto getMember(@PathVariable String userId) {
-        return memberService.findMemberDto(Long.valueOf(userId));
+    public ResponseEntity<MemberResponseDto> getMember(@PathVariable String userId) {
+        if (memberRepository.findById(Long.valueOf(userId)).isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(memberService.findMemberDto(Long.valueOf(userId)));
     }
 
     @GetMapping("/member/list")
-    public List<MemberResponseDto> getMembers() {
-        return memberService.findMemberDtoList();
+    public ResponseEntity<List<MemberResponseDto>> getMembers() {
+        return ResponseEntity.ok(memberService.findMemberDtoList());
     }
 
     @PatchMapping("/member/{userId}/update-info")
-    public MemberResponseDto updateMemberInfo(@PathVariable String userId, @RequestBody UpdateForm updateForm) {
+    public ResponseEntity<Object> updateMemberInfo(@PathVariable String userId, @RequestBody UpdateForm updateForm) {
+        if (memberRepository.findById(Long.valueOf(userId)).isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
         memberService.updateInfo(Long.valueOf(userId), updateForm.getName(), updateForm.getNickname(), updateForm.getProfileUrl());
-        return memberService.findMemberDto(Long.valueOf(userId));
+        return ResponseEntity.ok().build();
     }
 
     @PatchMapping("/member/{userId}/update-password")
-    public MemberResponseDto updateMemberPassword(@PathVariable String userId, @RequestBody PasswordForm passwordForm) {
+    public ResponseEntity<Object> updateMemberPassword(@PathVariable String userId, @RequestBody PasswordForm passwordForm) {
+        if (memberRepository.findById(Long.valueOf(userId)).isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
         memberService.updatePassword(Long.valueOf(userId), passwordForm.getOriginalPw(), passwordForm.getNewPw());
-        return memberService.findMemberDto(Long.valueOf(userId));
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/member/{userId}/delete")
-    public List<MemberResponseDto> deleteMember(@PathVariable String userId, @RequestParam String password) {
+    public ResponseEntity<Object> deleteMember(@PathVariable String userId, @RequestParam String password) {
+        if (memberRepository.findById(Long.valueOf(userId)).isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
         memberService.withdraw(Long.valueOf(userId), password);
-        return memberService.findMemberDtoList();
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/member/signup")
-    public ResponseEntity<Long> signup(@RequestBody MemberRequestDto memberRequestDto) {
-        return ResponseEntity.ok(memberService.join(memberRequestDto));
+    public ResponseEntity<MemberResponseDto> signup(@RequestBody MemberRequestDto memberRequestDto) {
+        Long userId = memberService.join(memberRequestDto);
+        return ResponseEntity.ok(memberService.findMemberDto(userId));
     }
 
     @PostMapping("/member/login")
-    public ResponseEntity<UserDetails> login(@RequestBody LoginForm loginForm) {
-        UserDetails userDetails = userDetailsService.loadUserByUsername(loginForm.getEmail()); // throws UsernameNotFoundException
-        memberService.login(userDetails, loginForm.getPassword()); // throws PasswordMismatchException
-
-        return ResponseEntity.ok(userDetails);
+    public ResponseEntity<TokenResponseDto> login(@RequestBody LoginForm loginForm) {
+        TokenResponseDto tokenResponseDto = memberService.login(loginForm.getEmail(), loginForm.getPassword());
+        return ResponseEntity.ok(tokenResponseDto);
     }
 }
