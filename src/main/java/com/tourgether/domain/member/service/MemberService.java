@@ -8,13 +8,13 @@ import com.tourgether.domain.member.model.repository.auth.MemberAuthorityReposit
 import com.tourgether.domain.member.model.repository.MemberRepository;
 import com.tourgether.enums.ErrorCode;
 import com.tourgether.exception.member.*;
-import com.tourgether.util.auth.UserDetailsImpl;
 import com.tourgether.util.auth.jwt.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -59,8 +59,9 @@ public class MemberService {
 
     @Transactional(readOnly = true)
     public TokenResponseDto login(String email, String password) {
-        UserDetailsImpl userDetails = userDetailsService.loadUserByUsername(email);
-        if (!encoder.matches(password, userDetails.getPassword())) {
+        Member member = memberRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException(email));
+        if (!encoder.matches(password, member.getPassword())) {
             throw new PasswordMismatchException("Password is not match.", ErrorCode.PASSWORD_MISMATCH);
         }
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(email, password); // ID, PW 를 이용한 토큰 생성
@@ -68,7 +69,7 @@ public class MemberService {
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        return jwtProvider.createTokenDto(userDetails.getId(), authentication);
+        return jwtProvider.createTokenDto(member.getId(), authentication);
     }
 
     public void updatePassword(Long id, String originalPw, String newPw) {
