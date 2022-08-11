@@ -1,5 +1,7 @@
 package com.tourgether.util.auth.jwt;
 
+import com.tourgether.domain.member.service.UserDetailsServiceImpl;
+import com.tourgether.util.auth.UserDetailsImpl;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.impl.Base64UrlCodec;
 import lombok.RequiredArgsConstructor;
@@ -8,8 +10,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -30,7 +30,7 @@ public class JwtProvider {
     private final String ROLES = "roles";
     private final Long ACCESSTOKEN_VALID_MILLISECOND = 60 * 60 * 1000L; // 1 hour
     private final Long REFRESHTOKEN_VALID_MILLISECOND = 14 * 24 * 60 * 60 * 1000L; // 14 day
-    private final UserDetailsService userDetailsService;
+    private final UserDetailsServiceImpl userDetailsService;
 
     @PostConstruct
     protected void init() {
@@ -83,7 +83,7 @@ public class JwtProvider {
         }*/
         log.info("user id: {}", claims.getSubject());
 
-        UserDetails userDetails = userDetailsService.loadUserByUsername(claims.getSubject());
+        UserDetailsImpl userDetails = userDetailsService.loadUserByUsername(claims.getSubject());
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
