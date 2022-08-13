@@ -2,7 +2,6 @@ package com.tourgether.domain.recruit.controller;
 
 import com.tourgether.domain.recruit.model.repository.BookmarkRepository;
 import com.tourgether.domain.recruit.service.BookmarkService;
-import com.tourgether.dto.BookmarkDto;
 import com.tourgether.util.auth.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -27,7 +26,7 @@ public class BookmarkController {
         if (loginMember == null) {
             return "redirect:/member/login";
         }
-        Page<BookmarkQueryDto> bookmarks = bookmarkRepository.findPageWithUserId(loginMember.getId(), Pageable.ofSize(10));
+        Page<BookmarkQueryDto> bookmarks = bookmarkRepository.findPageWithUserId(loginMember.getMember().getId(), Pageable.ofSize(10));
         model.addAttribute("bookmarks", bookmarks);
 
         return "bookmark/list";

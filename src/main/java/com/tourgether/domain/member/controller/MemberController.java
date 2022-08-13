@@ -4,8 +4,6 @@ import com.tourgether.domain.member.service.MemberService;
 import com.tourgether.util.auth.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -24,7 +22,6 @@ import static com.tourgether.dto.MemberDto.*;
 public class MemberController {
 
     private final MemberService memberService;
-    private final UserDetailsService userDetailsService;
 
     @GetMapping("/member/signup")
     public String signup(@ModelAttribute MemberRequestDto memberRequestDto) {
@@ -54,8 +51,7 @@ public class MemberController {
         if (result.hasErrors()) {
             return "member/login";
         }
-        UserDetails userDetails = userDetailsService.loadUserByUsername(loginForm.getEmail());// 이메일 존재 여부 검증, 시큐리티 고유 세션 영역에 저장
-        memberService.login(userDetails, loginForm.getPassword()); // 비밀번호 일치 여부 검증
+        memberService.login(loginForm.getEmail(), loginForm.getPassword());
 
         if (redirectUrl != null) {
             return "redirect:" + redirectUrl;
@@ -72,42 +68,39 @@ public class MemberController {
     }
 
     @GetMapping("/member/update-pw")
-    public String updatePw(@AuthenticationPrincipal UserDetailsImpl loginMember, Model model) {
+    public String updatePw(@AuthenticationPrincipal UserDetailsImpl loginMember, @ModelAttribute PasswordForm passwordForm, Model model) {
         if (loginMember == null) {
             return "redirect:/member/sign-in";
         }
-        PasswordForm passwordForm = new PasswordForm(loginMember.getId());
-        model.addAttribute("passwordForm", passwordForm);
-
+        model.addAttribute("userId", loginMember.getMember().getId());
         return "member/update-pw";
     }
 
     @PostMapping("/member/update-pw")
-    public String updatePw(@Valid PasswordForm form, BindingResult result) {
+    public String updatePw(@Valid PasswordForm form, BindingResult result, @RequestParam String userId) {
         if (result.hasErrors()) {
             return "member/update-pw";
         }
-        memberService.updatePassword(form.getUserId(), form.getOriginalPw(), form.getNewPw());
+        memberService.updatePassword(Long.valueOf(userId), form.getOriginalPw(), form.getNewPw());
         return "redirect:/";
     }
 
     @GetMapping("/member/update-info")
-    public String updateInfo(@AuthenticationPrincipal UserDetailsImpl loginMember, Model model) {
+    public String updateInfo(@AuthenticationPrincipal UserDetailsImpl loginMember, @ModelAttribute PasswordForm passwordForm, Model model) {
         if (loginMember == null) {
             return "redirect:/member/sign-in";
         }
-        UpdateForm updateForm = new UpdateForm(loginMember.getId());
-        model.addAttribute("updateForm", updateForm);
+        model.addAttribute("userId", loginMember.getMember().getId());
 
         return "member/update-info";
     }
 
     @PostMapping("/member/update-info")
-    public String updateInfo(@Valid UpdateForm form, BindingResult result) {
+    public String updateInfo(@Valid UpdateForm form, BindingResult result, @RequestParam String userId) {
         if (result.hasErrors()) {
             return "member/update-info";
         }
-        memberService.updateInfo(form.getUserId(), form.getName(), form.getNickname(), form.getProfileUrl());
+        memberService.updateInfo(Long.valueOf(userId), form.getName(), form.getNickname(), form.getProfileUrl());
         return "redirect:/";
     }
 

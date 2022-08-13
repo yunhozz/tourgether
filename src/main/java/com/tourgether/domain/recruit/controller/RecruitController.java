@@ -82,11 +82,11 @@ public class RecruitController {
         addViewCount(Long.valueOf(recruitId), request, response); // 조회수 증가 (중복 x)
         model.addAttribute("recruit", recruit);
 
-        boolean isRecruitWriter = recruit.getWriterId().equals(loginMember.getId());
+        boolean isRecruitWriter = recruit.getWriterId().equals(loginMember.getMember().getId());
         model.addAttribute("isRecruitWriter", isRecruitWriter); // 모집글 작성자일 경우 수정, 삭제 버튼 활성화
         List<CommentResponseDto> comments = recruit.getComments();
         for (CommentResponseDto comment : comments) {
-            boolean isCommentWriter = comment.getWriterId().equals(loginMember.getId());
+            boolean isCommentWriter = comment.getWriterId().equals(loginMember.getMember().getId());
             model.addAttribute("isCommentWriter", isCommentWriter); // 댓글 작성자일 경우 수정, 삭제 버튼 활성화
         }
         return "recruit/detail";
@@ -97,7 +97,7 @@ public class RecruitController {
         if (loginMember == null) {
             return "redirect:/member/signIn";
         }
-        model.addAttribute("writer", loginMember.getId());
+        model.addAttribute("writer", loginMember.getMember().getId());
         return "recruit/write";
     }
 
@@ -115,7 +115,7 @@ public class RecruitController {
         if (loginMember == null) {
             return "redirect:/member/signIn";
         }
-        RecruitDto.UpdateForm updateForm = new RecruitDto.UpdateForm(recruitId, loginMember.getId());
+        RecruitDto.UpdateForm updateForm = new RecruitDto.UpdateForm(recruitId, loginMember.getMember().getId());
         model.addAttribute("updateForm", updateForm);
 
         return "recruit/update";
@@ -135,7 +135,7 @@ public class RecruitController {
         if (loginMember == null) {
             return "redirect:/member/signIn";
         }
-        recruitService.deleteRecruit(Long.valueOf(recruitId), loginMember.getId());
+        recruitService.deleteRecruit(Long.valueOf(recruitId), loginMember.getMember().getId());
         return "redirect:/recruit";
     }
 
