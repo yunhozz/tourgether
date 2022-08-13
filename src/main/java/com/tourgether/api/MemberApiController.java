@@ -1,12 +1,10 @@
 package com.tourgether.api;
 
+import com.tourgether.api.dto.Response;
 import com.tourgether.domain.member.model.repository.MemberRepository;
 import com.tourgether.domain.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 import static com.tourgether.dto.MemberDto.*;
 import static com.tourgether.dto.TokenDto.*;
@@ -20,54 +18,54 @@ public class MemberApiController {
     private final MemberRepository memberRepository;
 
     @GetMapping("/member/{userId}")
-    public ResponseEntity<MemberResponseDto> getMember(@PathVariable String userId) {
+    public Response getMember(@PathVariable String userId) {
         if (memberRepository.findById(Long.valueOf(userId)).isEmpty()) {
-            return ResponseEntity.notFound().build();
+            return Response.failure(400, "회원이 존재하지 않습니다.");
         }
-        return ResponseEntity.ok(memberService.findMemberDto(Long.valueOf(userId)));
+        return Response.success(memberService.findMemberDto(Long.valueOf(userId)));
     }
 
     @GetMapping("/member/list")
-    public ResponseEntity<List<MemberResponseDto>> getMembers() {
-        return ResponseEntity.ok(memberService.findMemberDtoList());
+    public Response getMembers() {
+        return Response.success(memberService.findMemberDtoList());
     }
 
-    @PatchMapping("/member/{userId}/update-info")
-    public ResponseEntity<Object> updateMemberInfo(@PathVariable String userId, @RequestBody UpdateForm updateForm) {
-        if (memberRepository.findById(Long.valueOf(userId)).isEmpty()) {
-            return ResponseEntity.notFound().build();
+    @PatchMapping("/member/update-info")
+    public Response updateMemberInfo(@RequestParam String id, @RequestBody UpdateForm updateForm) {
+        if (memberRepository.findById(Long.valueOf(id)).isEmpty()) {
+            return Response.failure(400, "회원이 존재하지 않습니다.");
         }
-        memberService.updateInfo(Long.valueOf(userId), updateForm.getName(), updateForm.getNickname(), updateForm.getProfileUrl());
-        return ResponseEntity.ok().build();
+        memberService.updateInfo(Long.valueOf(id), updateForm.getName(), updateForm.getNickname(), updateForm.getProfileUrl());
+        return Response.success(memberService.findMemberDto(Long.valueOf(id)));
     }
 
-    @PatchMapping("/member/{userId}/update-password")
-    public ResponseEntity<Object> updateMemberPassword(@PathVariable String userId, @RequestBody PasswordForm passwordForm) {
-        if (memberRepository.findById(Long.valueOf(userId)).isEmpty()) {
-            return ResponseEntity.notFound().build();
+    @PatchMapping("/member/update-password")
+    public Response updateMemberPassword(@RequestParam String id, @RequestBody PasswordForm passwordForm) {
+        if (memberRepository.findById(Long.valueOf(id)).isEmpty()) {
+            return Response.failure(400, "회원이 존재하지 않습니다.");
         }
-        memberService.updatePassword(Long.valueOf(userId), passwordForm.getOriginalPw(), passwordForm.getNewPw());
-        return ResponseEntity.ok().build();
+        memberService.updatePassword(Long.valueOf(id), passwordForm.getOriginalPw(), passwordForm.getNewPw());
+        return Response.success(memberService.findMemberDto(Long.valueOf(id)));
     }
 
-    @DeleteMapping("/member/{userId}/delete")
-    public ResponseEntity<Object> deleteMember(@PathVariable String userId, @RequestParam String password) {
-        if (memberRepository.findById(Long.valueOf(userId)).isEmpty()) {
-            return ResponseEntity.notFound().build();
+    @DeleteMapping("/member/delete")
+    public Response deleteMember(@RequestParam String id, @RequestParam String password) {
+        if (memberRepository.findById(Long.valueOf(id)).isEmpty()) {
+            return Response.failure(400, "회원이 존재하지 않습니다.");
         }
-        memberService.withdraw(Long.valueOf(userId), password);
-        return ResponseEntity.ok().build();
+        memberService.withdraw(Long.valueOf(id), password);
+        return Response.success();
     }
 
     @PostMapping("/member/signup")
-    public ResponseEntity<MemberResponseDto> signup(@RequestBody MemberRequestDto memberRequestDto) {
+    public Response signup(@RequestBody MemberRequestDto memberRequestDto) {
         Long userId = memberService.join(memberRequestDto);
-        return ResponseEntity.ok(memberService.findMemberDto(userId));
+        return Response.success(memberService.findMemberDto(userId));
     }
 
     @PostMapping("/member/login")
-    public ResponseEntity<TokenResponseDto> login(@RequestBody LoginForm loginForm) {
+    public Response login(@RequestBody LoginForm loginForm) {
         TokenResponseDto tokenResponseDto = memberService.login(loginForm.getEmail(), loginForm.getPassword());
-        return ResponseEntity.ok(tokenResponseDto);
+        return Response.success(tokenResponseDto);
     }
 }
