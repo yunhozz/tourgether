@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -115,9 +114,6 @@ public class MemberDto {
     @AllArgsConstructor
     public static class UpdateForm {
 
-        @NotNull
-        private Long userId;
-
         @NotBlank
         private String name;
 
@@ -125,10 +121,6 @@ public class MemberDto {
         private String nickname;
 
         private String profileUrl;
-
-        public UpdateForm(Long userId) {
-            this.userId = userId;
-        }
     }
 
     @Getter
@@ -136,17 +128,10 @@ public class MemberDto {
     @AllArgsConstructor
     public static class PasswordForm {
 
-        @NotNull
-        private Long userId;
-
         @NotBlank
         private String originalPw;
 
         @NotBlank
         private String newPw;
-
-        public PasswordForm(Long userId) {
-            this.userId = userId;
-        }
     }
 }

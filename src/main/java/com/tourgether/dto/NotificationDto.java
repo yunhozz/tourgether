@@ -19,12 +19,6 @@ public class NotificationDto {
     @AllArgsConstructor
     public static class NotificationRequestDto {
 
-        @NotNull
-        private Long senderId;
-
-        @NotNull
-        private Long receiverId;
-
         @NotBlank
         private String message;
 

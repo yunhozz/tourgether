@@ -50,12 +50,10 @@ public class NotificationService {
     }
 
     // 알림 보내기
-    public Long sendNotification(NotificationRequestDto notificationRequestDto) {
-        Long senderId = notificationRequestDto.getSenderId();
-        Long receiverId = notificationRequestDto.getReceiverId();
-
+    public Long sendNotification(Long senderId, Long receiverId, NotificationRequestDto notificationRequestDto) {
         Member sender = memberRepository.getReferenceById(senderId);
-        Member receiver = memberRepository.getReferenceById(receiverId);
+        Member receiver = memberRepository.findById(receiverId)
+                .orElseThrow(() -> new MemberNotFoundException("This member is null: " + receiverId, ErrorCode.MEMBER_NOT_FOUND));
         Notification notification = notificationRequestDto.toEntity(sender, receiver);
         notificationRepository.save(notification);
 
