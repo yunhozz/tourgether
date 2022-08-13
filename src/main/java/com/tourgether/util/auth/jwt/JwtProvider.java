@@ -1,5 +1,6 @@
 package com.tourgether.util.auth.jwt;
 
+import com.tourgether.domain.member.model.entity.auth.MemberAuthority;
 import com.tourgether.domain.member.service.UserDetailsServiceImpl;
 import com.tourgether.util.auth.UserDetailsImpl;
 import io.jsonwebtoken.*;
@@ -9,13 +10,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.tourgether.dto.TokenDto.*;
@@ -38,10 +41,10 @@ public class JwtProvider {
     }
 
     // jwt 생성
-    public TokenResponseDto createTokenDto(Long userId, Authentication authentication) {
-        String roles = authentication.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.joining(","));
+    public TokenResponseDto createTokenDto(Long userId, Set<MemberAuthority> authorities) {
+        List<String> roles = authorities.stream()
+                .map(memberAuthority -> memberAuthority.getAuthority().getAuthorityName())
+                .collect(Collectors.toList());
         Claims claims = Jwts.claims().setSubject(String.valueOf(userId));
         claims.put(ROLES, roles);
         Date now = new Date();
@@ -73,17 +76,20 @@ public class JwtProvider {
         Claims claims;
         // jwt 토큰 복호화해서 가져오기
         try {
-            claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
+            claims = Jwts.parser()
+                    .setSigningKey(secretKey)
+                    .parseClaimsJws(token)
+                    .getBody();
         } catch (ExpiredJwtException e) {
             claims = e.getClaims();
         }
         // 권한 정보가 없는 경우
-        /*if (claims.get(ROLES) == null) {
-            throw new CAuthenticationEntryPointException();
-        }*/
-        log.info("user id: {}", claims.getSubject());
-
+//        if (claims.get(ROLES) == null) {
+//            throw new CAuthenticationEntryPointException();
+//        }
+        log.info("userId: {}", claims.getSubject());
         UserDetailsImpl userDetails = userDetailsService.loadUserByUsername(claims.getSubject());
+
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
@@ -94,7 +100,9 @@ public class JwtProvider {
 
     public boolean validationToken(String token) {
         try {
-            Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
+            Jwts.parser()
+                    .setSigningKey(secretKey)
+                    .parseClaimsJws(token);
             return true;
         } catch (SecurityException | MalformedJwtException e) {
             log.error("잘못된 Jwt 서명입니다.");

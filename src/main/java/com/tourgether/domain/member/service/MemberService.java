@@ -33,8 +33,6 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final AuthorityRepository authorityRepository;
     private final MemberAuthorityRepository memberAuthorityRepository;
-    private final UserDetailsServiceImpl userDetailsService;
-    private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final JwtProvider jwtProvider;
     private final BCryptPasswordEncoder encoder;
 
@@ -57,19 +55,13 @@ public class MemberService {
         return memberRepository.save(member).getId();
     }
 
-    @Transactional(readOnly = true)
     public TokenResponseDto login(String email, String password) {
         Member member = memberRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException(email));
         if (!encoder.matches(password, member.getPassword())) {
             throw new PasswordMismatchException("Password is not match.", ErrorCode.PASSWORD_MISMATCH);
         }
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(email, password); // ID, PW 를 이용한 토큰 생성
-        // 세션 등록
-        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        return jwtProvider.createTokenDto(member.getId(), authentication);
+        return jwtProvider.createTokenDto(member.getId(), member.getAuthorities());
     }
 
     public void updatePassword(Long id, String originalPw, String newPw) {
