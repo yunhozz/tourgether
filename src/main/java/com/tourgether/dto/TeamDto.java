@@ -18,11 +18,12 @@ public class TeamDto {
         @NotBlank
         private String name;
 
-        @NotBlank
         private String introduction;
 
+        private String propensities;
+
         public Team toEntity() {
-            return new Team(name, introduction);
+            return Team.createTeam(name, introduction, propensities);
         }
     }
 
@@ -33,13 +34,16 @@ public class TeamDto {
 
         private Long id;
         private String name;
-        private int numOfMember;
+        private String introduction;
+        private String propensities;
         private LocalDateTime createdDate;
         private LocalDateTime lastModifiedDate;
 
         public TeamResponseDto(Team team) {
             id = team.getId();
             name = team.getName();
+            introduction = team.getIntroduction();
+            propensities = team.getPropensities();
             createdDate = team.getCreatedDate();
             lastModifiedDate = team.getLastModifiedDate();
         }
