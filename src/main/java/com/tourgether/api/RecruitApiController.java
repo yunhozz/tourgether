@@ -1,13 +1,16 @@
 package com.tourgether.api;
 
+import com.tourgether.api.dto.Response;
 import com.tourgether.domain.recruit.model.repository.RecruitRepository;
 import com.tourgether.domain.recruit.service.RecruitService;
+import com.tourgether.util.auth.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 import static com.tourgether.dto.RecruitDto.*;
 
@@ -20,54 +23,96 @@ public class RecruitApiController {
     private final RecruitRepository recruitRepository;
 
     @GetMapping("/recruit/{recruitId}")
-    public RecruitResponseDto getRecruit(@PathVariable String recruitId) {
-        return recruitService.findRecruitDto(Long.valueOf(recruitId));
+    public Response getRecruit(@PathVariable String recruitId) {
+        if (recruitRepository.findById(Long.valueOf(recruitId)).isEmpty()) {
+            return Response.failure(404, "모집글을 찾을 수 없습니다.");
+        }
+        return Response.success(recruitService.findRecruitDto(Long.valueOf(recruitId)));
     }
 
     @GetMapping("/recruit/list")
-    public List<RecruitResponseDto> getRecruits() {
-        return recruitService.findRecruitDtoList();
+    public Response getRecruits() {
+        return Response.success(recruitService.findRecruitDtoList());
     }
 
     @GetMapping("/page/recruits-created")
-    public Page<RecruitQueryDto> getPageWithCreated(Pageable pageable) {
-        return recruitRepository.findPageWithCreated(pageable);
+    public Response getPageWithCreated(Pageable pageable) {
+        return Response.success(recruitRepository.findPageWithCreated(pageable));
     }
 
     @GetMapping("/page/recruits-modified")
-    public Page<RecruitQueryDto> getPageWithModified(Pageable pageable) {
-        return recruitRepository.findPageWithModified(pageable);
+    public Response getPageWithModified(Pageable pageable) {
+        return Response.success(recruitRepository.findPageWithModified(pageable));
     }
 
     @GetMapping("/page/recruits-popularity")
-    public Page<RecruitQueryDto> getPageWithPopularity(Pageable pageable) {
-        return recruitRepository.findPageWithPopularity(pageable);
+    public Response getPageWithPopularity(Pageable pageable) {
+        return Response.success(recruitRepository.findPageWithPopularity(pageable));
     }
 
     @GetMapping("/page/recruits-created/search")
-    public Page<RecruitQueryDto> getPageWithKeyword(@RequestParam String keyword, Pageable pageable) {
-        return recruitRepository.findPageWithKeyword(keyword, pageable);
+    public Response getPageWithKeyword(@RequestParam(required = false) String keyword, Pageable pageable, HttpServletResponse response) {
+        if (keyword.isEmpty()) {
+            try {
+                handleRedirectPage(response);
+            } catch (IOException e) {
+                return Response.failure(404, e.getMessage());
+            }
+        }
+        return Response.success(recruitRepository.findPageWithKeyword(keyword, pageable));
     }
 
     @GetMapping("/page/recruits-modified/search")
-    public Page<RecruitQueryDto> getPageWithKeywordOnLatestOrder(@RequestParam String keyword, Pageable pageable) {
-        return recruitRepository.findPageWithKeywordOnLatestOrder(keyword, pageable);
+    public Response getPageWithKeywordOnLatestOrder(@RequestParam(required = false) String keyword, Pageable pageable, HttpServletResponse response) {
+        if (keyword.isEmpty()) {
+            try {
+                handleRedirectPage(response);
+            } catch (IOException e) {
+                return Response.failure(404, e.getMessage());
+            }
+        }
+        return Response.success(recruitRepository.findPageWithKeywordOnLatestOrder(keyword, pageable));
     }
 
     @GetMapping("/page/recruits-accuracy/search")
-    public Page<RecruitQueryDto> getPageWithKeywordOnAccuracyOrder(@RequestParam String keyword, Pageable pageable) {
-        return recruitRepository.findPageWithKeywordOnAccuracyOrder(keyword, pageable);
+    public Response getPageWithKeywordOnAccuracyOrder(@RequestParam(required = false) String keyword, Pageable pageable, HttpServletResponse response) {
+        if (keyword.isEmpty()) {
+            try {
+                handleRedirectPage(response);
+            } catch (IOException e) {
+                return Response.failure(404, e.getMessage());
+            }
+        }
+        return Response.success(recruitRepository.findPageWithKeywordOnAccuracyOrder(keyword, pageable));
     }
 
     @PostMapping("/recruit/create")
-    public RecruitResponseDto createRecruit(@RequestBody RecruitRequestDto recruitRequestDto) {
-        Long recruitId = recruitService.makeRecruit(recruitRequestDto);
-        return recruitService.findRecruitDto(recruitId);
+    public Response createRecruit(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody RecruitRequestDto recruitRequestDto) {
+        if (userDetails == null) {
+            return Response.failure(404, "인증된 유저가 아닙니다.");
+        }
+        Long recruitId = recruitService.makeRecruit(userDetails.getMember().getId(), recruitRequestDto);
+        return Response.success(recruitService.findRecruitDto(recruitId));
     }
 
     @PatchMapping("/recruit/{recruitId}/update")
-    public RecruitResponseDto updateRecruit(@RequestBody UpdateForm updateForm) {
-        recruitService.updateRecruit(Long.valueOf(updateForm.getRecruitId()), updateForm.getWriterId(), updateForm.getTitle(), updateForm.getContent());
-        return recruitService.findRecruitDto(Long.valueOf(updateForm.getRecruitId()));
+    public Response updateRecruit(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable String recruitId, @RequestBody UpdateForm updateForm) {
+        if (userDetails == null) {
+            return Response.failure(404, "인증된 유저가 아닙니다.");
+        }
+        if (recruitRepository.findById(Long.valueOf(recruitId)).isEmpty()) {
+            return Response.failure(404, "모집글을 찾을 수 없습니다.");
+        }
+        RecruitResponseDto recruit = recruitService.findRecruitDto(Long.valueOf(recruitId));
+        if (recruit.getWriterId() != userDetails.getMember().getId()) {
+            return Response.failure(404, "수정 권한이 없습니다.");
+        }
+        recruitService.updateRecruit(Long.valueOf(recruitId), recruit.getWriterId(), updateForm.getTitle(), updateForm.getContent());
+        return Response.success(recruitService.findRecruitDto(Long.valueOf(recruitId)));
+    }
+
+    @GetMapping("/recruit/re-direct")
+    private void handleRedirectPage(HttpServletResponse response) throws IOException {
+        response.sendRedirect("/api/page/recruits-created");
     }
 }
