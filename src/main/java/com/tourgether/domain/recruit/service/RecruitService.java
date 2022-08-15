@@ -27,8 +27,8 @@ public class RecruitService {
     private final MemberRepository memberRepository;
     private final BookmarkRepository bookmarkRepository;
 
-    public Long makeRecruit(RecruitRequestDto recruitRequestDto) {
-        Member writer = memberRepository.getReferenceById(recruitRequestDto.getWriterId());
+    public Long makeRecruit(Long writerId, RecruitRequestDto recruitRequestDto) {
+        Member writer = memberRepository.getReferenceById(writerId);
         return recruitRepository.save(recruitRequestDto.toEntity(writer)).getId();
     }
 
