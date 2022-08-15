@@ -1,5 +1,6 @@
 package com.tourgether.domain.member.model.entity;
 
+import com.tourgether.enums.Position;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,8 +24,12 @@ public class TeamMember {
     @JoinColumn(name = "team_id")
     private Team team;
 
-    public TeamMember(Member member, Team team) {
+    @Enumerated(EnumType.STRING)
+    private Position position; // POSITION_LEADER, POSITION_MEMBER
+
+    public TeamMember(Member member, Team team, Position position) {
         this.member = member;
         this.team = team;
+        this.position = position;
     }
 }
