@@ -46,13 +46,15 @@ public class WebSecurityConfig {
         httpSecurity
                 .csrf().disable() // 추후 제거 예정
                 .authorizeRequests()
-                .antMatchers("/", "/api/**", "/member/signup", "/member/login", "/swagger-ui/**", "/h2-console/**", "/resources/**").permitAll()
+                .antMatchers("/", "/api/**").permitAll()
+                .antMatchers("/h2-console/**", "/resources/**").permitAll()
+                .antMatchers("/swagger-ui/**", "/swagger-resources/**", "/v3/api-docs").permitAll()
                 .anyRequest().authenticated()
 
                 .and()
 
                 .formLogin()
-                .loginPage("/sign-in")
+                .loginPage("/member/login")
                 .usernameParameter("email")
                 .passwordParameter("password")
                 .defaultSuccessUrl("/")
