@@ -41,7 +41,23 @@ public class MemberController {
         return "redirect:/";
     }
 
-    @GetMapping("/sign-in")
+//    @GetMapping("/member/login")
+//    public String loginSelect() {
+//        return "member/login-select";
+//    }
+
+    @PostMapping("/member/login")
+    public String loginSelect(@RequestParam String method) {
+        if (method.equals("email")) {
+            return "redirect:/member/sign-in";
+        }
+        if (method.equals("kakao")) {
+            return "redirect:/oauth2/authorization/kakao?redirect_uri=http://localhost:3000/oauth/redirect";
+        }
+        return null;
+    }
+
+    @GetMapping("/member/sign-in")
     public String signIn(@ModelAttribute LoginForm loginForm) {
         return "member/login";
     }
@@ -68,39 +84,42 @@ public class MemberController {
     }
 
     @GetMapping("/member/update-pw")
-    public String updatePw(@AuthenticationPrincipal UserDetailsImpl loginMember, @ModelAttribute PasswordForm passwordForm, Model model) {
+    public String updatePw(@AuthenticationPrincipal UserDetailsImpl loginMember, @ModelAttribute PasswordForm passwordForm, HttpServletResponse response) {
         if (loginMember == null) {
             return "redirect:/member/sign-in";
         }
-        model.addAttribute("userId", loginMember.getMember().getId());
+        response.setHeader("userId", String.valueOf(loginMember.getMember().getId()));
         return "member/update-pw";
     }
 
     @PostMapping("/member/update-pw")
-    public String updatePw(@Valid PasswordForm form, BindingResult result, @RequestParam String userId) {
+    public String updatePw(@Valid PasswordForm form, BindingResult result, HttpServletRequest request) {
         if (result.hasErrors()) {
             return "member/update-pw";
         }
+        String userId = request.getHeader("userId");
         memberService.updatePassword(Long.valueOf(userId), form.getOriginalPw(), form.getNewPw());
+
         return "redirect:/";
     }
 
     @GetMapping("/member/update-info")
-    public String updateInfo(@AuthenticationPrincipal UserDetailsImpl loginMember, @ModelAttribute PasswordForm passwordForm, Model model) {
+    public String updateInfo(@AuthenticationPrincipal UserDetailsImpl loginMember, @ModelAttribute PasswordForm passwordForm, HttpServletResponse response) {
         if (loginMember == null) {
             return "redirect:/member/sign-in";
         }
-        model.addAttribute("userId", loginMember.getMember().getId());
-
+        response.setHeader("userId", String.valueOf(loginMember.getMember().getId()));
         return "member/update-info";
     }
 
     @PostMapping("/member/update-info")
-    public String updateInfo(@Valid UpdateForm form, BindingResult result, @RequestParam String userId) {
+    public String updateInfo(@Valid UpdateForm form, BindingResult result, HttpServletRequest request) {
         if (result.hasErrors()) {
             return "member/update-info";
         }
+        String userId = request.getHeader("userId");
         memberService.updateInfo(Long.valueOf(userId), form.getName(), form.getNickname(), form.getProfileUrl());
+
         return "redirect:/";
     }
 

@@ -93,41 +93,47 @@ public class RecruitController {
     }
 
     @GetMapping("/recruit/write")
-    public String writePage(@AuthenticationPrincipal UserDetailsImpl loginMember, @ModelAttribute RecruitRequestDto recruitRequestDto, Model model) {
+    public String writePage(@AuthenticationPrincipal UserDetailsImpl loginMember, @ModelAttribute RecruitRequestDto recruitRequestDto, HttpServletResponse response) {
         if (loginMember == null) {
             return "redirect:/member/signIn";
         }
-        model.addAttribute("writer", loginMember.getMember().getId());
+        response.setHeader("userId", String.valueOf(loginMember.getMember().getId()));
         return "recruit/write";
     }
 
     @PostMapping("/recruit/write")
-    public String write(@Valid RecruitRequestDto recruitRequestDto, BindingResult result) {
+    public String write(@Valid RecruitRequestDto recruitRequestDto, BindingResult result, HttpServletRequest request) {
         if (result.hasErrors()) {
             return "recruit/write";
         }
-        recruitService.makeRecruit(recruitRequestDto);
+        String userId = request.getHeader("userId");
+        recruitService.makeRecruit(Long.valueOf(userId), recruitRequestDto);
+
         return "redirect:/recruit";
     }
 
     @GetMapping("/recruit/{recruitId}/update")
-    public String updateRecruitForm(@AuthenticationPrincipal UserDetailsImpl loginMember, @PathVariable String recruitId, Model model) {
+    public String updateRecruitForm(@AuthenticationPrincipal UserDetailsImpl loginMember, @PathVariable String recruitId, @ModelAttribute RecruitDto.UpdateForm updateForm,
+                                    HttpServletResponse response) {
         if (loginMember == null) {
             return "redirect:/member/signIn";
         }
-        RecruitDto.UpdateForm updateForm = new RecruitDto.UpdateForm(recruitId, loginMember.getMember().getId());
-        model.addAttribute("updateForm", updateForm);
+        response.setHeader("userId", String.valueOf(loginMember.getMember().getId()));
+        response.setHeader("recruitId", recruitId);
 
         return "recruit/update";
     }
 
     @PostMapping("/recruit/update")
-    public String updateRecruit(@Valid RecruitDto.UpdateForm form, BindingResult result) {
+    public String updateRecruit(@Valid RecruitDto.UpdateForm form, BindingResult result, HttpServletRequest request) {
         if (result.hasErrors()) {
             return "recruit/update";
         }
-        recruitService.updateRecruit(Long.valueOf(form.getRecruitId()), form.getWriterId(), form.getTitle(), form.getContent());
-        return "redirect:/" + form.getRecruitId();
+        String userId = request.getHeader("userId");
+        String recruitId = request.getHeader("recruitId");
+        recruitService.updateRecruit(Long.valueOf(recruitId), Long.valueOf(userId), form.getTitle(), form.getContent());
+
+        return "redirect:/" + recruitId;
     }
 
     @GetMapping("/recruit/{recruitId}/delete")
