@@ -23,9 +23,6 @@ public class RecruitDto {
     @AllArgsConstructor
     public static class RecruitRequestDto {
 
-        @NotNull
-        private Long writerId;
-
         @NotBlank
         private String title;
 
@@ -121,20 +118,9 @@ public class RecruitDto {
     public static class UpdateForm {
 
         @NotBlank
-        private String recruitId;
-
-        @NotNull
-        private Long writerId;
-
-        @NotBlank
         private String title;
 
         @NotBlank
         private String content;
-
-        public UpdateForm(String recruitId, Long writerId) {
-            this.recruitId = recruitId;
-            this.writerId = writerId;
-        }
     }
 }
