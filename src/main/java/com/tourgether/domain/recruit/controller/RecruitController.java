@@ -89,6 +89,9 @@ public class RecruitController {
             boolean isCommentWriter = comment.getWriterId().equals(loginMember.getMember().getId());
             model.addAttribute("isCommentWriter", isCommentWriter); // 댓글 작성자일 경우 수정, 삭제 버튼 활성화
         }
+        response.setHeader("userId", String.valueOf(loginMember.getMember().getId()));
+        response.setHeader("recruitId", recruitId);
+
         return "recruit/detail";
     }
 

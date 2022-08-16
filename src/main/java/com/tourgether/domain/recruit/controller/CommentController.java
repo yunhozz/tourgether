@@ -6,10 +6,11 @@ import com.tourgether.util.auth.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import static com.tourgether.dto.CommentDto.*;
@@ -22,33 +23,41 @@ public class CommentController {
     private final CommentRepository commentRepository;
 
     @PostMapping("/comment/write")
-    public String comment(@Valid CommentRequestDto commentRequestDto, BindingResult result) {
+    public String comment(@Valid CommentRequestDto commentRequestDto, BindingResult result, HttpServletRequest request) {
         if (result.hasErrors()) {
             return "recruit/detail";
         }
-        commentService.makeComment(commentRequestDto);
-        return "redirect:/" + commentRequestDto.getRecruitId();
+        String userId = request.getHeader("userId");
+        String recruitId = request.getHeader("recruitId");
+        commentService.makeComment(Long.valueOf(userId), Long.valueOf(recruitId), commentRequestDto);
+
+        return "redirect:/recruit/" + recruitId;
     }
 
     @GetMapping("/comment/{commentId}/update")
     public String updateComment(@AuthenticationPrincipal UserDetailsImpl loginMember, @PathVariable String commentId, @RequestParam String recruitId,
-                                    Model model) {
+                                @ModelAttribute UpdateForm updateForm, HttpServletResponse response) {
         if (loginMember == null) {
             return "redirect:/member/signIn";
         }
-        UpdateForm commentUpdateForm = new UpdateForm(recruitId, commentId, loginMember.getId());
-        model.addAttribute("updateForm", commentUpdateForm);
+        response.setHeader("userId", String.valueOf(loginMember.getMember().getId()));
+        response.setHeader("recruitId", recruitId);
+        response.setHeader("commentId", commentId);
 
         return "recruit/comment-update";
     }
 
     @PostMapping("/comment/update")
-    public String updateComment(@Valid UpdateForm form, BindingResult result) {
+    public String updateComment(@Valid UpdateForm form, BindingResult result, HttpServletRequest request) {
         if (result.hasErrors()) {
             return "recruit/comment-update";
         }
-        commentService.updateComment(Long.valueOf(form.getCommentId()), form.getWriterId(), form.getContent());
-        return "redirect:/" + form.getRecruitId();
+        String userId = request.getHeader("userId");
+        String recruitId = request.getHeader("recruitId");
+        String commentId = request.getHeader("commentId");
+
+        commentService.updateComment(Long.valueOf(commentId), Long.valueOf(userId), form.getContent());
+        return "redirect:/recruit/" + recruitId;
     }
 
     @GetMapping("/comment/{commentId}/delete")
@@ -57,6 +66,6 @@ public class CommentController {
             return "redirect:/member/signIn";
         }
         commentRepository.deleteById(Long.valueOf(commentId));
-        return "redirect:/" + recruitId;
+        return "redirect:/recruit/" + recruitId;
     }
 }
