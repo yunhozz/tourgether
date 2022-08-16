@@ -136,7 +136,7 @@ public class RecruitController {
         String recruitId = request.getHeader("recruitId");
         recruitService.updateRecruit(Long.valueOf(recruitId), Long.valueOf(userId), form.getTitle(), form.getContent());
 
-        return "redirect:/" + recruitId;
+        return "redirect:/recruit/" + recruitId;
     }
 
     @GetMapping("/recruit/{recruitId}/delete")
