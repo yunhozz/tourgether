@@ -24,17 +24,11 @@ public class NotificationApiController {
 
     @GetMapping("/notification/read/{notificationId}")
     public Response readNotification(@PathVariable String notificationId) {
-        if (notificationRepository.findById(Long.valueOf(notificationId)).isEmpty()) {
-            return Response.failure(400, "알림을 찾을 수 없습니다.");
-        }
         return Response.success(notificationService.readNotification(Long.valueOf(notificationId)));
     }
 
     @GetMapping("/notification/read/all")
     public Response readNotificationAll(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        if (userDetails == null) {
-            return Response.failure(404, "인증된 사용자가 아닙니다.");
-        }
         List<NotificationResponseDto> notifications = notificationService.findNotificationDtoListWithReceiverIdReadOrNot(userDetails.getMember().getId(), false);
         List<Long> ids = notifications.stream().map(NotificationResponseDto::getId).toList();
         notificationService.readNotifications(ids);
@@ -44,17 +38,11 @@ public class NotificationApiController {
 
     @GetMapping("/notification/list")
     public Response getNotifications(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        if (userDetails == null) {
-            return Response.failure(404, "인증된 사용자가 아닙니다.");
-        }
         return Response.success(notificationService.findNotificationDtoListWithReceiverId(userDetails.getMember().getId()));
     }
 
     @GetMapping("/notification/receiver-list")
     public Response getNotificationsPage(@AuthenticationPrincipal UserDetailsImpl userDetails, @PageableDefault(size = 10) Pageable pageable) {
-        if (userDetails == null) {
-            return Response.failure(404, "인증된 사용자가 아닙니다.");
-        }
         return Response.success(notificationRepository.findSimplePage(userDetails.getMember().getId(), pageable));
     }
 
@@ -62,28 +50,19 @@ public class NotificationApiController {
     @GetMapping(value = "/notification/connect", produces = "text/event-stream")
     public Response connect(@RequestHeader(value = "Last-Event-ID", required = false, defaultValue = "") String lastEventId,
                             @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        if (userDetails == null) {
-            return Response.failure(404, "인증된 사용자가 아닙니다.");
-        }
         notificationService.connect(userDetails.getMember().getId(), lastEventId);
         return Response.success();
     }
 
     @PostMapping("/notification/send")
     public Response send(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestParam String receiverId, @RequestBody NotificationRequestDto notificationRequestDto) {
-        if (userDetails == null) {
-            return Response.failure(404, "인증된 사용자가 아닙니다.");
-        }
         Long notificationId = notificationService.sendNotification(userDetails.getMember().getId(), Long.valueOf(receiverId), notificationRequestDto);
         return Response.success(notificationService.findNotificationDto(notificationId));
     }
 
     @DeleteMapping("/notification/delete")
-    public Response deleteNotification(@RequestParam String id) {
-        if (notificationRepository.findById(Long.valueOf(id)).isEmpty()) {
-            return Response.failure(400, "알림을 찾을 수 없습니다.");
-        }
-        notificationRepository.deleteNotification(Long.valueOf(id));
+    public Response deleteNotification(@RequestParam String notificationId) {
+        notificationRepository.deleteNotification(Long.valueOf(notificationId));
         return Response.success();
     }
 

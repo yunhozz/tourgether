@@ -19,9 +19,6 @@ public class MemberApiController {
 
     @GetMapping("/member/{userId}")
     public Response getMember(@PathVariable String userId) {
-        if (memberRepository.findById(Long.valueOf(userId)).isEmpty()) {
-            return Response.failure(400, "회원이 존재하지 않습니다.");
-        }
         return Response.success(memberService.findMemberDto(Long.valueOf(userId)));
     }
 
@@ -31,29 +28,20 @@ public class MemberApiController {
     }
 
     @PatchMapping("/member/update-info")
-    public Response updateMemberInfo(@RequestParam String id, @RequestBody UpdateForm updateForm) {
-        if (memberRepository.findById(Long.valueOf(id)).isEmpty()) {
-            return Response.failure(400, "회원이 존재하지 않습니다.");
-        }
-        memberService.updateInfo(Long.valueOf(id), updateForm.getName(), updateForm.getNickname(), updateForm.getProfileUrl());
-        return Response.success(memberService.findMemberDto(Long.valueOf(id)));
+    public Response updateMemberInfo(@RequestParam String userId, @RequestBody UpdateForm updateForm) {
+        memberService.updateInfo(Long.valueOf(userId), updateForm.getName(), updateForm.getNickname(), updateForm.getProfileUrl());
+        return Response.success(memberService.findMemberDto(Long.valueOf(userId)));
     }
 
     @PatchMapping("/member/update-password")
-    public Response updateMemberPassword(@RequestParam String id, @RequestBody PasswordForm passwordForm) {
-        if (memberRepository.findById(Long.valueOf(id)).isEmpty()) {
-            return Response.failure(400, "회원이 존재하지 않습니다.");
-        }
-        memberService.updatePassword(Long.valueOf(id), passwordForm.getOriginalPw(), passwordForm.getNewPw());
-        return Response.success(memberService.findMemberDto(Long.valueOf(id)));
+    public Response updateMemberPassword(@RequestParam String userId, @RequestBody PasswordForm passwordForm) {
+        memberService.updatePassword(Long.valueOf(userId), passwordForm.getOriginalPw(), passwordForm.getNewPw());
+        return Response.success(memberService.findMemberDto(Long.valueOf(userId)));
     }
 
     @DeleteMapping("/member/delete")
-    public Response deleteMember(@RequestParam String id, @RequestParam String password) {
-        if (memberRepository.findById(Long.valueOf(id)).isEmpty()) {
-            return Response.failure(400, "회원이 존재하지 않습니다.");
-        }
-        memberService.withdraw(Long.valueOf(id), password);
+    public Response deleteMember(@RequestParam String userId, @RequestParam String password) {
+        memberService.withdraw(Long.valueOf(userId), password);
         return Response.success();
     }
 

@@ -24,9 +24,6 @@ public class RecruitApiController {
 
     @GetMapping("/recruit/{recruitId}")
     public Response getRecruit(@PathVariable String recruitId) {
-        if (recruitRepository.findById(Long.valueOf(recruitId)).isEmpty()) {
-            return Response.failure(404, "모집글을 찾을 수 없습니다.");
-        }
         return Response.success(recruitService.findRecruitDto(Long.valueOf(recruitId)));
     }
 
@@ -88,21 +85,12 @@ public class RecruitApiController {
 
     @PostMapping("/recruit/create")
     public Response createRecruit(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody RecruitRequestDto recruitRequestDto) {
-        if (userDetails == null) {
-            return Response.failure(404, "인증된 유저가 아닙니다.");
-        }
         Long recruitId = recruitService.makeRecruit(userDetails.getMember().getId(), recruitRequestDto);
         return Response.success(recruitService.findRecruitDto(recruitId));
     }
 
     @PatchMapping("/recruit/{recruitId}/update")
     public Response updateRecruit(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable String recruitId, @RequestBody UpdateForm updateForm) {
-        if (userDetails == null) {
-            return Response.failure(404, "인증된 유저가 아닙니다.");
-        }
-        if (recruitRepository.findById(Long.valueOf(recruitId)).isEmpty()) {
-            return Response.failure(404, "모집글을 찾을 수 없습니다.");
-        }
         RecruitResponseDto recruit = recruitService.findRecruitDto(Long.valueOf(recruitId));
         if (recruit.getWriterId() != userDetails.getMember().getId()) {
             return Response.failure(404, "수정 권한이 없습니다.");
