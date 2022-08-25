@@ -1,10 +1,12 @@
 package com.tourgether.api;
 
-import com.tourgether.api.dto.Response;
 import com.tourgether.domain.member.model.repository.MemberRepository;
 import com.tourgether.domain.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 import static com.tourgether.dto.MemberDto.*;
 import static com.tourgether.dto.TokenDto.*;
@@ -18,42 +20,40 @@ public class MemberApiController {
     private final MemberRepository memberRepository;
 
     @GetMapping("/member/{userId}")
-    public Response getMember(@PathVariable String userId) {
-        return Response.success(memberService.findMemberDto(Long.valueOf(userId)));
+    public ResponseEntity<MemberResponseDto> getMember(@PathVariable String userId) {
+        return ResponseEntity.ok(memberService.findMemberDto(Long.valueOf(userId)));
     }
 
     @GetMapping("/member/list")
-    public Response getMembers() {
-        return Response.success(memberService.findMemberDtoList());
+    public ResponseEntity<List<MemberResponseDto>> getMembers() {
+        return ResponseEntity.ok(memberService.findMemberDtoList());
     }
 
     @PatchMapping("/member/update-info")
-    public Response updateMemberInfo(@RequestParam String userId, @RequestBody UpdateForm updateForm) {
+    public ResponseEntity<Void> updateMemberInfo(@RequestParam String userId, @RequestBody UpdateForm updateForm) {
         memberService.updateInfo(Long.valueOf(userId), updateForm.getName(), updateForm.getNickname(), updateForm.getProfileUrl());
-        return Response.success(memberService.findMemberDto(Long.valueOf(userId)));
+        return ResponseEntity.ok().build();
     }
 
     @PatchMapping("/member/update-password")
-    public Response updateMemberPassword(@RequestParam String userId, @RequestBody PasswordForm passwordForm) {
+    public ResponseEntity<Void> updateMemberPassword(@RequestParam String userId, @RequestBody PasswordForm passwordForm) {
         memberService.updatePassword(Long.valueOf(userId), passwordForm.getOriginalPw(), passwordForm.getNewPw());
-        return Response.success(memberService.findMemberDto(Long.valueOf(userId)));
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/member/delete")
-    public Response deleteMember(@RequestParam String userId, @RequestParam String password) {
+    public ResponseEntity<Void> deleteMember(@RequestParam String userId, @RequestParam String password) {
         memberService.withdraw(Long.valueOf(userId), password);
-        return Response.success();
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/member/signup")
-    public Response signup(@RequestBody MemberRequestDto memberRequestDto) {
-        Long userId = memberService.join(memberRequestDto);
-        return Response.success(memberService.findMemberDto(userId));
+    public ResponseEntity<Long> signup(@RequestBody MemberRequestDto memberRequestDto) {
+        return ResponseEntity.ok(memberService.join(memberRequestDto));
     }
 
     @PostMapping("/member/login")
-    public Response login(@RequestBody LoginForm loginForm) {
-        TokenResponseDto tokenResponseDto = memberService.login(loginForm.getEmail(), loginForm.getPassword());
-        return Response.success(tokenResponseDto);
+    public ResponseEntity<TokenResponseDto> login(@RequestBody LoginForm loginForm) {
+        return ResponseEntity.ok(memberService.login(loginForm.getEmail(), loginForm.getPassword()));
     }
 }

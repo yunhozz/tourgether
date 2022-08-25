@@ -1,12 +1,13 @@
 package com.tourgether.api;
 
-import com.tourgether.api.dto.Response;
 import com.tourgether.domain.notification.model.repository.NotificationRepository;
 import com.tourgether.domain.notification.service.NotificationService;
 import com.tourgether.util.auth.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,52 +24,49 @@ public class NotificationApiController {
     private final NotificationRepository notificationRepository;
 
     @GetMapping("/notification/read/{notificationId}")
-    public Response readNotification(@PathVariable String notificationId) {
-        return Response.success(notificationService.readNotification(Long.valueOf(notificationId)));
+    public ResponseEntity<NotificationResponseDto> readNotification(@PathVariable String notificationId) {
+        return ResponseEntity.ok(notificationService.readNotification(Long.valueOf(notificationId)));
     }
 
     @GetMapping("/notification/read/all")
-    public Response readNotificationAll(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ResponseEntity<List<NotificationResponseDto>> readNotificationAll(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         List<NotificationResponseDto> notifications = notificationService.findNotificationDtoListWithReceiverIdReadOrNot(userDetails.getMember().getId(), false);
         List<Long> ids = notifications.stream().map(NotificationResponseDto::getId).toList();
         notificationService.readNotifications(ids);
 
-        return Response.success(notificationService.findNotificationDtoList());
+        return ResponseEntity.ok(notificationService.findNotificationDtoList());
     }
 
     @GetMapping("/notification/list")
-    public Response getNotifications(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return Response.success(notificationService.findNotificationDtoListWithReceiverId(userDetails.getMember().getId()));
+    public ResponseEntity<List<NotificationResponseDto>> getNotifications(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return ResponseEntity.ok(notificationService.findNotificationDtoListWithReceiverId(userDetails.getMember().getId()));
     }
 
     @GetMapping("/notification/receiver-list")
-    public Response getNotificationsPage(@AuthenticationPrincipal UserDetailsImpl userDetails, @PageableDefault(size = 10) Pageable pageable) {
-        return Response.success(notificationRepository.findSimplePage(userDetails.getMember().getId(), pageable));
+    public ResponseEntity<Page<NotificationQueryDto>> getNotificationsPage(@AuthenticationPrincipal UserDetailsImpl userDetails, @PageableDefault(size = 10) Pageable pageable) {
+        return ResponseEntity.ok(notificationRepository.findSimplePage(userDetails.getMember().getId(), pageable));
     }
 
-    // 편의상 유저의 id 를 직접 받게 하였지만, 실제 적용시에는 access-token 을 적용
     @GetMapping(value = "/notification/connect", produces = "text/event-stream")
-    public Response connect(@RequestHeader(value = "Last-Event-ID", required = false, defaultValue = "") String lastEventId,
-                            @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ResponseEntity<Void> connect(@RequestHeader(value = "Last-Event-ID", required = false, defaultValue = "") String lastEventId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         notificationService.connect(userDetails.getMember().getId(), lastEventId);
-        return Response.success();
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/notification/send")
-    public Response send(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestParam String receiverId, @RequestBody NotificationRequestDto notificationRequestDto) {
-        Long notificationId = notificationService.sendNotification(userDetails.getMember().getId(), Long.valueOf(receiverId), notificationRequestDto);
-        return Response.success(notificationService.findNotificationDto(notificationId));
+    public ResponseEntity<Long> send(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestParam String receiverId, @RequestBody NotificationRequestDto notificationRequestDto) {
+        return ResponseEntity.ok(notificationService.sendNotification(userDetails.getMember().getId(), Long.valueOf(receiverId), notificationRequestDto));
     }
 
     @DeleteMapping("/notification/delete")
-    public Response deleteNotification(@RequestParam String notificationId) {
+    public ResponseEntity<Void> deleteNotification(@RequestParam String notificationId) {
         notificationRepository.deleteNotification(Long.valueOf(notificationId));
-        return Response.success();
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/notification/delete-checked")
-    public Response deleteNotificationChecked(@RequestParam List<Long> notificationIds) {
+    public ResponseEntity<Void> deleteNotificationChecked(@RequestParam List<Long> notificationIds) {
         notificationRepository.deleteAlreadyChecked(notificationIds);
-        return Response.success();
+        return ResponseEntity.ok().build();
     }
 }
