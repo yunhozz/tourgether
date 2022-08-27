@@ -1,6 +1,6 @@
 package com.tourgether.domain.member.model.entity;
 
-import com.tourgether.domain.TimeEntity;
+import com.tourgether.domain.BaseTime;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Team extends TimeEntity {
+public class Team extends BaseTime {
 
     @Id
     @GeneratedValue

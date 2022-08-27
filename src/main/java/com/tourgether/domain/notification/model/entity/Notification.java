@@ -1,6 +1,6 @@
 package com.tourgether.domain.notification.model.entity;
 
-import com.tourgether.domain.TimeEntity;
+import com.tourgether.domain.BaseTime;
 import com.tourgether.domain.member.model.entity.Member;
 import com.tourgether.enums.NotificationType;
 import lombok.AccessLevel;
@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Notification extends TimeEntity {
+public class Notification extends BaseTime {
 
     @Id
     @GeneratedValue

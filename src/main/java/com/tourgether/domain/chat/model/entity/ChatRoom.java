@@ -1,7 +1,7 @@
 package com.tourgether.domain.chat.model.entity;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tourgether.domain.TimeEntity;
+import com.tourgether.domain.BaseTime;
 import com.tourgether.domain.member.model.entity.Member;
 import com.tourgether.enums.MessageType;
 import lombok.AccessLevel;
@@ -22,7 +22,7 @@ import static com.tourgether.dto.ChatDto.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ChatRoom extends TimeEntity {
+public class ChatRoom extends BaseTime {
 
     @Id
     @GeneratedValue
