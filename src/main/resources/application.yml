@@ -11,17 +11,15 @@ spring:
       ddl-auto: create
     properties:
       hibernate:
-#        show_sql: true
         format_sql: true
         default_batch_fetch_size: 1000
+
+  h2:
+    console.enabled: true
 
   mvc:
     pathmatch:
       matching-strategy: ANT_PATH_MATCHER
-
-  h2:
-    console:
-      enabled: true
 
   devtools:
     livereload:
@@ -54,4 +52,3 @@ server:
 logging:
   level:
     org.hibernate.SQL: debug
-    me.silvernine: DEBUG
