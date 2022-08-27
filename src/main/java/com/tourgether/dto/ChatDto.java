@@ -2,7 +2,6 @@ package com.tourgether.dto;
 
 import com.tourgether.domain.chat.model.entity.Chat;
 import com.tourgether.domain.chat.model.entity.ChatRoom;
-import com.tourgether.domain.member.model.entity.Member;
 import com.tourgether.enums.MessageType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,26 +18,20 @@ public class ChatDto {
     @AllArgsConstructor
     public static class ChatRequestDto {
 
-        @NotNull
-        private Long senderId;
-
-        @NotNull
-        private Long chatRoomId;
-
         @NotBlank
         private String message;
 
         @NotNull
         private MessageType type;
+    }
 
-        public Chat toEntity(Member sender, ChatRoom chatRoom) {
-            return Chat.builder()
-                    .sender(sender)
-                    .chatRoom(chatRoom)
-                    .message(message)
-                    .type(type)
-                    .build();
-        }
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ChatRoomRequestDto {
+
+        @NotBlank
+        private String title;
     }
 
     @Getter
@@ -62,6 +55,26 @@ public class ChatDto {
             type = chat.getType();
             createdDate = chat.getCreatedDate();
             lastModifiedDate = chat.getLastModifiedDate();
+        }
+    }
+
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ChatRoomResponseDto {
+
+        private Long id;
+        private Long userId;
+        private String title;
+        private LocalDateTime createdDate;
+        private LocalDateTime lastModifiedDate;
+
+        public ChatRoomResponseDto(ChatRoom chatRoom) {
+            id = chatRoom.getId();
+            userId = chatRoom.getMember().getId();
+            title = chatRoom.getTitle();
+            createdDate = chatRoom.getCreatedDate();
+            lastModifiedDate = chatRoom.getLastModifiedDate();
         }
     }
 }
