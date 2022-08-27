@@ -1,10 +1,13 @@
 package com.tourgether.exception;
 
 import com.tourgether.enums.ErrorCode;
+import com.tourgether.exception.apply.ApplyNotFoundException;
+import com.tourgether.exception.bookmark.BookmarkNotFoundException;
 import com.tourgether.exception.chat.ChatNotFoundException;
 import com.tourgether.exception.chat.ChatRoomNotFoundException;
 import com.tourgether.exception.member.*;
 import com.tourgether.exception.notification.NotificationNotFoundException;
+import com.tourgether.exception.recruit.CommentNotFoundException;
 import com.tourgether.exception.recruit.RecruitNotFoundException;
 import com.tourgether.exception.recruit.WriterMismatchException;
 import com.tourgether.exception.team.TeamNotFoundException;
@@ -108,6 +111,15 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.valueOf(e.getErrorCode().getStatus()));
     }
 
+    // 댓글 조회 실패
+    @ExceptionHandler(CommentNotFoundException.class)
+    public ResponseEntity<ErrorResponseDto> handleCommentNotFoundException(CommentNotFoundException e) {
+        log.error("handleCommentNotFoundException", e);
+        ErrorResponseDto error = new ErrorResponseDto(e.getErrorCode());
+
+        return new ResponseEntity<>(error, HttpStatus.valueOf(e.getErrorCode().getStatus()));
+    }
+
     // 모집글 작성자 불일치
     @ExceptionHandler(WriterMismatchException.class)
     public ResponseEntity<ErrorResponseDto> handleWriterMismatchException(WriterMismatchException e) {
@@ -120,7 +132,7 @@ public class GlobalExceptionHandler {
     // 채팅 조회 실패
     @ExceptionHandler(ChatNotFoundException.class)
     public ResponseEntity<ErrorResponseDto> handleChatNotFoundException(ChatNotFoundException e) {
-        log.error("handlerChatNotFoundException", e);
+        log.error("handleChatNotFoundException", e);
         ErrorResponseDto error = new ErrorResponseDto(e.getErrorCode());
 
         return new ResponseEntity<>(error, HttpStatus.valueOf(e.getErrorCode().getStatus()));
@@ -130,6 +142,24 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ChatRoomNotFoundException.class)
     public ResponseEntity<ErrorResponseDto> handleChatRoomNotFoundException(ChatRoomNotFoundException e) {
         log.error("handleChatRoomNotFoundException", e);
+        ErrorResponseDto error = new ErrorResponseDto(e.getErrorCode());
+
+        return new ResponseEntity<>(error, HttpStatus.valueOf(e.getErrorCode().getStatus()));
+    }
+
+    // 북마크 조회 실패
+    @ExceptionHandler(BookmarkNotFoundException.class)
+    public ResponseEntity<ErrorResponseDto> handleBookmarkNotFoundException(BookmarkNotFoundException e) {
+        log.error("handleBookmarkNotFoundException", e);
+        ErrorResponseDto error = new ErrorResponseDto(e.getErrorCode());
+
+        return new ResponseEntity<>(error, HttpStatus.valueOf(e.getErrorCode().getStatus()));
+    }
+
+    // 지원 조회 실패
+    @ExceptionHandler(ApplyNotFoundException.class)
+    public ResponseEntity<ErrorResponseDto> handleApplyNotFoundException(ApplyNotFoundException e) {
+        log.error("handleApplyNotFoundException", e);
         ErrorResponseDto error = new ErrorResponseDto(e.getErrorCode());
 
         return new ResponseEntity<>(error, HttpStatus.valueOf(e.getErrorCode().getStatus()));

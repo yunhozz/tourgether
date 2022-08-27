@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum ErrorCode {
 
+    // global
     NOT_FOUND(404, "COMMON-ERR-404", "PAGE NOT FOUND"),
     INTER_SERVER_ERROR(500, "COMMON-ERR-500", "INTER SERVER ERROR"),
 
@@ -25,11 +26,18 @@ public enum ErrorCode {
 
     // recruit
     RECRUIT_NOT_FOUND(400, "RECRUIT-ERR-400", "RECRUITMENT NOT FOUND"),
+    COMMENT_NOT_FOUND(400, "COMMENT-ERR-400", "COMMENT NOT FOUND"),
     WRITER_MISMATCH(400, "RECRUIT-ERR-400", "WRITER DO NOT MATCH"),
 
     // chat
     CHAT_NOT_FOUND(400, "CHATTING-ERR-400", "CHAT NOT FOUND"),
-    CHATROOM_NOT_FOUND(400, "CHATROOM-ERR-400", "CHATROOM NOT FOUND");
+    CHATROOM_NOT_FOUND(400, "CHATROOM-ERR-400", "CHATROOM NOT FOUND"),
+
+    // bookmark
+    BOOKMARK_NOT_FOUND(400, "BOOKMARK-ERR-400", "BOOKMARK NOT FOUND"),
+
+    // apply
+    APPLY_NOT_FOUND(400, "APPLY-ERR-400", "APPLY NOT FOUND");
 
     private final int status;
     private final String code;
