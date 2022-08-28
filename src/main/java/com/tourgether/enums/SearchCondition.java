@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 public enum SearchCondition {
 
     LATEST_ORDER("SEQ_LATEST", "최신순"),
+    MODIFIED_ORDER("SEQ_MODIFIED", "수정 순"),
+    POPULARITY_ORDER("SEQ_POPULARITY", "인기 순"),
     ACCURACY_ORDER("SEQ_ACCURACY", "정확도순");
 
     private final String key;
