@@ -7,10 +7,9 @@ import static com.tourgether.dto.RecruitDto.*;
 
 public interface RecruitRepositoryCustom {
 
-    Page<RecruitQueryDto> findPageWithCreated(Pageable pageable);
-    Page<RecruitQueryDto> findPageWithModified(Pageable pageable);
-    Page<RecruitQueryDto> findPageWithPopularity(Pageable pageable);
-    Page<RecruitQueryDto> findPageWithKeyword(String keyword, Pageable pageable);
-    Page<RecruitQueryDto> findPageWithKeywordOnLatestOrder(String keyword, Pageable pageable);
-    Page<RecruitQueryDto> findPageWithKeywordOnAccuracyOrder(String keyword, Pageable pageable);
+    Page<RecruitQueryDto> findPageWithCreated(Pageable pageable); // 최신 순
+    Page<RecruitQueryDto> findPageWithModified(Pageable pageable); // 수정 순
+    Page<RecruitQueryDto> findPageWithPopularity(Pageable pageable); // 인기 순
+    Page<RecruitQueryDto> findPageWithKeywordOnLatestOrder(String keyword, Pageable pageable); // 검색 + 최신 순
+    Page<RecruitQueryDto> findPageWithKeywordOnAccuracyOrder(String keyword, Pageable pageable); // 검색 + 정확도 순
 }

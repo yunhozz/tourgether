@@ -114,37 +114,6 @@ public class RecruitRepositoryImpl implements RecruitRepositoryCustom {
 
     // 키워드 최신순
     @Override
-    public Page<RecruitQueryDto> findPageWithKeyword(String keyword, Pageable pageable) {
-        List<RecruitQueryDto> recruits = queryFactory
-                .select(new QRecruitDto_RecruitQueryDto(
-                        recruit.id,
-                        recruit.title,
-                        recruit.content,
-                        recruit.view,
-                        recruit.createdDate,
-                        recruit.lastModifiedDate,
-                        member.id,
-                        member.nickname,
-                        member.profileImgUrl
-                ))
-                .from(recruit)
-                .join(recruit.writer, member)
-                .where(isContain(keyword))
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
-                .orderBy(recruit.createdDate.desc())
-                .fetch();
-
-        Long count = queryFactory
-                .select(recruit.count())
-                .from(recruit)
-                .fetchOne();
-
-        return new PageImpl<>(recruits, pageable, count);
-    }
-
-    // 키워드 수정순
-    @Override
     public Page<RecruitQueryDto> findPageWithKeywordOnLatestOrder(String keyword, Pageable pageable) {
         List<RecruitQueryDto> recruits = queryFactory
                 .select(new QRecruitDto_RecruitQueryDto(
@@ -163,7 +132,7 @@ public class RecruitRepositoryImpl implements RecruitRepositoryCustom {
                 .where(isContain(keyword))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
-                .orderBy(recruit.lastModifiedDate.desc())
+                .orderBy(recruit.createdDate.desc())
                 .fetch();
 
         Long count = queryFactory
