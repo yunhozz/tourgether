@@ -4,8 +4,8 @@ import com.tourgether.domain.member.model.entity.Member;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -17,30 +17,19 @@ public class MemberDto {
     @AllArgsConstructor
     public static class MemberRequestDto {
 
-        @NotBlank
+        @Email(message = "이메일을 입력해주세요.")
         private String email;
 
-        @NotBlank
+        @NotBlank(message = "비밀번호를 입력해주세요.")
         private String password;
 
-        @NotBlank
+        @NotBlank(message = "이름을 입력해주세요.")
         private String name;
 
-        @NotBlank
+        @NotBlank(message = "닉네임을 입력해주세요.")
         private String nickname;
 
         private String profileImgUrl;
-
-        public Member toEntity() {
-            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-            return Member.builder()
-                    .email(email)
-                    .password(encoder.encode(password))
-                    .name(name)
-                    .nickname(nickname)
-                    .profileImgUrl(profileImgUrl)
-                    .build();
-        }
     }
 
     @Getter
@@ -102,10 +91,10 @@ public class MemberDto {
     @AllArgsConstructor
     public static class LoginForm {
 
-        @NotBlank
+        @Email(message = "이메일을 입력해주세요.")
         private String email;
 
-        @NotBlank
+        @NotBlank(message = "비밀번호를 입력해주세요.")
         private String password;
     }
 
@@ -114,10 +103,10 @@ public class MemberDto {
     @AllArgsConstructor
     public static class UpdateForm {
 
-        @NotBlank
+        @NotBlank(message = "이름을 입력해주세요.")
         private String name;
 
-        @NotBlank
+        @NotBlank(message = "닉네임을 입력해주세요.")
         private String nickname;
 
         private String profileUrl;
@@ -128,10 +117,10 @@ public class MemberDto {
     @AllArgsConstructor
     public static class PasswordForm {
 
-        @NotBlank
+        @NotBlank(message = "기존 비밀번호를 입력해주세요.")
         private String originalPw;
 
-        @NotBlank
+        @NotBlank(message = "변경하실 비밀번호를 입력해주세요.")
         private String newPw;
     }
 }

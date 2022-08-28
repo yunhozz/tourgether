@@ -19,27 +19,13 @@ public class NotificationDto {
     @AllArgsConstructor
     public static class NotificationRequestDto {
 
-        @NotBlank
+        @NotBlank(message = "메세지를 입력해주세요.")
         private String message;
 
-        @NotNull
+        @NotNull(message = "알림 타입을 입력해주세요.")
         private NotificationType type;
 
         private String redirectUrl;
-
-        @NotNull
-        private Boolean isChecked;
-
-        public Notification toEntity(Member sender, Member receiver) {
-            return Notification.builder()
-                    .sender(sender)
-                    .receiver(receiver)
-                    .message(message)
-                    .type(type)
-                    .redirectUrl(redirectUrl)
-                    .isChecked(isChecked)
-                    .build();
-        }
     }
 
     @Getter

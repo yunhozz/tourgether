@@ -23,23 +23,11 @@ public class RecruitDto {
     @AllArgsConstructor
     public static class RecruitRequestDto {
 
-        @NotBlank
+        @NotBlank(message = "제목을 입력해주세요.")
         private String title;
 
-        @NotBlank
+        @NotBlank(message = "내용을 입력해주세요.")
         private String content;
-
-        @NotNull
-        private Integer view;
-
-        public Recruit toEntity(Member writer) {
-            return Recruit.builder()
-                    .writer(writer)
-                    .title(title)
-                    .content(content)
-                    .view(view)
-                    .build();
-        }
     }
 
     @Getter

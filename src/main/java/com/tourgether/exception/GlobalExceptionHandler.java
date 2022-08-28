@@ -1,5 +1,7 @@
 package com.tourgether.exception;
 
+import com.tourgether.dto.ErrorResponseDto;
+import com.tourgether.dto.NotValidResponseDto;
 import com.tourgether.enums.ErrorCode;
 import com.tourgether.exception.apply.ApplyNotFoundException;
 import com.tourgether.exception.bookmark.BookmarkNotFoundException;
@@ -14,8 +16,13 @@ import com.tourgether.exception.team.TeamNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @ControllerAdvice
@@ -37,6 +44,25 @@ public class GlobalExceptionHandler {
         ErrorResponseDto error = new ErrorResponseDto(ErrorCode.INTER_SERVER_ERROR);
 
         return new ResponseEntity<>(error, HttpStatus.REQUEST_TIMEOUT);
+    }
+
+    // validation
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<List<NotValidResponseDto>> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+        log.error("handleMethodArgumentNotValidException", e);
+        List<FieldError> fieldErrors = e.getBindingResult().getFieldErrors();
+        List<NotValidResponseDto> notValidResponseDtoList = new ArrayList<>();
+
+        for (FieldError fieldError : fieldErrors) {
+            NotValidResponseDto notValidResponseDto = NotValidResponseDto.builder()
+                    .defaultMessage(fieldError.getDefaultMessage())
+                    .field(fieldError.getField())
+                    .rejectedValue(fieldError.getRejectedValue())
+                    .code(fieldError.getCode())
+                    .build();
+            notValidResponseDtoList.add(notValidResponseDto);
+        }
+        return new ResponseEntity<>(notValidResponseDtoList, HttpStatus.BAD_REQUEST);
     }
 
     // 회원 조회 실패

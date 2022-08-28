@@ -14,7 +14,7 @@ public class CommentDto {
     @AllArgsConstructor
     public static class CommentRequestDto {
 
-        @NotBlank
+        @NotBlank(message = "내용을 입력해주세요.")
         private String content;
     }
 
@@ -40,7 +40,7 @@ public class CommentDto {
     @NoArgsConstructor
     public static class UpdateForm {
 
-        @NotBlank
+        @NotBlank(message = "내용을 입력해주세요.")
         private String content;
     }
 }

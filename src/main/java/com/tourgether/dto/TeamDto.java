@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class TeamDto {
 
@@ -15,16 +16,12 @@ public class TeamDto {
     @AllArgsConstructor
     public static class TeamRequestDto {
 
-        @NotBlank
+        @NotBlank(message = "팀명을 입력해주세요.")
         private String name;
 
         private String introduction;
 
         private String propensities;
-
-        public Team toEntity() {
-            return Team.createTeam(name, introduction, propensities);
-        }
     }
 
     @Getter
@@ -47,5 +44,15 @@ public class TeamDto {
             createdDate = team.getCreatedDate();
             lastModifiedDate = team.getLastModifiedDate();
         }
+    }
+
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class UpdateForm {
+
+        private String introduction;
+
+        private List<String> propensities;
     }
 }
