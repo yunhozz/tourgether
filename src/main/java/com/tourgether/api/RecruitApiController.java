@@ -2,7 +2,9 @@ package com.tourgether.api;
 
 import com.tourgether.domain.recruit.model.repository.RecruitRepository;
 import com.tourgether.domain.recruit.service.RecruitService;
+import com.tourgether.enums.ErrorCode;
 import com.tourgether.enums.SearchCondition;
+import com.tourgether.exception.ErrorResponseDto;
 import com.tourgether.util.auth.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -35,31 +37,25 @@ public class RecruitApiController {
     }
 
     @GetMapping("/recruits/page")
-    public ResponseEntity<Page<RecruitQueryDto>> getRecruitsPage(@RequestParam SearchCondition condition, Pageable pageable) {
-        if (condition.equals(LATEST_ORDER)) {
-            return ResponseEntity.ok(recruitRepository.findPageWithCreated(pageable));
-        }
+    public ResponseEntity<Page<RecruitQueryDto>> getRecruitsPage(@RequestParam(defaultValue = "LATEST_ORDER") SearchCondition condition, Pageable pageable) {
         if (condition.equals(MODIFIED_ORDER)) {
             return ResponseEntity.ok(recruitRepository.findPageWithModified(pageable));
         }
         if (condition.equals(POPULARITY_ORDER)) {
             return ResponseEntity.ok(recruitRepository.findPageWithPopularity(pageable));
         }
-        return ResponseEntity.badRequest().build();
+        return ResponseEntity.ok(recruitRepository.findPageWithCreated(pageable));
     }
 
     @GetMapping("/recruits/search")
-    public ResponseEntity<Page<RecruitQueryDto>> getPageWithKeyword(@RequestParam(required = false) String keyword, @RequestParam(required = false) SearchCondition condition, Pageable pageable) {
-        if (keyword.isEmpty() || condition == null) {
-            return ResponseEntity.badRequest().build();
-        }
-        if (condition.equals(LATEST_ORDER)) {
-            return ResponseEntity.ok(recruitRepository.findPageWithKeywordOnLatestOrder(keyword, pageable));
+    public ResponseEntity<Object> getPageWithKeyword(@RequestParam(required = false) String keyword, @RequestParam(defaultValue = "LATEST_ORDER") SearchCondition condition, Pageable pageable) {
+        if (keyword.isEmpty()) {
+            return ResponseEntity.badRequest().body(new ErrorResponseDto(ErrorCode.KEYWORD_NOT_ENTERED));
         }
         if (condition.equals(ACCURACY_ORDER)) {
             return ResponseEntity.ok(recruitRepository.findPageWithKeywordOnAccuracyOrder(keyword, pageable));
         }
-        return null;
+        return ResponseEntity.ok(recruitRepository.findPageWithKeywordOnLatestOrder(keyword, pageable));
     }
 
     @PostMapping("/recruits")
