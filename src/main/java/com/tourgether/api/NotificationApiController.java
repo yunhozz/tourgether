@@ -23,50 +23,50 @@ public class NotificationApiController {
     private final NotificationService notificationService;
     private final NotificationRepository notificationRepository;
 
-    @GetMapping("/notification/read/{notificationId}")
+    @GetMapping("/notifications/{notificationId}")
     public ResponseEntity<NotificationResponseDto> readNotification(@PathVariable String notificationId) {
         return ResponseEntity.ok(notificationService.readNotification(Long.valueOf(notificationId)));
     }
 
-    @GetMapping("/notification/read/all")
-    public ResponseEntity<List<NotificationResponseDto>> readNotificationAll(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        List<NotificationResponseDto> notifications = notificationService.findNotificationDtoListWithReceiverIdReadOrNot(userDetails.getMember().getId(), false);
-        List<Long> ids = notifications.stream().map(NotificationResponseDto::getId).toList();
-        notificationService.readNotifications(ids);
-
-        return ResponseEntity.ok(notificationService.findNotificationDtoList());
-    }
-
-    @GetMapping("/notification/list")
+    @GetMapping("/notifications")
     public ResponseEntity<List<NotificationResponseDto>> getNotifications(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         return ResponseEntity.ok(notificationService.findNotificationDtoListWithReceiverId(userDetails.getMember().getId()));
     }
 
-    @GetMapping("/notification/receiver-list")
-    public ResponseEntity<Page<NotificationQueryDto>> getNotificationsPage(@AuthenticationPrincipal UserDetailsImpl userDetails, @PageableDefault(size = 10) Pageable pageable) {
+    @GetMapping("/notifications/page")
+    public ResponseEntity<Page<NotificationQueryDto>> getNotificationPage(@AuthenticationPrincipal UserDetailsImpl userDetails, @PageableDefault(size = 10) Pageable pageable) {
         return ResponseEntity.ok(notificationRepository.findSimplePage(userDetails.getMember().getId(), pageable));
     }
 
-    @GetMapping(value = "/notification/connect", produces = "text/event-stream")
+    @PostMapping(value = "/notifications/connect", produces = "text/event-stream")
     public ResponseEntity<Void> connect(@RequestHeader(value = "Last-Event-ID", required = false, defaultValue = "") String lastEventId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         notificationService.connect(userDetails.getMember().getId(), lastEventId);
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/notification/send")
+    @PostMapping("/notifications")
     public ResponseEntity<Long> send(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestParam String receiverId, @RequestBody NotificationRequestDto notificationRequestDto) {
         return ResponseEntity.ok(notificationService.sendNotification(userDetails.getMember().getId(), Long.valueOf(receiverId), notificationRequestDto));
     }
 
-    @DeleteMapping("/notification/delete")
-    public ResponseEntity<Void> deleteNotification(@RequestParam String notificationId) {
-        notificationRepository.deleteNotification(Long.valueOf(notificationId));
+    @PatchMapping("/notifications")
+    public ResponseEntity<Void> readNotificationAll(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        List<NotificationResponseDto> notifications = notificationService.findNotificationDtoListWithReceiverIdReadOrNot(userDetails.getMember().getId(), false);
+        List<Long> ids = notifications.stream().map(NotificationResponseDto::getId).toList();
+        notificationService.readNotifications(ids);
+
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/notification/delete-checked")
+    @DeleteMapping("/notifications")
+    public ResponseEntity<Void> deleteNotification(@RequestParam String notificationId) {
+        notificationRepository.deleteNotification(Long.valueOf(notificationId));
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/notifications/checked")
     public ResponseEntity<Void> deleteNotificationChecked(@RequestParam List<Long> notificationIds) {
         notificationRepository.deleteAlreadyChecked(notificationIds);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 }

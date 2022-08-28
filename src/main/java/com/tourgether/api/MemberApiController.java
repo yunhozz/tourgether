@@ -19,41 +19,41 @@ public class MemberApiController {
     private final MemberService memberService;
     private final MemberRepository memberRepository;
 
-    @GetMapping("/member/{userId}")
+    @GetMapping("/members/{userId}")
     public ResponseEntity<MemberResponseDto> getMember(@PathVariable String userId) {
         return ResponseEntity.ok(memberService.findMemberDto(Long.valueOf(userId)));
     }
 
-    @GetMapping("/member/list")
+    @GetMapping("/members")
     public ResponseEntity<List<MemberResponseDto>> getMembers() {
         return ResponseEntity.ok(memberService.findMemberDtoList());
     }
 
-    @PatchMapping("/member/update-info")
+    @PostMapping("/members")
+    public ResponseEntity<Long> signup(@RequestBody MemberRequestDto memberRequestDto) {
+        return ResponseEntity.ok(memberService.join(memberRequestDto));
+    }
+
+    @PostMapping("/members/login")
+    public ResponseEntity<TokenResponseDto> login(@RequestBody LoginForm loginForm) {
+        return ResponseEntity.ok(memberService.login(loginForm.getEmail(), loginForm.getPassword()));
+    }
+
+    @PatchMapping("/members/info")
     public ResponseEntity<Void> updateMemberInfo(@RequestParam String userId, @RequestBody UpdateForm updateForm) {
         memberService.updateInfo(Long.valueOf(userId), updateForm.getName(), updateForm.getNickname(), updateForm.getProfileUrl());
         return ResponseEntity.ok().build();
     }
 
-    @PatchMapping("/member/update-password")
+    @PatchMapping("/members/password")
     public ResponseEntity<Void> updateMemberPassword(@RequestParam String userId, @RequestBody PasswordForm passwordForm) {
         memberService.updatePassword(Long.valueOf(userId), passwordForm.getOriginalPw(), passwordForm.getNewPw());
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/member/delete")
+    @DeleteMapping("/members")
     public ResponseEntity<Void> deleteMember(@RequestParam String userId, @RequestParam String password) {
         memberService.withdraw(Long.valueOf(userId), password);
-        return ResponseEntity.ok().build();
-    }
-
-    @PostMapping("/member/signup")
-    public ResponseEntity<Long> signup(@RequestBody MemberRequestDto memberRequestDto) {
-        return ResponseEntity.ok(memberService.join(memberRequestDto));
-    }
-
-    @PostMapping("/member/login")
-    public ResponseEntity<TokenResponseDto> login(@RequestBody LoginForm loginForm) {
-        return ResponseEntity.ok(memberService.login(loginForm.getEmail(), loginForm.getPassword()));
+        return ResponseEntity.noContent().build();
     }
 }
