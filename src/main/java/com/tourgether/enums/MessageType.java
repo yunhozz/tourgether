@@ -7,8 +7,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum MessageType {
 
-    ENTER("CHAT_ENTER", "입장 메세지"),
-    TALK("CHAT_TALK", "채팅 메세지");
+    JOIN("CHAT_ENTER", "입장 메세지"),
+    CHAT("CHAT_TALK", "채팅 메세지");
 
     private final String key;
     private final String value;
