@@ -29,7 +29,14 @@ public class RecruitService {
 
     public Long makeRecruit(Long writerId, RecruitRequestDto recruitRequestDto) {
         Member writer = memberRepository.getReferenceById(writerId);
-        return recruitRepository.save(recruitRequestDto.toEntity(writer)).getId();
+        Recruit recruit = Recruit.builder()
+                .writer(writer)
+                .title(recruitRequestDto.getTitle())
+                .content(recruitRequestDto.getContent())
+                .view(0)
+                .build();
+
+        return recruitRepository.save(recruit).getId();
     }
 
     public void updateRecruit(Long id, Long writerId, String title, String content) {
