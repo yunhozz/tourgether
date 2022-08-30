@@ -7,8 +7,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum Position {
 
-    POSITION_LEADER("TEAM LEADER", "팀장"),
-    POSITION_MEMBER("TEAM MEMBER", "팀원");
+    LEADER("TEAM LEADER", "팀장"),
+    MEMBER("TEAM MEMBER", "팀원");
 
     private final String key;
     private final String value;
