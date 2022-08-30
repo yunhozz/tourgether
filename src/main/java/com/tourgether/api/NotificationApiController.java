@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 import static com.tourgether.dto.NotificationDto.*;
@@ -45,7 +46,7 @@ public class NotificationApiController {
     }
 
     @PostMapping("/notifications")
-    public ResponseEntity<Long> send(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestParam String receiverId, @RequestBody NotificationRequestDto notificationRequestDto) {
+    public ResponseEntity<Long> send(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestParam String receiverId, @Valid @RequestBody NotificationRequestDto notificationRequestDto) {
         return ResponseEntity.ok(notificationService.sendNotification(userDetails.getMember().getId(), Long.valueOf(receiverId), notificationRequestDto));
     }
 

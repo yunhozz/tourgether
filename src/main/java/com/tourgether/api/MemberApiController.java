@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 import static com.tourgether.dto.MemberDto.*;
@@ -30,23 +31,23 @@ public class MemberApiController {
     }
 
     @PostMapping("/members")
-    public ResponseEntity<Long> signup(@RequestBody MemberRequestDto memberRequestDto) {
+    public ResponseEntity<Long> signup(@Valid @RequestBody MemberRequestDto memberRequestDto) {
         return ResponseEntity.ok(memberService.join(memberRequestDto));
     }
 
     @PostMapping("/members/login")
-    public ResponseEntity<TokenResponseDto> login(@RequestBody LoginForm loginForm) {
+    public ResponseEntity<TokenResponseDto> login(@Valid @RequestBody LoginForm loginForm) {
         return ResponseEntity.ok(memberService.login(loginForm.getEmail(), loginForm.getPassword()));
     }
 
     @PatchMapping("/members/info")
-    public ResponseEntity<Void> updateMemberInfo(@RequestParam String userId, @RequestBody UpdateForm updateForm) {
+    public ResponseEntity<Void> updateMemberInfo(@RequestParam String userId, @Valid @RequestBody UpdateForm updateForm) {
         memberService.updateInfo(Long.valueOf(userId), updateForm.getName(), updateForm.getNickname(), updateForm.getProfileUrl());
         return ResponseEntity.ok().build();
     }
 
     @PatchMapping("/members/password")
-    public ResponseEntity<Void> updateMemberPassword(@RequestParam String userId, @RequestBody PasswordForm passwordForm) {
+    public ResponseEntity<Void> updateMemberPassword(@RequestParam String userId, @Valid @RequestBody PasswordForm passwordForm) {
         memberService.updatePassword(Long.valueOf(userId), passwordForm.getOriginalPw(), passwordForm.getNewPw());
         return ResponseEntity.ok().build();
     }

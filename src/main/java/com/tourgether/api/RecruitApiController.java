@@ -4,7 +4,7 @@ import com.tourgether.domain.recruit.model.repository.RecruitRepository;
 import com.tourgether.domain.recruit.service.RecruitService;
 import com.tourgether.enums.ErrorCode;
 import com.tourgether.enums.SearchCondition;
-import com.tourgether.exception.ErrorResponseDto;
+import com.tourgether.dto.ErrorResponseDto;
 import com.tourgether.util.auth.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 import static com.tourgether.dto.RecruitDto.*;
@@ -59,17 +60,15 @@ public class RecruitApiController {
     }
 
     @PostMapping("/recruits")
-    public ResponseEntity<Long> createRecruit(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody RecruitRequestDto recruitRequestDto) {
+    public ResponseEntity<Long> createRecruit(@AuthenticationPrincipal UserDetailsImpl userDetails, @Valid @RequestBody RecruitRequestDto recruitRequestDto) {
         return ResponseEntity.ok(recruitService.makeRecruit(userDetails.getMember().getId(), recruitRequestDto));
     }
 
     @PatchMapping("/recruits")
-    public ResponseEntity<Void> updateRecruit(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestParam String recruitId, @RequestBody UpdateForm updateForm) {
+    public ResponseEntity<Void> updateRecruit(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestParam String recruitId, @Valid @RequestBody UpdateForm updateForm) {
         RecruitResponseDto recruit = recruitService.findRecruitDto(Long.valueOf(recruitId));
-        if (!recruit.getWriterId().equals(userDetails.getMember().getId())) {
-            return ResponseEntity.badRequest().build();
-        }
         recruitService.updateRecruit(Long.valueOf(recruitId), recruit.getWriterId(), updateForm.getTitle(), updateForm.getContent());
+
         return ResponseEntity.ok().build();
     }
 }
