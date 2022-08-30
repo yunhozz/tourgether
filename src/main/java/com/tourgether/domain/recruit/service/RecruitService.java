@@ -2,8 +2,10 @@ package com.tourgether.domain.recruit.service;
 
 import com.tourgether.domain.member.model.entity.Member;
 import com.tourgether.domain.member.model.repository.MemberRepository;
+import com.tourgether.domain.member.model.repository.RecruitMemberRepository;
 import com.tourgether.domain.recruit.model.entity.Bookmark;
 import com.tourgether.domain.recruit.model.entity.Recruit;
+import com.tourgether.domain.recruit.model.repository.ApplyRepository;
 import com.tourgether.domain.recruit.model.repository.BookmarkRepository;
 import com.tourgether.domain.recruit.model.repository.RecruitRepository;
 import com.tourgether.enums.ErrorCode;
@@ -24,8 +26,10 @@ import static com.tourgether.dto.RecruitDto.*;
 public class RecruitService {
 
     private final RecruitRepository recruitRepository;
+    private final RecruitMemberRepository recruitMemberRepository;
     private final MemberRepository memberRepository;
     private final BookmarkRepository bookmarkRepository;
+    private final ApplyRepository applyRepository;
 
     public Long makeRecruit(Long writerId, RecruitRequestDto recruitRequestDto) {
         Member writer = memberRepository.getReferenceById(writerId);
@@ -50,10 +54,11 @@ public class RecruitService {
     public void deleteRecruit(Long id, Long writerId) {
         Recruit recruit = findRecruit(id);
         if (!recruit.getWriter().getId().equals(writerId)) {
-            throw new WriterMismatchException("This member don't match on recruitment : " + writerId, ErrorCode.WRITER_MISMATCH);
+            throw new WriterMismatchException("This member don't have permission on deleting recruitment : " + writerId, ErrorCode.WRITER_MISMATCH);
         }
-        List<Bookmark> bookmarks = bookmarkRepository.findWithRecruitId(recruit.getId());
-        bookmarks.forEach(Bookmark::deleteRecruit);
+        bookmarkRepository.findByRecruit(recruit).forEach(Bookmark::deleteRecruit);
+        applyRepository.findByRecruit(recruit).forEach(applyRepository::delete);
+        recruitMemberRepository.findByRecruit(recruit).forEach(recruitMemberRepository::delete);
         recruitRepository.delete(recruit);
     }
 
