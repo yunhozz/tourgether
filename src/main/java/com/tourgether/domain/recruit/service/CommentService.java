@@ -33,7 +33,7 @@ public class CommentService {
         Recruit recruit = recruitRepository.findById(recruitId)
                 .orElseThrow(() -> new RecruitNotFoundException("This recruitment is null: " + recruitId, ErrorCode.RECRUIT_NOT_FOUND));
 
-        Comment comment = Comment.createComment(recruit, writer, commentRequestDto.getContent());
+        Comment comment = Comment.create(recruit, writer, commentRequestDto.getContent());
         return commentRepository.save(comment).getId();
     }
 
@@ -43,16 +43,24 @@ public class CommentService {
                 .orElseThrow(() -> new RecruitNotFoundException("This recruitment is null: " + recruitId, ErrorCode.RECRUIT_NOT_FOUND));
         Comment parent = findComment(parentId);
 
-        Comment commentChild = Comment.createCommentChild(recruit, writer, parent, commentRequestDto.getContent());
+        Comment commentChild = Comment.createChild(recruit, writer, parent, commentRequestDto.getContent());
         return commentRepository.save(commentChild).getId();
     }
 
     public void updateComment(Long commentId, Long writerId, String content) {
         Comment comment = findComment(commentId);
         if (!comment.getWriter().getId().equals(writerId)) {
-            throw new WriterMismatchException("This member is not writer of this: " + writerId, ErrorCode.WRITER_MISMATCH);
+            throw new WriterMismatchException("This member is not a comment writer: " + writerId, ErrorCode.WRITER_MISMATCH);
         }
         comment.update(content);
+    }
+
+    public void deleteComment(Long commentId, Long writerId) {
+        Comment comment = findComment(commentId);
+        if (!comment.getWriter().getId().equals(writerId)) {
+            throw new WriterMismatchException("This member is not a comment writer: " + writerId, ErrorCode.WRITER_MISMATCH);
+        }
+        commentRepository.delete(comment); // orphan remove : children
     }
 
     @Transactional(readOnly = true)
@@ -63,6 +71,16 @@ public class CommentService {
     @Transactional(readOnly = true)
     public List<CommentResponseDto> findCommentDtoList() {
         return commentRepository.findAll().stream()
+                .map(CommentResponseDto::new)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<CommentResponseDto> findCommentDtoListByRecruit(Long recruitId) {
+        Recruit recruit = recruitRepository.findById(recruitId)
+                .orElseThrow(() -> new RecruitNotFoundException("This recruitment is null: " + recruitId, ErrorCode.RECRUIT_NOT_FOUND));
+
+        return commentRepository.findByRecruit(recruit).stream()
                 .map(CommentResponseDto::new)
                 .collect(Collectors.toList());
     }

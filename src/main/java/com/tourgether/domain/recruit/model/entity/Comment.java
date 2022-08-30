@@ -42,14 +42,14 @@ public class Comment extends BaseTime {
         this.content = content;
     }
 
-    public static Comment createComment(Recruit recruit, Member writer, String content) {
+    public static Comment create(Recruit recruit, Member writer, String content) {
         Comment parent = new Comment(writer, content);
         parent.setRecruit(recruit);
 
         return parent;
     }
 
-    public static Comment createCommentChild(Recruit recruit, Member writer, Comment parent, String content) {
+    public static Comment createChild(Recruit recruit, Member writer, Comment parent, String content) {
         Comment child = new Comment(writer, content);
         child.setRecruit(recruit);
         child.setParent(parent);
