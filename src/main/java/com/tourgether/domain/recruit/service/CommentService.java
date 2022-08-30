@@ -7,6 +7,7 @@ import com.tourgether.domain.recruit.model.entity.Recruit;
 import com.tourgether.domain.recruit.model.repository.CommentRepository;
 import com.tourgether.domain.recruit.model.repository.RecruitRepository;
 import com.tourgether.enums.ErrorCode;
+import com.tourgether.exception.recruit.CommentNotFoundException;
 import com.tourgether.exception.recruit.RecruitNotFoundException;
 import com.tourgether.exception.recruit.WriterMismatchException;
 import lombok.RequiredArgsConstructor;
@@ -69,6 +70,6 @@ public class CommentService {
     @Transactional(readOnly = true)
     private Comment findComment(Long id) {
         return commentRepository.findById(id)
-                .orElseThrow(() -> new IllegalStateException("This comment is null: " + id));
+                .orElseThrow(() -> new CommentNotFoundException("This comment is null: " + id, ErrorCode.COMMENT_NOT_FOUND));
     }
 }

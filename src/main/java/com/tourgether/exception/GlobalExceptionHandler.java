@@ -12,7 +12,6 @@ import com.tourgether.exception.notification.NotificationNotFoundException;
 import com.tourgether.exception.recruit.CommentNotFoundException;
 import com.tourgether.exception.recruit.RecruitNotFoundException;
 import com.tourgether.exception.recruit.WriterMismatchException;
-import com.tourgether.exception.team.TeamNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -105,15 +104,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(PasswordSameException.class)
     public ResponseEntity<ErrorResponseDto> handlePasswordSameException(PasswordSameException e) {
         log.error("handlePasswordSameException", e);
-        ErrorResponseDto error = new ErrorResponseDto(e.getErrorCode());
-
-        return new ResponseEntity<>(error, HttpStatus.valueOf(e.getErrorCode().getStatus()));
-    }
-
-    // 팀 조회 실패
-    @ExceptionHandler(TeamNotFoundException.class)
-    public ResponseEntity<ErrorResponseDto> handleTeamNotFoundException(TeamNotFoundException e) {
-        log.error("handleTeamNotFoundException", e);
         ErrorResponseDto error = new ErrorResponseDto(e.getErrorCode());
 
         return new ResponseEntity<>(error, HttpStatus.valueOf(e.getErrorCode().getStatus()));
