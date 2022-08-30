@@ -1,6 +1,8 @@
 package com.tourgether.dto;
 
 import com.tourgether.domain.member.model.entity.Member;
+import com.tourgether.domain.member.model.entity.RecruitMember;
+import com.tourgether.enums.Position;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -83,6 +85,28 @@ public class MemberDto {
             profileImgUrl = member.getProfileImgUrl();
             createdDate = member.getCreatedDate();
             lastModifiedDate = member.getLastModifiedDate();
+        }
+    }
+
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class RecruitMemberResponseDto {
+
+        private Long id;
+        private Long userId;
+        private Long recruitId;
+        private Position position;
+        private LocalDateTime createdDate;
+        private LocalDateTime lastModifiedDate;
+
+        public RecruitMemberResponseDto(RecruitMember recruitMember) {
+            id = recruitMember.getId();
+            userId = recruitMember.getMember().getId();
+            recruitId = recruitMember.getRecruit().getId();
+            position = recruitMember.getPosition();
+            createdDate = recruitMember.getCreatedDate();
+            lastModifiedDate = recruitMember.getLastModifiedDate();
         }
     }
 
