@@ -10,10 +10,6 @@ import com.tourgether.enums.ErrorCode;
 import com.tourgether.exception.member.*;
 import com.tourgether.util.auth.jwt.JwtProvider;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -47,7 +43,13 @@ public class MemberService {
                     }
                 }
         );
-        Member member = memberRequestDto.toEntity();
+        Member member = Member.builder()
+                .email(memberRequestDto.getEmail())
+                .password(encoder.encode(memberRequestDto.getPassword()))
+                .name(memberRequestDto.getName())
+                .nickname(memberRequestDto.getNickname())
+                .profileImgUrl(memberRequestDto.getProfileImgUrl())
+                .build();
         Authority roleUser = authorityRepository.getReferenceById("ROLE_USER");
         MemberAuthority memberAuthority = new MemberAuthority(member, roleUser); // 사용자 권한 부여
         memberAuthorityRepository.save(memberAuthority);
