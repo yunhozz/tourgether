@@ -54,7 +54,14 @@ public class NotificationService {
         Member sender = memberRepository.getReferenceById(senderId);
         Member receiver = memberRepository.findById(receiverId)
                 .orElseThrow(() -> new MemberNotFoundException("This member is null: " + receiverId, ErrorCode.MEMBER_NOT_FOUND));
-        Notification notification = notificationRequestDto.toEntity(sender, receiver);
+        Notification notification = Notification.builder()
+                .sender(sender)
+                .receiver(receiver)
+                .message(notificationRequestDto.getMessage())
+                .type(notificationRequestDto.getType())
+                .redirectUrl(notificationRequestDto.getRedirectUrl())
+                .isChecked(false)
+                .build();
         notificationRepository.save(notification);
 
         Map<String, SseEmitter> emitters = emitterRepository.findEmittersWithMemberId(String.valueOf(receiverId));
