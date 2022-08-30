@@ -1,7 +1,6 @@
 package com.tourgether.dto;
 
 import com.querydsl.core.annotations.QueryProjection;
-import com.tourgether.domain.member.model.entity.Member;
 import com.tourgether.domain.recruit.model.entity.Recruit;
 import com.tourgether.enums.SearchCondition;
 import lombok.AllArgsConstructor;
@@ -94,10 +93,10 @@ public class RecruitDto {
     @AllArgsConstructor
     public static class SearchForm {
 
-        @NotBlank
+        @NotBlank(message = "키워드를 입력해주세요.")
         private String keyword;
 
-        @NotNull
+        @NotNull(message = "검색 조건을 설정해주세요.")
         private SearchCondition condition;
     }
 
@@ -105,10 +104,10 @@ public class RecruitDto {
     @NoArgsConstructor
     public static class UpdateForm {
 
-        @NotBlank
+        @NotBlank(message = "제목을 입력해주세요.")
         private String title;
 
-        @NotBlank
+        @NotBlank(message = "내용을 입력해주세요.")
         private String content;
     }
 }
