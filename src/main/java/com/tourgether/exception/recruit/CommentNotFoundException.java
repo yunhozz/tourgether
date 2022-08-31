@@ -6,30 +6,9 @@ import lombok.Getter;
 @Getter
 public class CommentNotFoundException extends RuntimeException {
 
-    private ErrorCode errorCode;
+    private final ErrorCode errorCode;
 
-    public CommentNotFoundException(String message, ErrorCode errorCode) {
-        super(message);
+    public CommentNotFoundException(ErrorCode errorCode) {
         this.errorCode = errorCode;
-    }
-
-    public CommentNotFoundException() {
-        super();
-    }
-
-    public CommentNotFoundException(String message) {
-        super(message);
-    }
-
-    public CommentNotFoundException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public CommentNotFoundException(Throwable cause) {
-        super(cause);
-    }
-
-    protected CommentNotFoundException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
     }
 }

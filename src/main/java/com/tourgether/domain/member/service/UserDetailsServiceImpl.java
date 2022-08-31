@@ -26,7 +26,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetailsImpl loadUserByUsername(String userId) throws UsernameNotFoundException {
         Member member = memberRepository.findById(Long.valueOf(userId))
-                .orElseThrow(() -> new MemberNotFoundException("This member is null: " + userId, ErrorCode.MEMBER_NOT_FOUND));
+                .orElseThrow(() -> new MemberNotFoundException(ErrorCode.MEMBER_NOT_FOUND));
         Set<MemberAuthority> authorities = memberAuthorityRepository.findByMember(member);
 
         return new UserDetailsImpl(member, authorities);

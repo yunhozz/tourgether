@@ -6,6 +6,7 @@ import com.tourgether.domain.notification.model.entity.Notification;
 import com.tourgether.domain.notification.model.repository.EmitterRepository;
 import com.tourgether.domain.notification.model.repository.NotificationRepository;
 import com.tourgether.enums.ErrorCode;
+import com.tourgether.exception.member.MemberNotFoundException;
 import com.tourgether.exception.notification.NotificationNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,7 +28,7 @@ public class NotificationService {
     private final EmitterRepository emitterRepository;
     private final MemberRepository memberRepository;
 
-    private static final Long DEFAULT_TIMEOUT = 60L * 60 * 1000;
+    private static final Long DEFAULT_TIMEOUT = 60L * 60;
 
     // 클라이언트와 서버 sse 연결
     public SseEmitter connect(Long receiverId, String lastEventId) {
@@ -53,7 +54,7 @@ public class NotificationService {
     public Long sendNotification(Long senderId, Long receiverId, NotificationRequestDto notificationRequestDto) {
         Member sender = memberRepository.getReferenceById(senderId);
         Member receiver = memberRepository.findById(receiverId)
-                .orElseThrow(() -> new MemberNotFoundException("This member is null: " + receiverId, ErrorCode.MEMBER_NOT_FOUND));
+                .orElseThrow(() -> new MemberNotFoundException(ErrorCode.MEMBER_NOT_FOUND));
         Notification notification = Notification.builder()
                 .sender(sender)
                 .receiver(receiver)
@@ -90,6 +91,11 @@ public class NotificationService {
         }
     }
 
+    public void deleteNotification(Long notificationId) {
+        Notification notification = findNotification(notificationId);
+        notificationRepository.delete(notification);
+    }
+
     @Transactional(readOnly = true)
     public NotificationResponseDto findNotificationDto(Long id) {
         return new NotificationResponseDto(findNotification(id));
@@ -104,7 +110,8 @@ public class NotificationService {
 
     @Transactional(readOnly = true)
     public List<NotificationResponseDto> findNotificationDtoListWithReceiverId(Long receiverId) {
-        return notificationRepository.findWithReceiverId(receiverId).stream()
+        Member receiver = memberRepository.getReferenceById(receiverId);
+        return notificationRepository.findByReceiverOrderByCreatedDateDesc(receiver).stream()
                 .map(NotificationResponseDto::new)
                 .collect(Collectors.toList());
     }
@@ -119,7 +126,7 @@ public class NotificationService {
     @Transactional(readOnly = true)
     private Notification findNotification(Long id) {
         return notificationRepository.findById(id)
-                .orElseThrow(() -> new NotificationNotFoundException("This notification is null : " + id, ErrorCode.NOTIFICATION_NOT_FOUND));
+                .orElseThrow(() -> new NotificationNotFoundException(ErrorCode.NOTIFICATION_NOT_FOUND));
     }
 
     private void sendToClient(SseEmitter emitter, String id, Object data) {
@@ -132,7 +139,7 @@ public class NotificationService {
             );
         } catch (Exception e) {
             emitterRepository.deleteById(id);
-            System.out.println("Connection Error!");
+            throw new RuntimeException(e);
         }
     }
 

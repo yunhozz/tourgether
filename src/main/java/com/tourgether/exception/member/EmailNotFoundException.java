@@ -4,11 +4,11 @@ import com.tourgether.enums.ErrorCode;
 import lombok.Getter;
 
 @Getter
-public class PasswordMismatchException extends RuntimeException {
+public class EmailNotFoundException extends RuntimeException {
 
     private final ErrorCode errorCode;
 
-    public PasswordMismatchException(ErrorCode errorCode) {
+    public EmailNotFoundException(ErrorCode errorCode) {
         this.errorCode = errorCode;
     }
 }

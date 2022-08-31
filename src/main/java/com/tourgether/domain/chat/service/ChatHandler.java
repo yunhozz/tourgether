@@ -31,7 +31,7 @@ public class ChatHandler extends TextWebSocketHandler {
         log.info("payload = {}", payload);
 
         Chatroom chatroom = chatroomRepository.findById(chatroomId)
-                .orElseThrow(() -> new ChatRoomNotFoundException("This chatroom is null: " + chatroomId, ErrorCode.CHATROOM_NOT_FOUND));
+                .orElseThrow(() -> new ChatRoomNotFoundException(ErrorCode.CHATROOM_NOT_FOUND));
         chatroom.handleMessage(session, chatRequestDto, objectMapper);
     }
 

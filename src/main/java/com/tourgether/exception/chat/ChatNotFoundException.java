@@ -6,29 +6,9 @@ import lombok.Getter;
 @Getter
 public class ChatNotFoundException extends RuntimeException {
 
-    private ErrorCode errorCode;
+    private final ErrorCode errorCode;
 
-    public ChatNotFoundException(String message, ErrorCode errorCode) {
-        super(message);
+    public ChatNotFoundException(ErrorCode errorCode) {
         this.errorCode = errorCode;
-    }
-
-    public ChatNotFoundException() {
-    }
-
-    public ChatNotFoundException(String message) {
-        super(message);
-    }
-
-    public ChatNotFoundException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public ChatNotFoundException(Throwable cause) {
-        super(cause);
-    }
-
-    public ChatNotFoundException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
     }
 }

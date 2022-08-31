@@ -46,7 +46,7 @@ public class RecruitService {
     public void updateRecruit(Long id, Long writerId, String title, String content) {
         Recruit recruit = findRecruit(id);
         if (!recruit.getWriter().getId().equals(writerId)) {
-            throw new WriterMismatchException("This member is not writer of this: " + writerId, ErrorCode.WRITER_MISMATCH);
+            throw new WriterMismatchException(ErrorCode.WRITER_MISMATCH);
         }
         recruit.update(title, content);
     }
@@ -54,7 +54,7 @@ public class RecruitService {
     public void deleteRecruit(Long id, Long writerId) {
         Recruit recruit = findRecruit(id);
         if (!recruit.getWriter().getId().equals(writerId)) {
-            throw new WriterMismatchException("This member don't have permission on deleting recruitment : " + writerId, ErrorCode.WRITER_MISMATCH);
+            throw new WriterMismatchException(ErrorCode.WRITER_MISMATCH);
         }
         bookmarkRepository.findByRecruit(recruit).forEach(Bookmark::deleteRecruit);
         applyRepository.findByRecruit(recruit).forEach(applyRepository::delete);
@@ -77,6 +77,6 @@ public class RecruitService {
     @Transactional(readOnly = true)
     private Recruit findRecruit(Long id) {
         return recruitRepository.findById(id)
-                .orElseThrow(() -> new RecruitNotFoundException("This recruitment is null : " + id, ErrorCode.RECRUIT_NOT_FOUND));
+                .orElseThrow(() -> new RecruitNotFoundException(ErrorCode.RECRUIT_NOT_FOUND));
     }
 }

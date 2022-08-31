@@ -3,6 +3,8 @@ package com.tourgether.exception;
 import com.tourgether.dto.ErrorResponseDto;
 import com.tourgether.dto.NotValidResponseDto;
 import com.tourgether.enums.ErrorCode;
+import com.tourgether.exception.apply.AlreadyDecidedException;
+import com.tourgether.exception.apply.AlreadyApplyException;
 import com.tourgether.exception.apply.ApplyNotFoundException;
 import com.tourgether.exception.bookmark.BookmarkNotFoundException;
 import com.tourgether.exception.chat.ChatNotFoundException;
@@ -68,6 +70,15 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MemberNotFoundException.class)
     public ResponseEntity<ErrorResponseDto> handleMemberNotFoundException(MemberNotFoundException e) {
         log.error("handleMemberNotFoundException", e);
+        ErrorResponseDto error = new ErrorResponseDto(e.getErrorCode());
+
+        return new ResponseEntity<>(error, HttpStatus.valueOf(e.getErrorCode().getStatus()));
+    }
+
+    // 이메일 조회 실패
+    @ExceptionHandler(EmailNotFoundException.class)
+    public ResponseEntity<ErrorResponseDto> handleEmailNotFoundException(EmailNotFoundException e) {
+        log.error("handleEmailNotFoundException", e);
         ErrorResponseDto error = new ErrorResponseDto(e.getErrorCode());
 
         return new ResponseEntity<>(error, HttpStatus.valueOf(e.getErrorCode().getStatus()));
@@ -176,6 +187,24 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ApplyNotFoundException.class)
     public ResponseEntity<ErrorResponseDto> handleApplyNotFoundException(ApplyNotFoundException e) {
         log.error("handleApplyNotFoundException", e);
+        ErrorResponseDto error = new ErrorResponseDto(e.getErrorCode());
+
+        return new ResponseEntity<>(error, HttpStatus.valueOf(e.getErrorCode().getStatus()));
+    }
+
+    // 지원 중복
+    @ExceptionHandler(AlreadyApplyException.class)
+    public ResponseEntity<ErrorResponseDto> handleAlreadyApplyException(AlreadyApplyException e) {
+        log.error("handleAlreadyApplyException", e);
+        ErrorResponseDto error = new ErrorResponseDto(e.getErrorCode());
+
+        return new ResponseEntity<>(error, HttpStatus.valueOf(e.getErrorCode().getStatus()));
+    }
+
+    // 지원 처리 실패
+    @ExceptionHandler(AlreadyDecidedException.class)
+    public ResponseEntity<ErrorResponseDto> handleApplyAlreadyAcceptedException(AlreadyDecidedException e) {
+        log.error("handleApplyAlreadyAcceptedException", e);
         ErrorResponseDto error = new ErrorResponseDto(e.getErrorCode());
 
         return new ResponseEntity<>(error, HttpStatus.valueOf(e.getErrorCode().getStatus()));

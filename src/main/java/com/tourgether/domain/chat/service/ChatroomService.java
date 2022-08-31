@@ -54,6 +54,6 @@ public class ChatroomService {
     @Transactional(readOnly = true)
     private Chatroom findChatroom(Long chatroomId) {
         return chatroomRepository.findById(chatroomId)
-                .orElseThrow(() -> new ChatRoomNotFoundException("This chatroom is null: " + chatroomId, ErrorCode.CHATROOM_NOT_FOUND));
+                .orElseThrow(() -> new ChatRoomNotFoundException(ErrorCode.CHATROOM_NOT_FOUND));
     }
 }

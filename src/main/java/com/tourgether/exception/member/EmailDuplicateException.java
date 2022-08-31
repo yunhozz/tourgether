@@ -6,30 +6,9 @@ import lombok.Getter;
 @Getter
 public class EmailDuplicateException extends RuntimeException {
 
-    private ErrorCode errorCode;
+    private final ErrorCode errorCode;
 
-    public EmailDuplicateException(String message, ErrorCode errorCode) {
-        super(message);
+    public EmailDuplicateException(ErrorCode errorCode) {
         this.errorCode = errorCode;
-    }
-
-    public EmailDuplicateException() {
-        super();
-    }
-
-    public EmailDuplicateException(String message) {
-        super(message);
-    }
-
-    public EmailDuplicateException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public EmailDuplicateException(Throwable cause) {
-        super(cause);
-    }
-
-    protected EmailDuplicateException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
     }
 }

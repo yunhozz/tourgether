@@ -6,6 +6,8 @@ import com.tourgether.domain.recruit.model.entity.Bookmark;
 import com.tourgether.domain.recruit.model.entity.Recruit;
 import com.tourgether.domain.recruit.model.repository.BookmarkRepository;
 import com.tourgether.domain.recruit.model.repository.RecruitRepository;
+import com.tourgether.enums.ErrorCode;
+import com.tourgether.exception.bookmark.BookmarkNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,6 +50,6 @@ public class BookmarkService {
     @Transactional(readOnly = true)
     private Bookmark findBookmark(Long id) {
         return bookmarkRepository.findById(id)
-                .orElseThrow(() -> new IllegalStateException("This bookmark is null: " + id));
+                .orElseThrow(() -> new BookmarkNotFoundException(ErrorCode.BOOKMARK_NOT_FOUND));
     }
 }

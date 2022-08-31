@@ -36,10 +36,10 @@ public class MemberService {
         memberRepository.findAll().forEach(
                 member -> {
                     if (member.getEmail().equals(memberRequestDto.getEmail())) {
-                        throw new EmailDuplicateException("이메일이 중복된 회원이 존재합니다.", ErrorCode.EMAIL_DUPLICATION);
+                        throw new EmailDuplicateException(ErrorCode.EMAIL_DUPLICATION);
                     }
                     if (member.getNickname().equals(memberRequestDto.getNickname())) {
-                        throw new NicknameDuplicationException("닉네임이 중복된 회원이 존재합니다.", ErrorCode.NICKNAME_DUPLICATION);
+                        throw new NicknameDuplicationException(ErrorCode.NICKNAME_DUPLICATION);
                     }
                 }
         );
@@ -59,9 +59,9 @@ public class MemberService {
 
     public TokenResponseDto login(String email, String password) {
         Member member = memberRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException(email));
+                .orElseThrow(() -> new EmailNotFoundException(ErrorCode.EMAIL_NOT_FOUND));
         if (!encoder.matches(password, member.getPassword())) {
-            throw new PasswordMismatchException("Password is not match.", ErrorCode.PASSWORD_MISMATCH);
+            throw new PasswordMismatchException(ErrorCode.PASSWORD_MISMATCH);
         }
         return jwtProvider.createTokenDto(member.getId(), member.getAuthorities());
     }
@@ -69,10 +69,10 @@ public class MemberService {
     public void updatePassword(Long id, String originalPw, String newPw) {
         Member member = findMember(id);
         if (!encoder.matches(originalPw, member.getPassword())) {
-            throw new PasswordMismatchException("비밀번호가 다릅니다.", ErrorCode.PASSWORD_MISMATCH);
+            throw new PasswordMismatchException(ErrorCode.PASSWORD_MISMATCH);
         }
         if (originalPw.equals(newPw)) {
-            throw new PasswordSameException("예전 비밀번호와 같습니다.", ErrorCode.PASSWORD_SAME);
+            throw new PasswordSameException(ErrorCode.PASSWORD_SAME);
         }
         member.updatePassword(encoder.encode(newPw));
     }
@@ -85,7 +85,7 @@ public class MemberService {
     public void withdraw(Long id, String password) {
         Member member = findMember(id);
         if (!encoder.matches(password, member.getPassword())) {
-            throw new PasswordMismatchException("비밀번호가 다릅니다.", ErrorCode.PASSWORD_MISMATCH);
+            throw new PasswordMismatchException(ErrorCode.PASSWORD_MISMATCH);
         }
         // 추후 추가 예정
     }
@@ -105,6 +105,6 @@ public class MemberService {
     @Transactional(readOnly = true)
     private Member findMember(Long id) {
         return memberRepository.findById(id)
-                .orElseThrow(() -> new MemberNotFoundException("회원정보가 없습니다.", ErrorCode.MEMBER_NOT_FOUND));
+                .orElseThrow(() -> new MemberNotFoundException(ErrorCode.MEMBER_NOT_FOUND));
     }
 }

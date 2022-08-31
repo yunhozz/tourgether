@@ -4,11 +4,11 @@ import com.tourgether.enums.ErrorCode;
 import lombok.Getter;
 
 @Getter
-public class ApplyNotFoundException extends RuntimeException {
+public class AlreadyApplyException extends RuntimeException {
 
     private final ErrorCode errorCode;
 
-    public ApplyNotFoundException(ErrorCode errorCode) {
+    public AlreadyApplyException(ErrorCode errorCode) {
         this.errorCode = errorCode;
     }
 }
