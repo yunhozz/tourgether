@@ -1,16 +1,16 @@
-package com.tourgether.domain.chat.controller;
+package com.tourgether.api;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import static com.tourgether.dto.ChatDto.*;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
-public class ChatStompController {
+public class ChatApiController {
 
     private final SimpMessagingTemplate template;
 
