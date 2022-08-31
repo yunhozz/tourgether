@@ -22,7 +22,7 @@ public class ApplyApiController {
     private final ApplyService applyService;
 
     @GetMapping("/apply/{applyId}")
-    public ResponseEntity<ApplyResponseDto> getApply(@RequestParam String applyId) {
+    public ResponseEntity<ApplyResponseDto> getApply(@PathVariable String applyId) {
         return ResponseEntity.ok(applyService.findApplyDto(Long.valueOf(applyId)));
     }
 
