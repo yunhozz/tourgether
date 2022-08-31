@@ -46,4 +46,11 @@ public class Apply extends BaseTime {
         }
         status = 1;
     }
+
+    public void reject() {
+        if (status != 0) {
+            throw new AlreadyDecidedException(ErrorCode.ALREADY_DECIDED);
+        }
+        status = 2;
+    }
 }

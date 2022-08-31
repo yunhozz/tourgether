@@ -27,7 +27,7 @@ public class ApplyApiController {
     }
 
     @GetMapping("/apply")
-    public ResponseEntity<List<ApplyResponseDto>> getApplyList(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ResponseEntity<List<ApplyResponseDto>> getApplyListWithUser(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         return ResponseEntity.ok(applyService.findApplyDtoListByUserId(userDetails.getMember().getId()));
     }
 
@@ -41,6 +41,7 @@ public class ApplyApiController {
         if (flag == null) {
             return ResponseEntity.badRequest().body(new ErrorResponseDto(ErrorCode.ACCEPTANCE_NOT_INSERTED));
         }
+        applyService.applyResponse(Long.valueOf(applyId), flag);
         return ResponseEntity.ok().build();
     }
 }
