@@ -20,12 +20,12 @@ public class Recruit extends BaseTime {
     @GeneratedValue
     private Long id;
 
-    @OneToMany(mappedBy = "recruit", orphanRemoval = true)
-    private List<Comment> comments = new ArrayList<>();
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "writer_id")
     private Member writer;
+
+    @OneToMany(mappedBy = "recruit", orphanRemoval = true)
+    private List<Comment> comments = new ArrayList<>();
 
     private String title;
 
